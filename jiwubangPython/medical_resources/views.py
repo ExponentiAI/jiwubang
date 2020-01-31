@@ -48,7 +48,7 @@ class MedicalSuppliesViewSet(viewsets.ModelViewSet):
     queryset = MedicalSupplies.objects.all()
     serializer_class = MedicalSuppliesSerializer
 
-
+    
 class UserInfoViewSet(viewsets.ModelViewSet):
     queryset = UserInfo.objects.all()
     serializer_class = UserInfoSerializer
