@@ -9,12 +9,8 @@
 
 ![UI交互](https://github.com/ExponentiAI/jiwubang/blob/master/jiwubangUI/ui.jpg)
 
-## 主要开源子项目
+## 开源项目结构
 
-### UI交互设计
-
-### 前端小程序应用
-
-- 代码仓库：https://github.com/ExponentiAI/jiwubang/tree/master/jiwubangWeb
+- 前端小程序：https://github.com/ExponentiAI/jiwubang/tree/master/jiwubangWeb
 - UI设计：https://github.com/ExponentiAI/jiwubang/tree/master/jiwubangUI
 - 后端服务：https://github.com/ExponentiAI/jiwubang/tree/master/jiwubangPython
