@@ -7,4 +7,14 @@
 
 本项目的UI设计和交互如下：
 
-![UI](https://github.com/ExponentiAI/jiwubang/blob/master/jiwubangUI/ui.jpg)
+![UI交互](https://github.com/ExponentiAI/jiwubang/blob/master/jiwubangUI/ui.jpg)
+
+## 主要开源子项目
+
+### UI交互设计
+
+### 前端小程序应用
+
+- 代码仓库：https://github.com/ExponentiAI/jiwubang/tree/master/jiwubangWeb
+- UI设计：https://github.com/ExponentiAI/jiwubang/tree/master/jiwubangUI
+- 后端服务：https://github.com/ExponentiAI/jiwubang/tree/master/jiwubangPython
