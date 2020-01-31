@@ -7,7 +7,7 @@
 
 本项目的UI设计和交互如下：
 
-![UI交互](https://github.com/ExponentiAI/jiwubang/blob/master/jiwubangUI/ui.jpg)
+![UI交互](https://github.com/ExponentiAI/jiwubang/blob/master/JWB_UI/ui.jpg)
 
 ## 开源项目结构
 
