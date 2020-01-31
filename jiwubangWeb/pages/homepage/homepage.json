@@ -1,0 +1,4 @@
+{
+  "usingComponents": {"mp-tabs": "/components/weui-additional/tabs/index",
+  "mp-tabbar": "/components/weui-miniprogram/tabbar/tabbar"}
+}

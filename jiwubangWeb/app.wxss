@@ -1,0 +1,12 @@
+/**app.wxss**/
+@import 'components/weui-additional/weui-wxss/dist/style/weui.wxss';
+@import 'components/weui-miniprogram/weui-wxss/dist/style/weui.wxss';
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+} 

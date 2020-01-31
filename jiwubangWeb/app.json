@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/homepage/homepage",
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/provideInfo/provideInfo",
+    "pages/requireInfo/requireInfo"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "急物帮",
+    "navigationBarTextStyle": "black"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

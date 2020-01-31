@@ -1,0 +1,20 @@
+<!--pages/homepage/homepage.wxml-->
+<view class="container">
+<view class="tabs-whole">
+ <image id="tabs-scroll-top"  src="/icons/上滑键.png"></image>
+ <mp-tabs 
+  tabs="{{tabs}}" 
+  activeTab="{{activeTab}}" 
+  swiperClass="weui-tabs-swiper"
+  bindtabclick="onTabCLick"
+  bindchange="onChange"
+  activeClass="tab-bar-title__selected"
+ >
+  <block wx:for="{{tabs}}" wx:key="title">
+    <view class="tab-content" slot="tab-content-{{index}}" > {{item.title}} </view>
+  </block>
+</mp-tabs>
+</view>
+ <view class="tabbar-border"></view>
+ <mp-tabbar style="position:fixed;bottom:0;width:100%;left:0;right:0;" list="{{list}}" bindchange="tabChange"></mp-tabbar>
+</view>

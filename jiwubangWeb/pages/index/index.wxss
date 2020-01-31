@@ -1,0 +1,140 @@
+/**index.wxss**/
+.container{
+  background-color:gray;
+  padding-bottom: 100%;
+}
+
+#getAccount{
+  position: fixed;
+  right: 18%;
+  top:87%;
+  text-align: center;
+  width: 200rpx;
+  height:50;
+  font-size: 32rpx;
+  font-weight: 350;
+  color:white;
+  background-color:rgb(12, 177, 12);
+  
+}
+
+#enterHome{
+  position: fixed;
+  right: 18%;
+  top:87%;
+  text-align: center;
+  width: 200rpx;
+  height:50;
+  font-size: 32rpx;
+  font-weight: 350;
+  color:white;
+  background-color:rgb(12, 177, 12);
+}
+
+#cancel{
+  background-color: gainsboro;
+  position: fixed;
+  left:18%;
+  top:87%;
+  text-align: center;
+  width: 200rpx;
+  height:50;
+  font-size: 32rpx;
+  font-weight: 350;
+  color:rgb(12, 177, 12);
+
+}
+
+.userbox{
+  position: fixed;
+  top:55%;
+  width: 100%;
+  height:60%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top-left-radius:2%;
+  border-top-right-radius:2%;
+  
+}
+
+.project{
+  display:flex;
+  flex-direction: row;
+  position:fixed;
+  right:55%;
+  top:58%;
+  width:40%;
+}
+
+#project_logo {
+  width: 48rpx;
+  height: 48rpx;
+  
+}
+.project-name{
+  position:relative;
+  top:8rpx;
+  font-size:30rpx;
+  font-weight: bold;
+}
+
+#text1{
+  position:fixed;
+  top:65%;
+  width:86%;
+  font-size:30rpx;
+  font-weight: bold;
+}
+
+.userinfo {
+  position: fixed;
+  top: 70%;
+  width: 90%; 
+  height: 8%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-top-style: solid;
+  border-bottom-style: solid;
+  border-width: 3rpx;
+  border-color: gainsboro;
+ 
+}
+
+.userinfo_text{
+ display: flex;
+ flex-direction: column;
+}
+
+.userinfo-nickname{
+ font-size: 35rpx;
+}
+
+.personal-information{
+ font-size: 25rpx;
+ color: gray;
+}
+.userinfo-avatar {
+  width: 64rpx;
+  height: 64rpx;
+  margin: 20rpx;
+  border-radius: 10%;
+}
+
+#tick {
+  width: 32rpx;
+  height: 32rpx;
+  margin: 20rpx;
+  position:relative;
+  left:50%;
+}
+
+.userinfo-nickname {
+  color: black;
+}
+
+.usermotto {
+ display:none;
+}

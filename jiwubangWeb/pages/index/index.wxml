@@ -1,0 +1,29 @@
+<!--index.wxml-->
+<view class="container">
+<view class="userbox">
+ <view class="project">
+  <image id="project_logo" src="https://bkimg.cdn.bcebos.com/pic/2e2eb9389b504fc20964271ae2dde71190ef6df2?x-bce-process=image/watermark,g_7,image_d2F0ZXIvYmFpa2UxNTA=,xp_5,yp_5" alt="404">
+  </image>
+  <text class="project-name">急物帮</text>
+ </view>
+  <text id="text1">获取你的头像、昵称、地区以及性别</text>
+  <view class="userinfo">
+    <button id="getAccount"  wx:if="{{userInfo.nickName==null}}" open-type="getUserInfo"   bindgetuserinfo="getUserInfo">获取</button>
+    <button id="enterHome"  wx:else bindtap="enterHomepage">允许</button>
+    <button  id="cancel" bindtap="enterHomepage" >取消</button>
+    <block wx:if="{{hasUserInfo}}">
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+    <view class="userinfo_text">
+      <text class="userinfo-nickname" >{{userInfo.nickName}}</text>
+      <text wx:if="{{userInfo.gender==1}}" class="personal-information">{{userInfo.city }}，男</text>
+      <text wx:if="{{userInfo.gender==2}}" class="personal-information">{{userInfo.city }}，女</text>
+      <text wx:if="{{userInfo.gender==0}}" class="personal-information">{{userInfo.city }}，未知</text>
+    </view>
+    <image  wx:if="{{userInfo.nickName!=null}}" id="tick" src="https://s2.ax1x.com/2020/01/30/1l0Vo9.png" ></image>
+    </block>
+  </view>
+  <view class="usermotto">
+    <text class="user-motto">{{motto}}</text>
+  </view>
+  </view>
+</view>
