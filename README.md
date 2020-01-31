@@ -12,6 +12,6 @@
 ## 开源项目结构
 
 - 前端小程序：https://github.com/ExponentiAI/jiwubang/tree/master/jiwubangWeb
-- UI交互设计：https://github.com/ExponentiAI/jiwubang/tree/master/jiwubangUI
+- UI交互设计：https://github.com/ExponentiAI/jiwubang/tree/master/JWB_UI
 - 后台服务：https://github.com/ExponentiAI/jiwubang/tree/master/jiwubangPython
 - 测试数据：https://github.com/ExponentiAI/jiwubang/tree/master/JWB_Data
