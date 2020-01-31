@@ -1,3 +1,10 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "mp-toptips": "/components/weui-miniprogram/toptips/toptips",
+    "mp-cells": "/components/weui-miniprogram/cells/cells",
+    "mp-cell": "/components/weui-miniprogram/cell/cell",
+    "mp-checkbox": "/components/weui-miniprogram/checkbox/checkbox",
+    "mp-checkbox-group": "/components/weui-miniprogram/checkbox-group/checkbox-group",
+    "mp-form": "/components/weui-miniprogram/form/form"
+  }
 }

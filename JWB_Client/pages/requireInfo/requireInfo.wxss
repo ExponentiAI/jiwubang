@@ -1,1 +1,14 @@
 /* pages/requireInfo/requireInfo.wxss */
+
+.page__bd{
+  width:95%;
+  position: relative;
+  left:19rpx;
+}
+
+.weui-btn{
+  width:100rpx;
+  background-color: #3D91ED;
+  color: white;
+}
+

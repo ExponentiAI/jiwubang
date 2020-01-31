@@ -1,12 +1,16 @@
 /* pages/homepage/homepage.wxss */
-.container{
-  
-  background-color: gray;
- 
-
+.container{ 
+ background-color: gray;
 }
 
+.searchbar{
+  position: fixed;
+  z-index: 9999;
+  top:0%;
+  width:100%;
 
+  
+}
 
 .weui-tabs-bar__item {
   font-size:35rpx;
@@ -23,7 +27,7 @@
 .tabs-whole{
   position:relative;
   top:750rpx;
-  height:1183rpx;
+  height:1080rpx;
   background-color: white;
  
   

@@ -1,2 +1,42 @@
 <!--pages/provideInfo/provideInfo.wxml-->
-<text>pages/provideInfo/provideInfo.wxml</text>
+<!--pages/requireInfo/requireInfo.wxml-->
+<mp-toptips msg="{{error}}" type="error" show="{{error}}"></mp-toptips>
+<view class="page" >
+    <view class="page__bd">
+
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell">
+                <view class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="描述你知道的信息..." style="height:250rpx;font-size:35rpx;" maxlength='100'  bindinput='textCount'/>
+                    <view class="weui-textarea-counter" style="font-size:25rpx" >{{textLength}}/100</view>
+                </view>
+            </view>
+        </view>
+
+        <mp-form id="form" rules="{{rules}}" models="{{formData}}">
+            
+            <mp-cells title="拥有物品" >
+                <mp-checkbox-group prop="checkbox" multi="{{true}}" bindchange="checkboxChange">
+                    <mp-checkbox wx:for="{{checkboxItems}}" wx:key="value" label="{{item.name}}" value="{{item.value}}" checked="{{item.checked}}" style="font-size:30rpx"></mp-checkbox>
+                </mp-checkbox-group>
+            </mp-cells>
+            </mp-form>
+        
+
+        <checkbox-group   bindchange="bindAgreeChange">
+            <label class="weui-agree" for="weuiAgree">
+                <view class="weui-agree__text">
+                    <checkbox class="weui-agree__checkbox" id="weuiAgree" value="agree" checked="{{isAgree}}" />
+                    <view class="weui-agree__checkbox-icon" >
+                        <icon class="weui-agree__checkbox-icon-check" type="success_no_circle" size="9" wx:if="{{isAgree}}"></icon>
+                    </view>
+                    阅读并同意<navigator url="" class="weui-agree__link">《相关条款》</navigator>
+                </view>
+            </label>
+        </checkbox-group>
+
+        <view class="weui-btn-area">
+            <button class="weui-btn"  bindtap="submitForm">提交</button>
+        </view>
+    </view>
+</view>

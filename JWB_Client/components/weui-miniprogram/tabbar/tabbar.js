@@ -1,3 +1,5 @@
+const app = getApp()
+
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -117,9 +119,14 @@ Component({
             var index = e.currentTarget.dataset.index;
 
             if (index === this.data.current) {
-                wx.navigateTo({
+              if (!app.globalData.userInfo){wx.navigateTo({
                   url: '../index/index'
                 })
+                }
+                
+                wx.navigateTo({
+                  url: this.data.list[index].switchToPage
+              });
                 return;
             }
             this.setData({
