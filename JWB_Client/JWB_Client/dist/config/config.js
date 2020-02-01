@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var dev = true;
 var confing = {
-  useMock: true,
+  useMock: false,
   baseUrl: 'https://bookkeeping.yijifu.net/',
   dev: dev
 };

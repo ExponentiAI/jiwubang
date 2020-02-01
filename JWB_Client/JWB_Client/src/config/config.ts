@@ -1,6 +1,6 @@
 const dev = process.env.NODE_ENV === 'development'
 const confing = {
-  useMock: true,
+  useMock: !true,
   baseUrl: 'https://bookkeeping.yijifu.net/',
   dev
 }

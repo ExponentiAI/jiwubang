@@ -1,7 +1,7 @@
 {
 	"miniprogramRoot": "dist/",
-	"projectname": "bookkeeping-front",
-	"description": "老板记账app",
+	"projectname": "jwb",
+	"description": "jwb描述",
 	"appid": "wx2f6cce3026bec8b2",
 	"setting": {
 		"urlCheck": true,
