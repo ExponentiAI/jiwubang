@@ -18,9 +18,6 @@ echart 图表 [文档](https://www.echartsjs.com/zh/tutorial.html#5%20%E5%88%86%
 ##### 打包命令
 `npm run build:weapp`
 
-##### 导入项目
-`\bookkeeping\bookkeeping-front\dist`
-
 
 简要目录说明
 dist 打包上传文件
