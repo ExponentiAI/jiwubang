@@ -18,18 +18,27 @@ taro框架开发小程序文档 [链接](https://taro-docs.jd.com/)
 
 
 简要目录说明
+
 dist 打包上传文件
+
 src
+
  -- api api 统一管理目录 请求域名在config里面配置
+
  -- assets 静态资源目录
+
  -- components 公共组件
+
  -- config 全局配置文件
- -- lib 工具类 
-  -- http 公共http请求组件 
+
+ -- lib 工具类
+
+  -- http 公共http请求组件
+
 project.config 配置appid desc等信息
 
 ```
-// 网络http请求示例
+// 网络http请求示例 首页有demo
 http.request(api.getUser)
   .then((res:any)=>{
   if(res.success){
