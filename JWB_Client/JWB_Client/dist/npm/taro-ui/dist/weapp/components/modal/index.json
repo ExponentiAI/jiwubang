@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "at-modal-header": "./header/index",
+    "at-modal-content": "./content/index",
+    "at-modal-action": "./action/index"
+  }
+}

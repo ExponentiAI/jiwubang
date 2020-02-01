@@ -1,0 +1,5 @@
+<block wx:if="{{$taroCompReady}}">
+    <scroll-view scroll-y="{{true}}" class="{{rootClass}}">
+        <slot></slot>
+    </scroll-view>
+</block>

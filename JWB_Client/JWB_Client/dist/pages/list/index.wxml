@@ -1,0 +1,3 @@
+<block wx:if="{{$taroCompReady}}">
+    <view class="perCenter">信息提供页</view>
+</block>

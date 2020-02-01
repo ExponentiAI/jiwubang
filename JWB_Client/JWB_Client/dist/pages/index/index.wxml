@@ -1,0 +1,11 @@
+<block wx:if="{{$taroCompReady}}">
+    <view class="index">首页
+        <at-modal compid="{{$compid__0}}">
+            <at-modal-content>为了您更好的体验小程序，建议您授权微信获取用户信息</at-modal-content>
+            <at-modal-action>
+                <button class="button-gray" bindtap="anonymousFunc0">取消</button>
+                <button open-type="getUserInfo" bindgetuserinfo="anonymousFunc1">获取授权</button>
+            </at-modal-action>
+        </at-modal>
+    </view>
+</block>

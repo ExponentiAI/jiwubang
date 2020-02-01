@@ -1,0 +1,122 @@
+{
+     "interfaceType": "GET",
+     "requiredParameters": [
+          {
+               "name": "fsdf",
+               "required": true,
+               "remark": "int",
+               "nameVerify": "name_1433848360000",
+               "ruleVerify": "rule_1433848360000"
+          }
+     ],
+     "responseParameters": [
+          {
+               "id": "00",
+               "kind": "string",
+               "name": "code",
+               "rule": "200",
+               "array": [],
+               "nameVerify": "name_1426154188000",
+               "ruleVerify": "rule_1426154188000",
+               "remark": "错误码"
+          },
+          {
+               "id": "01",
+               "kind": "object",
+               "name": "data",
+               "rule": "",
+               "array": [],
+               "nameVerify": "name_1426154188000",
+               "ruleVerify": "rule_1426154188000"
+          },
+          {
+               "id": "0101",
+               "kind": "string",
+               "name": "accountName",
+               "rule": "@word",
+               "array": [],
+               "nameVerify": "name_1426154188000",
+               "ruleVerify": "rule_1426154188000",
+               "remark": "我是随机字符"
+          },
+          {
+               "id": "0102",
+               "kind": "mock",
+               "name": "accountStatus|1-10",
+               "rule": "1",
+               "array": [],
+               "nameVerify": "name_1426154188000",
+               "ruleVerify": "rule_1426154188000",
+               "remark": "我是1～10的随机数"
+          },
+          {
+               "id": "0105",
+               "kind": "object",
+               "name": "quota",
+               "rule": "",
+               "array": [],
+               "nameVerify": "name_1426154188000",
+               "ruleVerify": "rule_1426154188000",
+               "remark": "我是对象"
+          },
+          {
+               "id": "010501",
+               "kind": "string",
+               "name": "class",
+               "rule": "com.aliyun.csc.sls.model.AccountModel$Quota",
+               "array": [],
+               "nameVerify": "name_1426154188000",
+               "ruleVerify": "rule_1426154188000"
+          },
+          {
+               "id": "04",
+               "kind": "mock",
+               "name": "responseDatas|1",
+               "rule": "['A','B','C']",
+               "array": [],
+               "nameVerify": "name_1426154188000",
+               "ruleVerify": "rule_1426154188000",
+               "remark": "我是A、B、C随机出现"
+          },
+          {
+               "id": "05",
+               "kind": "mock",
+               "name": "success|1",
+               "rule": true,
+               "array": [],
+               "nameVerify": "name_1426154188000",
+               "ruleVerify": "rule_1426154188000",
+               "remark": "我是true／false 随机出现"
+          },
+          {
+               "id": "06",
+               "kind": "array(object)",
+               "name": "array|1-10",
+               "rule": "--",
+               "array": [],
+               "nameVerify": "name_1450314749000",
+               "ruleVerify": "rule_1450314749000",
+               "remark": "我是数组1～10随机出现"
+          },
+          {
+               "id": "0601",
+               "kind": "string",
+               "name": "name",
+               "rule": "10",
+               "array": [
+                    "06"
+               ],
+               "nameVerify": "name_1450314763000",
+               "ruleVerify": "rule_1450314763000"
+          }
+     ],
+     "reqError": [
+          "请求参数［fsdf］应该为必填项"
+     ],
+     "docError": [],
+     "interfaceUrl": "/demo/jsondemo.json",
+     "interfaceName": "/demo/sadsad.json",
+     "lazyLoad": "no",
+     "responseParametersType": false,
+     "responseJson": "{\"adasd\":1213213}"
+}
