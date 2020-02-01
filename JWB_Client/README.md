@@ -30,18 +30,18 @@ src
  -- components 公共组件
  -- config 全局配置文件
  -- lib 工具类 
-    -- http 公共http请求组件 
+  -- http 公共http请求组件 
 project.config 配置appid desc等信息
 
 ```
-	// 网络http请求示例
-    http.request(api.getUser)
-      .then((res:any)=>{
-        if(res.success){
-          this.setState({
-          },()=>{
-            // ...
-          })
-        }
-      })
+// 网络http请求示例
+http.request(api.getUser)
+  .then((res:any)=>{
+  if(res.success){
+    this.setState({
+    },()=>{
+    // ...
+    })
+  }
+  })
 ```
