@@ -1,0 +1,27 @@
+{
+  "name": "better-babel-generator",
+  "version": "6.26.1",
+  "description": "Turns an AST into code.",
+  "author": "yuche <i@yuche.me>",
+  "homepage": "https://babeljs.io/",
+  "license": "MIT",
+  "repository": "https://github.com/babel/babel/tree/master/packages/babel-generator",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "babel-messages": "^6.23.0",
+    "babel-runtime": "^6.26.0",
+    "babel-types": "^6.26.0",
+    "detect-indent": "^4.0.0",
+    "jsesc": "2",
+    "lodash": "^4.17.4",
+    "source-map": "^0.5.7",
+    "trim-right": "^1.0.1"
+  },
+  "devDependencies": {
+    "babel-helper-fixtures": "^6.26.0",
+    "babylon": "^6.18.0"
+  }
+}

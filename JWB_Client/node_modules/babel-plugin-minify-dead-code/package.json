@@ -1,0 +1,25 @@
+{
+  "name": "babel-plugin-minify-dead-code",
+  "description": "This plugin for babel 6 remove dead code",
+  "version": "1.3.2",
+  "keywords": [
+    "babel-plugin"
+  ],
+  "repository": "NervJS/babel-plugin-remove-dead-code",
+  "author": "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
+  "scripts": {
+    "watch": "babel --presets es2015,stage-0 -w index.src.js --out-file index.js",
+    "test": "node test/",
+    "create-diff-example": "diff -u --ignore-all-space --ignore-blank-lines test/fixtures/actual.js test/fixtures/expected.js > example.diff || true"
+  },
+  "dependencies": {
+    "babel-core": "6.10.4"
+  },
+  "devDependencies": {
+    "babel-cli": "6.10.1",
+    "babel-preset-es2015": "6.9.0",
+    "babel-preset-stage-0": "6.5.0",
+    "chalk": "^1.1.3",
+    "diff": "^2.2.3"
+  }
+}

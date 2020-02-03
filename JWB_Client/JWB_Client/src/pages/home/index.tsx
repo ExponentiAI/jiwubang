@@ -4,7 +4,9 @@ import { View, Text, Image, Navigator, Button, Map } from '@tarojs/components'
 import { AtModal, AtModalContent, AtModalAction, AtTabBar, AtSearchBar, AtTabs, AtTabsPane, AtDivider } from 'taro-ui'
 import { UPage } from '../../components/ui'
 import { WTab, WMessageItem } from '../../components/widget'
-import { mapLocation } from '../../assets/images/icon'
+import QQMapWX from '../../libs/qqmap-wx-jssdk'
+import myLocation from '../../assets/images/icon/my-location.png'
+import markerPic from '../../assets/images/icon/marker.png'
 import './index.less'
 
 // eslint-disable-next-line
@@ -18,6 +20,7 @@ export interface State {
   tabsIdx: number;
   latitude: number;
   longitude: number;
+  address: any;
   markers: Array<any>,
 }
 
@@ -37,32 +40,82 @@ export default class Index extends Component<{}, State> {
       tabsIdx: 0,
       latitude: 0,
       longitude: 0,
+      address: {},
       markers: []
     }
   }
 
   componentWillMount() {
-    this.getLocation()
+
+    // Taro.getLocation({
+    //   　　　　type: 'wgs84',
+    //   　　　　success:(res) => {
+    //   　　　　　　this.setState({
+    //   　　　　　　　　latitude: res.latitude,
+    //   　　　　　　　　longitude: res.longitude
+    //   　　　　　})
+    //   　　　}
+    // })
+
+    
+
+    this.getLocationInfo()
+
   }
 
-  async getLocation() {
-    const location = await Taro.getLocation({isHighAccuracy: true}) as Taro.getLocation.SuccessCallbackResult
-    const latitude = location.latitude
-    const longitude = location.longitude
+  async getLocationInfo() {
+    let qqmapsdk = new QQMapWX({
+      key: 'E56BZ-VCOLX-Q7Q4N-7OE7Y-LHKK3-MPBD5'
+    })
 
-    this.setState({
-      latitude,
-      longitude,
-      markers: [{
-        iconPath: mapLocation,
-        id: 0,
-        latitude,
-        longitude,
-        width: 50,
-        height: 50
-      }]
+    qqmapsdk.reverseGeocoder({
+      get_poi: 0,
+      success:(res) =>{
+        // console.log(res.result.address_component)
+        const latitude = res.result.location.lat
+        const longitude = res.result.location.lng
+
+        this.setState({
+          latitude,
+          longitude,
+          address: res.result.address_component,
+          markers: [{
+            iconPath: myLocation,
+            id: 1,
+            latitude,
+            longitude,
+            width: 30,
+            height: 30,
+            callout:{
+              content:"我的位置",
+              // padding:10,
+              display:'ALWAYS',
+              textAlign:'center'
+            }
+          }]
+        })
+      }
     })
   }
+
+  // async getLocation() {
+  //   const location = await Taro.getLocation({isHighAccuracy: true}) as Taro.getLocation.SuccessCallbackResult
+  //   const latitude = location.latitude
+  //   const longitude = location.longitude
+
+  //   this.setState({
+  //     latitude,
+  //     longitude,
+  //     markers: [{
+  //       iconPath: mapLocation,
+  //       id: 0,
+  //       latitude,
+  //       longitude,
+  //       width: 50,
+  //       height: 50
+  //     }]
+  //   })
+  // }
 
   tabList = [{ title: '热门' }, { title: '最新' }, { title: '我的' }]
 
@@ -72,9 +125,9 @@ export default class Index extends Component<{}, State> {
   searchChange() {
 
   }
-  mapClick({ detail: { longitude, latitude } }: MapProps) {
-    console.log(longitude, latitude)
-  }
+  // mapClick({ detail: { longitude, latitude } }: MapProps) {
+  //   console.log(longitude, latitude)
+  // }
   tabsClick(value) {
     this.setState({
       tabsIdx: value
@@ -99,11 +152,13 @@ export default class Index extends Component<{}, State> {
             showActionButton
           />
         }>
+
         <Map
           markers={markers}
           latitude={latitude}
           longitude={longitude}
-          onClick={this.mapClick.bind(this)}
+          // onClick={this.mapClick.bind(this)}
+          scale='15'
           className='p-map'
         />
 
