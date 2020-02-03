@@ -1,6 +1,0 @@
-<block wx:if="{{$taroCompReady}}">
-    <view style="{{anonymousState__temp}}" class="{{'className ' + prefix}}">
-        <image class="{{prefix + '-img'}}" src="{{empty}}"></image>
-        <view>{{text ? text : '暂无数据'}}</view>
-    </view>
-</block>
