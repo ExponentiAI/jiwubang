@@ -13,5 +13,5 @@
 
 - 前端小程序：https://github.com/ExponentiAI/jiwubang/tree/master/JWB_Client
 - UI交互设计：https://github.com/ExponentiAI/jiwubang/tree/master/JWB_UI
-- 后台服务：https://github.com/ExponentiAI/jiwubang/tree/master/JWB_Server
+- 后台服务：https://github.com/ExponentiAI/JWB_Server_API
 - 测试数据：https://github.com/ExponentiAI/jiwubang/tree/master/JWB_Data
