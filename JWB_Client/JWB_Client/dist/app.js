@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -6,9 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _index = require('./npm/@tarojs/taro-weapp/index.js');
+var _index = require("./npm/@tarojs/taro-weapp/index.js");
 
 var _index2 = _interopRequireDefault(_index);
+
+require("./npm/@tarojs/async-await/index.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23,6 +25,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 // if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
 //   require('nerv-devtools')
 // }
+
 var _App = function (_BaseComponent) {
   _inherits(_App, _BaseComponent);
 
@@ -38,33 +41,38 @@ var _App = function (_BaseComponent) {
         navigationBarBackgroundColor: '#fff',
         navigationBarTitleText: 'WeChat',
         navigationBarTextStyle: 'black'
+      },
+      permission: {
+        "scope.userLocation": {
+          "desc": "你的位置信息将用于小程序位置接口的效果展示" // 高速公路行驶持续后台定位
+        }
       }
     };
     return _this;
   }
 
   _createClass(_App, [{
-    key: 'componentWillMount',
+    key: "componentWillMount",
     value: function componentWillMount() {
       // Taro.hideTabBar()
     }
   }, {
-    key: 'componentDidMount',
+    key: "componentDidMount",
     value: function componentDidMount() {}
   }, {
-    key: 'componentDidShow',
+    key: "componentDidShow",
     value: function componentDidShow() {}
   }, {
-    key: 'componentDidHide',
+    key: "componentDidHide",
     value: function componentDidHide() {}
   }, {
-    key: 'componentDidCatchError',
+    key: "componentDidCatchError",
     value: function componentDidCatchError() {}
     // 在 App 类中的 render() 函数没有实际作用
     // 请勿修改此函数
 
   }, {
-    key: '_createData',
+    key: "_createData",
     value: function _createData() {}
   }]);
 

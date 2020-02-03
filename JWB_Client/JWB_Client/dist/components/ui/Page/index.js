@@ -44,7 +44,7 @@ var Page = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Page.__proto__ || Object.getPrototypeOf(Page)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "$compid__19", "prefix", "empty", "transparent", "mainPaddingTop", "mainPaddingBottom", "titleImmerse", "className", "showBottom", "onePxTransparent", "renderTop", "children", "renderBottom"], _this.onScroll = function (event) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Page.__proto__ || Object.getPrototypeOf(Page)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "$compid__15", "prefix", "empty", "transparent", "mainPaddingTop", "mainPaddingBottom", "titleImmerse", "className", "showBottom", "onePxTransparent", "renderTop", "children", "renderBottom"], _this.onScroll = function (event) {
       _this.props.onScroll && _this.props.onScroll(event);
       // 沉浸式
       if (_this.props.titleImmerse) {
@@ -110,10 +110,10 @@ var Page = (_temp2 = _class = function (_BaseComponent) {
       var __prefix = this.$prefix;
       var prefix = this.prefix;
 
-      var _genCompid = (0, _index.genCompid)(__prefix + "$compid__19"),
+      var _genCompid = (0, _index.genCompid)(__prefix + "$compid__15"),
           _genCompid2 = _slicedToArray(_genCompid, 2),
-          $prevCompid__19 = _genCompid2[0],
-          $compid__19 = _genCompid2[1];
+          $prevCompid__15 = _genCompid2[0],
+          $compid__15 = _genCompid2[1];
 
       var statusBarHeight = _index2.default.getSystemInfoSync().statusBarHeight;
       var _state = this.__state,
@@ -130,7 +130,7 @@ var Page = (_temp2 = _class = function (_BaseComponent) {
       var anonymousState__temp2 = (0, _index.internal_inline_style)({ paddingTop: mainPaddingTop, paddingBottom: mainPaddingBottom });
       empty && _index.propsManager.set({
         "style": "padding-top: 200px"
-      }, $compid__19, $prevCompid__19);
+      }, $compid__15, $prevCompid__15);
       this.$$refs.pushRefs([{
         type: "dom",
         id: "azzzz",
@@ -156,7 +156,7 @@ var Page = (_temp2 = _class = function (_BaseComponent) {
       Object.assign(this.__state, {
         anonymousState__temp: anonymousState__temp,
         anonymousState__temp2: anonymousState__temp2,
-        $compid__19: $compid__19,
+        $compid__15: $compid__15,
         prefix: prefix,
         empty: empty,
         onePxTransparent: this.onePxTransparent

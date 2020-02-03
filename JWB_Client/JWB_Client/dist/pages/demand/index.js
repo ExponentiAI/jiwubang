@@ -38,7 +38,7 @@ var Index = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Index.__proto__ || Object.getPrototypeOf(Index)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "$compid__22", "$compid__23", "$compid__24", "$compid__25", "$compid__26", "$compid__27", "showMyAccordion", "showShopAccordion", "checkedList"], _this.config = {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Index.__proto__ || Object.getPrototypeOf(Index)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "$compid__9", "$compid__10", "$compid__11", "$compid__12", "$compid__13", "$compid__14", "showMyAccordion", "showShopAccordion", "checkedList"], _this.config = {
       navigationBarTitleText: '信息提供'
     }, _this.customComponents = ["UPage", "AtButton", "AtAccordion", "AtTextarea", "AtCheckbox"], _temp), _possibleConstructorReturn(_this, _ret);
   }
@@ -76,35 +76,35 @@ var Index = (_temp2 = _class = function (_BaseComponent) {
       var __prefix = this.$prefix;
       ;
 
-      var _genCompid = (0, _index.genCompid)(__prefix + "$compid__22"),
+      var _genCompid = (0, _index.genCompid)(__prefix + "$compid__9"),
           _genCompid2 = _slicedToArray(_genCompid, 2),
-          $prevCompid__22 = _genCompid2[0],
-          $compid__22 = _genCompid2[1];
+          $prevCompid__9 = _genCompid2[0],
+          $compid__9 = _genCompid2[1];
 
-      var _genCompid3 = (0, _index.genCompid)(__prefix + "$compid__23"),
+      var _genCompid3 = (0, _index.genCompid)(__prefix + "$compid__10"),
           _genCompid4 = _slicedToArray(_genCompid3, 2),
-          $prevCompid__23 = _genCompid4[0],
-          $compid__23 = _genCompid4[1];
+          $prevCompid__10 = _genCompid4[0],
+          $compid__10 = _genCompid4[1];
 
-      var _genCompid5 = (0, _index.genCompid)(__prefix + "$compid__24"),
+      var _genCompid5 = (0, _index.genCompid)(__prefix + "$compid__11"),
           _genCompid6 = _slicedToArray(_genCompid5, 2),
-          $prevCompid__24 = _genCompid6[0],
-          $compid__24 = _genCompid6[1];
+          $prevCompid__11 = _genCompid6[0],
+          $compid__11 = _genCompid6[1];
 
-      var _genCompid7 = (0, _index.genCompid)(__prefix + "$compid__25"),
+      var _genCompid7 = (0, _index.genCompid)(__prefix + "$compid__12"),
           _genCompid8 = _slicedToArray(_genCompid7, 2),
-          $prevCompid__25 = _genCompid8[0],
-          $compid__25 = _genCompid8[1];
+          $prevCompid__12 = _genCompid8[0],
+          $compid__12 = _genCompid8[1];
 
-      var _genCompid9 = (0, _index.genCompid)(__prefix + "$compid__26"),
+      var _genCompid9 = (0, _index.genCompid)(__prefix + "$compid__13"),
           _genCompid10 = _slicedToArray(_genCompid9, 2),
-          $prevCompid__26 = _genCompid10[0],
-          $compid__26 = _genCompid10[1];
+          $prevCompid__13 = _genCompid10[0],
+          $compid__13 = _genCompid10[1];
 
-      var _genCompid11 = (0, _index.genCompid)(__prefix + "$compid__27"),
+      var _genCompid11 = (0, _index.genCompid)(__prefix + "$compid__14"),
           _genCompid12 = _slicedToArray(_genCompid11, 2),
-          $prevCompid__27 = _genCompid12[0],
-          $compid__27 = _genCompid12[1];
+          $prevCompid__14 = _genCompid12[0],
+          $compid__14 = _genCompid12[1];
 
       var _state = this.__state,
           showMyAccordion = _state.showMyAccordion,
@@ -133,45 +133,45 @@ var Index = (_temp2 = _class = function (_BaseComponent) {
         "className": "p-demand-page",
         "showBottom": true,
         "titleImmerse": true
-      }, $compid__22, $prevCompid__22);
+      }, $compid__9, $prevCompid__9);
       _index.propsManager.set({
         "className": "p-submit-btn",
         "type": "primary",
         "circle": true,
         "size": "small",
         "customStyle": anonymousState__temp
-      }, $compid__23, $prevCompid__23);
+      }, $compid__10, $prevCompid__10);
       _index.propsManager.set({
         "open": showMyAccordion,
         "onClick": this.anonymousFunc0,
         "title": "\u6211\u7684\u4F4D\u7F6E"
-      }, $compid__24, $prevCompid__24);
+      }, $compid__11, $prevCompid__11);
       _index.propsManager.set({
         "open": showShopAccordion,
         "onClick": this.anonymousFunc1,
         "title": "\u5546\u5E97\u6240\u5728\u4F4D\u7F6E"
-      }, $compid__25, $prevCompid__25);
+      }, $compid__12, $prevCompid__12);
       _index.propsManager.set({
         "customStyle": anonymousState__temp2,
         "value": "",
         "onChange": this.anonymousFunc2,
         "maxLength": 200,
         "placeholder": "\u63CF\u8FF0\u4F60\u77E5\u9053\u7684\u4FE1\u606F..."
-      }, $compid__26, $prevCompid__26);
+      }, $compid__13, $prevCompid__13);
       _index.propsManager.set({
         "onChange": this.anonymousFunc3,
         "options": this.checkboxOption,
         "selectedList": checkedList
-      }, $compid__27, $prevCompid__27);
+      }, $compid__14, $prevCompid__14);
       Object.assign(this.__state, {
         anonymousState__temp: anonymousState__temp,
         anonymousState__temp2: anonymousState__temp2,
-        $compid__22: $compid__22,
-        $compid__23: $compid__23,
-        $compid__24: $compid__24,
-        $compid__25: $compid__25,
-        $compid__26: $compid__26,
-        $compid__27: $compid__27
+        $compid__9: $compid__9,
+        $compid__10: $compid__10,
+        $compid__11: $compid__11,
+        $compid__12: $compid__12,
+        $compid__13: $compid__13,
+        $compid__14: $compid__14
       });
       return this.__state;
     }

@@ -2,6 +2,8 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import Index from './pages/home/index'
 import 'taro-ui/dist/style/index.scss'
 import './app.scss'
+import '@tarojs/async-await'
+
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
 // if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
@@ -24,26 +26,11 @@ class App extends Component {
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black',
     },
-    // tabBar: {
-    //   color: '#bbc0ca',
-    //   selectedColor: '1f83e1',
-    //   backgroundColor: '#feffff',
-    //   borderStyle: 'black',
-    //   list: [
-    //     {
-    //       pagePath: 'pages/home/index',
-    //       iconPath: 'assets/images/icon/report-ico1.png',
-    //       selectedIconPath: 'assets/images/icon/report-ico2.png',
-    //       text: '信息求助',
-    //     },
-    //     {
-    //       pagePath: 'pages/demand/index',
-    //       iconPath: 'assets/images/icon/bill-ico1.png',
-    //       selectedIconPath: 'assets/images/icon/bill-ico2.png',
-    //       text: '信息提供',
-    //     },
-    //   ],
-    // },
+    permission: {
+      "scope.userLocation": {
+        "desc": "你的位置信息将用于小程序位置接口的效果展示" // 高速公路行驶持续后台定位
+      }
+    }
   }
 
   componentDidMount () {

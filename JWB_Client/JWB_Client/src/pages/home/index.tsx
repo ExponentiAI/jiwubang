@@ -4,12 +4,11 @@ import { View, Text, Image, Navigator, Button, Map } from '@tarojs/components'
 import { AtModal, AtModalContent, AtModalAction, AtTabBar, AtSearchBar, AtTabs, AtTabsPane, AtDivider } from 'taro-ui'
 import { UPage } from '../../components/ui'
 import { WTab, WMessageItem } from '../../components/widget'
+import { mapLocation } from '../../assets/images/icon'
 import './index.less'
-import http from '../../libs/http'
-import api from '../../api/api'
 
-let isWapp = process.env.TARO_ENV;
-
+// eslint-disable-next-line
+const { regeneratorRuntime } = global;
 
 export interface State {
   open: boolean;
@@ -17,6 +16,9 @@ export interface State {
   tabBarIdx: number;
   keyword: string;
   tabsIdx: number;
+  latitude: number;
+  longitude: number;
+  markers: Array<any>,
 }
 
 export default class Index extends Component<{}, State> {
@@ -32,41 +34,38 @@ export default class Index extends Component<{}, State> {
       homeData: {},
       tabBarIdx: 0,
       keyword: '',
-      tabsIdx: 0
+      tabsIdx: 0,
+      latitude: 0,
+      longitude: 0,
+      markers: []
     }
   }
 
   componentWillMount() {
-    Taro.showShareMenu()
-      .then(
-        () => {
-          this.onShareAppMessage
-        }
-      )
+    this.getLocation()
   }
-  onShareAppMessage(res) {
-    // 这是分享配置
-    return {
-      title: '老板记账  收支更清晰',
-      path: '/pages/index/index',
-      // imageUrl: source.shareImage,
-    }
+
+  async getLocation() {
+    const location = await Taro.getLocation({isHighAccuracy: true}) as Taro.getLocation.SuccessCallbackResult
+    const latitude = location.latitude
+    const longitude = location.longitude
+
+    this.setState({
+      latitude,
+      longitude,
+      markers: [{
+        iconPath: mapLocation,
+        id: 0,
+        latitude,
+        longitude,
+        width: 50,
+        height: 50
+      }]
+    })
   }
 
   tabList = [{ title: '热门' }, { title: '最新' }, { title: '我的' }]
 
-  homeInfo() {
-    // 网络http请求示例
-    http.request(api.getUser)
-      .then((res: any) => {
-        if (res.success) {
-          this.setState({
-          }, () => {
-            // ...
-          })
-        }
-      })
-  }
   tabbarClick() {
 
   }
@@ -83,7 +82,7 @@ export default class Index extends Component<{}, State> {
   }
 
   render() {
-    const { keyword, tabBarIdx, open, tabsIdx } = this.state
+    const { keyword, tabBarIdx, markers, tabsIdx, latitude, longitude } = this.state
 
     return (
       <UPage
@@ -101,6 +100,9 @@ export default class Index extends Component<{}, State> {
           />
         }>
         <Map
+          markers={markers}
+          latitude={latitude}
+          longitude={longitude}
           onClick={this.mapClick.bind(this)}
           className='p-map'
         />
@@ -109,48 +111,21 @@ export default class Index extends Component<{}, State> {
           <AtTabsPane className='p-tabs-pane' current={tabsIdx} index={0} >
             <WMessageItem></WMessageItem>
             <WMessageItem></WMessageItem>
+            <WMessageItem></WMessageItem>
+            <WMessageItem></WMessageItem>
+            <WMessageItem></WMessageItem>
+            <WMessageItem></WMessageItem>
+            <WMessageItem></WMessageItem>
+            <WMessageItem></WMessageItem>
             <WMessageItem style='border-bottom: none'></WMessageItem>
-            <AtDivider content='没有更多了' />
           </AtTabsPane>
           <AtTabsPane className='p-tabs-pane' current={tabsIdx} index={1}>
             <WMessageItem></WMessageItem>
-            <AtDivider content='没有更多了' />
           </AtTabsPane>
           <AtTabsPane className='p-tabs-pane' current={tabsIdx} index={2}>
             <WMessageItem style='border-bottom: none'></WMessageItem>
-            <AtDivider content='没有更多了' />
           </AtTabsPane>
         </AtTabs>
-
-        {
-          isWapp === 'weapp' ?
-            <AtModal isOpened={open} closeOnClickOverlay={false}>
-              <AtModalContent>
-                为了您更好的体验小程序，建议您授权微信获取用户信息
-            </AtModalContent>
-              <AtModalAction>
-                <Button className='button-gray' onClick={() => {
-                  this.setState({
-                    open: false
-                  })
-                }}>取消</Button>
-                <Button openType='getUserInfo' onGetUserInfo={() => {
-                  this.setState({
-                    open: false
-                  })
-                }}>获取授权</Button>
-              </AtModalAction>
-            </AtModal> : ''
-        }
-        {/* <AtTabBar
-          fixed
-          tabList={[
-            { title: '信息求助', iconType: 'bullet-list', text: 'new' },
-            { title: '信息提供', iconType: 'camera' }
-          ]}
-          onClick={this.tabbarClick.bind(this)}
-          current={tabBarIdx}
-        /> */}
       </UPage>
     )
   }

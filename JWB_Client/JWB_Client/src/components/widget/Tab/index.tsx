@@ -3,6 +3,10 @@ import { View, Image, Button } from '@tarojs/components';
 import Component from '../../common/component';
 import './index.scss';
 import { billIco1, billIco2, reportIco1, reportIco2 } from '../../../assets/images/icon'
+import { login } from '../../../models/home'
+
+// eslint-disable-next-line
+const { regeneratorRuntime } = global;
 
 interface Props {
   className?: string;
@@ -27,10 +31,16 @@ class Tab extends Component<Props, State> {
     { text: '信息提供', jump: true,  icon: reportIco1, selectedIcon: reportIco2 }
   ]
 
-  onGetUserInfo(item, e) {
-    console.log(e.detail.userInfo)
-    if(item.jump) {
+  async login() {
+    let data = await login({})
+    if(data) {
       Taro.navigateTo({url: '/pages/demand/index'})
+    }
+  }
+
+  onGetUserInfo(item, e) {
+    if(item.jump && e.detail.userInfo) {
+      this.login()
     }
   }
 

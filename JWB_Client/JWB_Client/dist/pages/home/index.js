@@ -16,15 +16,11 @@ var _index = require("../../npm/@tarojs/taro-weapp/index.js");
 
 var _index2 = _interopRequireDefault(_index);
 
-var _http = require("../../libs/http.js");
-
-var _http2 = _interopRequireDefault(_http);
-
-var _api = require("../../api/api.js");
-
-var _api2 = _interopRequireDefault(_api);
+var _index3 = require("../../assets/images/icon/index.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -32,8 +28,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var isWapp = "weapp";
-
+// eslint-disable-next-line
+var _global = global,
+    regeneratorRuntime = _global.regeneratorRuntime;
 var Index = (_temp2 = _class = function (_BaseComponent) {
   _inherits(Index, _BaseComponent);
 
@@ -48,10 +45,10 @@ var Index = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Index.__proto__ || Object.getPrototypeOf(Index)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["$compid__0", "$compid__1", "$compid__2", "$compid__3", "$compid__4", "$compid__5", "$compid__6", "$compid__7", "$compid__8", "$compid__9", "$compid__10", "$compid__11", "$compid__12", "open", "homeData", "tabBarIdx", "keyword", "tabsIdx"], _this.config = {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Index.__proto__ || Object.getPrototypeOf(Index)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["$compid__152", "$compid__153", "$compid__154", "$compid__155", "$compid__156", "$compid__157", "$compid__158", "$compid__159", "$compid__160", "markers", "latitude", "longitude", "open", "homeData", "tabBarIdx", "keyword", "tabsIdx"], _this.config = {
       navigationBarTitleText: '信息求助',
       navigationStyle: 'custom'
-    }, _this.customComponents = ["UPage", "WTab", "AtTabs", "AtTabsPane", "WMessageItem", "AtDivider", "AtModal", "AtModalContent", "AtModalAction", "AtSearchBar"], _temp), _possibleConstructorReturn(_this, _ret);
+    }, _this.customComponents = ["UPage", "WTab", "AtTabs", "AtTabsPane", "WMessageItem", "AtSearchBar"], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Index, [{
@@ -65,42 +62,62 @@ var Index = (_temp2 = _class = function (_BaseComponent) {
         homeData: {},
         tabBarIdx: 0,
         keyword: '',
-        tabsIdx: 0
+        tabsIdx: 0,
+        latitude: 0,
+        longitude: 0,
+        markers: []
       };
       this.$$refs = new _index2.default.RefsArray();
     }
   }, {
     key: "componentWillMount",
     value: function componentWillMount() {
-      var _this2 = this;
-
-      _index2.default.showShareMenu().then(function () {
-        _this2.onShareAppMessage;
-      });
+      this.getLocation();
     }
   }, {
-    key: "onShareAppMessage",
-    value: function onShareAppMessage(res) {
-      // 这是分享配置
-      return {
-        title: '老板记账  收支更清晰',
-        path: '/pages/index/index'
-      };
-    }
-  }, {
-    key: "homeInfo",
-    value: function homeInfo() {
-      var _this3 = this;
+    key: "getLocation",
+    value: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var location, latitude, longitude;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _index2.default.getLocation({ isHighAccuracy: true });
 
-      // 网络http请求示例
-      _http2.default.request(_api2.default.getUser).then(function (res) {
-        if (res.success) {
-          _this3.setState({}, function () {
-            // ...
-          });
-        }
-      });
-    }
+              case 2:
+                location = _context.sent;
+                latitude = location.latitude;
+                longitude = location.longitude;
+
+                this.setState({
+                  latitude: latitude,
+                  longitude: longitude,
+                  markers: [{
+                    iconPath: _index3.mapLocation,
+                    id: 0,
+                    latitude: latitude,
+                    longitude: longitude,
+                    width: 50,
+                    height: 50
+                  }]
+                });
+
+              case 6:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function getLocation() {
+        return _ref2.apply(this, arguments);
+      }
+
+      return getLocation;
+    }()
   }, {
     key: "tabbarClick",
     value: function tabbarClick() {}
@@ -109,10 +126,10 @@ var Index = (_temp2 = _class = function (_BaseComponent) {
     value: function searchChange() {}
   }, {
     key: "mapClick",
-    value: function mapClick(_ref2) {
-      var _ref2$detail = _ref2.detail,
-          longitude = _ref2$detail.longitude,
-          latitude = _ref2$detail.latitude;
+    value: function mapClick(_ref3) {
+      var _ref3$detail = _ref3.detail,
+          longitude = _ref3$detail.longitude,
+          latitude = _ref3$detail.latitude;
 
       console.log(longitude, latitude);
     }
@@ -126,182 +143,122 @@ var Index = (_temp2 = _class = function (_BaseComponent) {
   }, {
     key: "_createData",
     value: function _createData() {
-      var _this4 = this;
-
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
       var __isRunloopRef = arguments[2];
       var __prefix = this.$prefix;
       ;
 
-      var _genCompid = (0, _index.genCompid)(__prefix + "$compid__0"),
+      var _genCompid = (0, _index.genCompid)(__prefix + "$compid__152"),
           _genCompid2 = _slicedToArray(_genCompid, 2),
-          $prevCompid__0 = _genCompid2[0],
-          $compid__0 = _genCompid2[1];
+          $prevCompid__152 = _genCompid2[0],
+          $compid__152 = _genCompid2[1];
 
-      var _genCompid3 = (0, _index.genCompid)(__prefix + "$compid__1"),
+      var _genCompid3 = (0, _index.genCompid)(__prefix + "$compid__153"),
           _genCompid4 = _slicedToArray(_genCompid3, 2),
-          $prevCompid__1 = _genCompid4[0],
-          $compid__1 = _genCompid4[1];
+          $prevCompid__153 = _genCompid4[0],
+          $compid__153 = _genCompid4[1];
 
-      var _genCompid5 = (0, _index.genCompid)(__prefix + "$compid__2"),
+      var _genCompid5 = (0, _index.genCompid)(__prefix + "$compid__154"),
           _genCompid6 = _slicedToArray(_genCompid5, 2),
-          $prevCompid__2 = _genCompid6[0],
-          $compid__2 = _genCompid6[1];
+          $prevCompid__154 = _genCompid6[0],
+          $compid__154 = _genCompid6[1];
 
-      var _genCompid7 = (0, _index.genCompid)(__prefix + "$compid__3"),
+      var _genCompid7 = (0, _index.genCompid)(__prefix + "$compid__155"),
           _genCompid8 = _slicedToArray(_genCompid7, 2),
-          $prevCompid__3 = _genCompid8[0],
-          $compid__3 = _genCompid8[1];
+          $prevCompid__155 = _genCompid8[0],
+          $compid__155 = _genCompid8[1];
 
-      var _genCompid9 = (0, _index.genCompid)(__prefix + "$compid__4"),
+      var _genCompid9 = (0, _index.genCompid)(__prefix + "$compid__156"),
           _genCompid10 = _slicedToArray(_genCompid9, 2),
-          $prevCompid__4 = _genCompid10[0],
-          $compid__4 = _genCompid10[1];
+          $prevCompid__156 = _genCompid10[0],
+          $compid__156 = _genCompid10[1];
 
-      var _genCompid11 = (0, _index.genCompid)(__prefix + "$compid__5"),
+      var _genCompid11 = (0, _index.genCompid)(__prefix + "$compid__157"),
           _genCompid12 = _slicedToArray(_genCompid11, 2),
-          $prevCompid__5 = _genCompid12[0],
-          $compid__5 = _genCompid12[1];
+          $prevCompid__157 = _genCompid12[0],
+          $compid__157 = _genCompid12[1];
 
-      var _genCompid13 = (0, _index.genCompid)(__prefix + "$compid__6"),
+      var _genCompid13 = (0, _index.genCompid)(__prefix + "$compid__158"),
           _genCompid14 = _slicedToArray(_genCompid13, 2),
-          $prevCompid__6 = _genCompid14[0],
-          $compid__6 = _genCompid14[1];
+          $prevCompid__158 = _genCompid14[0],
+          $compid__158 = _genCompid14[1];
 
-      var _genCompid15 = (0, _index.genCompid)(__prefix + "$compid__7"),
+      var _genCompid15 = (0, _index.genCompid)(__prefix + "$compid__159"),
           _genCompid16 = _slicedToArray(_genCompid15, 2),
-          $prevCompid__7 = _genCompid16[0],
-          $compid__7 = _genCompid16[1];
+          $prevCompid__159 = _genCompid16[0],
+          $compid__159 = _genCompid16[1];
 
-      var _genCompid17 = (0, _index.genCompid)(__prefix + "$compid__8"),
+      var _genCompid17 = (0, _index.genCompid)(__prefix + "$compid__160"),
           _genCompid18 = _slicedToArray(_genCompid17, 2),
-          $prevCompid__8 = _genCompid18[0],
-          $compid__8 = _genCompid18[1];
-
-      var _genCompid19 = (0, _index.genCompid)(__prefix + "$compid__9"),
-          _genCompid20 = _slicedToArray(_genCompid19, 2),
-          $prevCompid__9 = _genCompid20[0],
-          $compid__9 = _genCompid20[1];
-
-      var _genCompid21 = (0, _index.genCompid)(__prefix + "$compid__10"),
-          _genCompid22 = _slicedToArray(_genCompid21, 2),
-          $prevCompid__10 = _genCompid22[0],
-          $compid__10 = _genCompid22[1];
-
-      var _genCompid23 = (0, _index.genCompid)(__prefix + "$compid__11"),
-          _genCompid24 = _slicedToArray(_genCompid23, 2),
-          $prevCompid__11 = _genCompid24[0],
-          $compid__11 = _genCompid24[1];
-
-      var _genCompid25 = (0, _index.genCompid)(__prefix + "$compid__12"),
-          _genCompid26 = _slicedToArray(_genCompid25, 2),
-          $prevCompid__12 = _genCompid26[0],
-          $compid__12 = _genCompid26[1];
+          $prevCompid__160 = _genCompid18[0],
+          $compid__160 = _genCompid18[1];
 
       var _state = this.__state,
           keyword = _state.keyword,
           tabBarIdx = _state.tabBarIdx,
-          open = _state.open,
-          tabsIdx = _state.tabsIdx;
-
-
-      this.anonymousFunc0 = function () {
-        _this4.setState({
-          open: false
-        });
-      };
-
-      this.anonymousFunc1 = function () {
-        _this4.setState({
-          open: false
-        });
-      };
+          markers = _state.markers,
+          tabsIdx = _state.tabsIdx,
+          latitude = _state.latitude,
+          longitude = _state.longitude;
 
       _index.propsManager.set({
         "value": keyword,
         "onChange": this.searchChange.bind(this),
         "className": "p-search-bar",
         "showActionButton": true
-      }, $compid__0, $prevCompid__0);
+      }, $compid__152, $prevCompid__152);
       _index.propsManager.set({
         "className": "p-home-page",
         "showBottom": true
-      }, $compid__1, $prevCompid__1);
+      }, $compid__153, $prevCompid__153);
       _index.propsManager.set({
         "className": "g-safe-area"
-      }, $compid__2, $prevCompid__2);
+      }, $compid__154, $prevCompid__154);
       _index.propsManager.set({
         "className": "p-tabs",
         "current": tabsIdx,
         "tabList": this.tabList,
         "onClick": this.tabsClick.bind(this)
-      }, $compid__3, $prevCompid__3);
+      }, $compid__155, $prevCompid__155);
       _index.propsManager.set({
         "className": "p-tabs-pane",
         "current": tabsIdx,
         "index": 0
-      }, $compid__4, $prevCompid__4);
+      }, $compid__156, $prevCompid__156);
       _index.propsManager.set({
         "style": "border-bottom: none"
-      }, $compid__5, $prevCompid__5);
-      _index.propsManager.set({
-        "content": "\u6CA1\u6709\u66F4\u591A\u4E86"
-      }, $compid__6, $prevCompid__6);
+      }, $compid__157, $prevCompid__157);
       _index.propsManager.set({
         "className": "p-tabs-pane",
         "current": tabsIdx,
         "index": 1
-      }, $compid__7, $prevCompid__7);
-      _index.propsManager.set({
-        "content": "\u6CA1\u6709\u66F4\u591A\u4E86"
-      }, $compid__8, $prevCompid__8);
+      }, $compid__158, $prevCompid__158);
       _index.propsManager.set({
         "className": "p-tabs-pane",
         "current": tabsIdx,
         "index": 2
-      }, $compid__9, $prevCompid__9);
+      }, $compid__159, $prevCompid__159);
       _index.propsManager.set({
         "style": "border-bottom: none"
-      }, $compid__10, $prevCompid__10);
-      _index.propsManager.set({
-        "content": "\u6CA1\u6709\u66F4\u591A\u4E86"
-      }, $compid__11, $prevCompid__11);
-      _index.propsManager.set({
-        "isOpened": open,
-        "closeOnClickOverlay": false
-      }, $compid__12, $prevCompid__12);
+      }, $compid__160, $prevCompid__160);
       Object.assign(this.__state, {
-        $compid__0: $compid__0,
-        $compid__1: $compid__1,
-        $compid__2: $compid__2,
-        $compid__3: $compid__3,
-        $compid__4: $compid__4,
-        $compid__5: $compid__5,
-        $compid__6: $compid__6,
-        $compid__7: $compid__7,
-        $compid__8: $compid__8,
-        $compid__9: $compid__9,
-        $compid__10: $compid__10,
-        $compid__11: $compid__11,
-        $compid__12: $compid__12
+        $compid__152: $compid__152,
+        $compid__153: $compid__153,
+        $compid__154: $compid__154,
+        $compid__155: $compid__155,
+        $compid__156: $compid__156,
+        $compid__157: $compid__157,
+        $compid__158: $compid__158,
+        $compid__159: $compid__159,
+        $compid__160: $compid__160
       });
       return this.__state;
-    }
-  }, {
-    key: "anonymousFunc0",
-    value: function anonymousFunc0(e) {
-      ;
-    }
-  }, {
-    key: "anonymousFunc1",
-    value: function anonymousFunc1(e) {
-      ;
     }
   }]);
 
   return Index;
-}(_index.Component), _class.$$events = ["mapClick", "anonymousFunc0", "anonymousFunc1"], _class.$$componentPath = "pages/home/index", _temp2);
+}(_index.Component), _class.$$events = ["mapClick"], _class.$$componentPath = "pages/home/index", _temp2);
 exports.default = Index;
 
 Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(Index, true));

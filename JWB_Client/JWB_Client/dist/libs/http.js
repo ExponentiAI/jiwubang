@@ -33,11 +33,15 @@ var Http = function () {
 
   _createClass(Http, [{
     key: "request",
-    value: function request(api, data) {
+    value: function request(options) {
       var _this = this;
 
-      var showLoading = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-      var method = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'POST';
+      var api = options.api,
+          _options$showLoading = options.showLoading,
+          showLoading = _options$showLoading === undefined ? false : _options$showLoading,
+          data = options.data,
+          _options$method = options.method,
+          method = _options$method === undefined ? 'GET' : _options$method;
 
       if (showLoading) {
         _index2.default.showLoading({

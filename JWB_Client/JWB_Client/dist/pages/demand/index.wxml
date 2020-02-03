@@ -1,21 +1,21 @@
 <block wx:if="{{$taroCompReady}}">
-    <u-page compid="{{$compid__22}}">
-        <at-accordion compid="{{$compid__24}}">
+    <u-page compid="{{$compid__9}}">
+        <at-accordion compid="{{$compid__11}}">
             <map class="p-map"></map>
         </at-accordion>
-        <at-accordion compid="{{$compid__25}}">
+        <at-accordion compid="{{$compid__12}}">
             <map class="p-map"></map>
         </at-accordion>
-        <at-textarea compid="{{$compid__26}}"></at-textarea>
+        <at-textarea compid="{{$compid__13}}"></at-textarea>
         <view>
             <view class="g-panel-title">拥有物品</view>
-            <at-checkbox compid="{{$compid__27}}"></at-checkbox>
+            <at-checkbox compid="{{$compid__14}}"></at-checkbox>
         </view>
         <view slot="bottom">
             <view class="p-bottom-wrap g-safe-area">
                 <checkbox class="p-clause">我已阅读</checkbox><text class="p-text">《xxxx》</text>
                 <view class="p-submit">
-                    <at-button compid="{{$compid__23}}">提交</at-button>
+                    <at-button compid="{{$compid__10}}">提交</at-button>
                 </view>
             </view>
         </view>

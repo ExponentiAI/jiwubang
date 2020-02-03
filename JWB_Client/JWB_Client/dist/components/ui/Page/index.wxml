@@ -6,7 +6,7 @@
         <scroll-view style="{{anonymousState__temp2}}" scroll-y="{{true}}" class="{{prefix + '-main'}}" bindscroll="funPrivateczzzz" id="bzzzz">
             <block>
                 <block wx:if="{{empty}}">
-                    <u-empty compid="{{$compid__19}}"></u-empty>
+                    <u-empty compid="{{$compid__15}}"></u-empty>
                 </block>
                 <block wx:else>
                     <slot></slot>

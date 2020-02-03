@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 var dev = true;
 var confing = {
   useMock: false,
-  baseUrl: 'https://bookkeeping.yijifu.net/',
+  baseUrl: 'https://jwb.comdesignlab.com/',
   dev: dev
 };
 exports.default = confing;

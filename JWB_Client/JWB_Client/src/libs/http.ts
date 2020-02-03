@@ -19,7 +19,9 @@ class Http {
     return this.instance;
   }
 
-  request(api: string, data?: object, showLoading:boolean = true, method: 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT' = 'POST') {
+  request(options: {api: string, data?: object, showLoading?: boolean, method?: 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT'}) {
+    const { api, showLoading = false, data, method = 'GET' } = options
+    
     if(showLoading){
       Taro.showLoading({
         title: 'Loading...'
