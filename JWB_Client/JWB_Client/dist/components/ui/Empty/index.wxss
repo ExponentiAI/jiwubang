@@ -1,0 +1,7 @@
+
+.u-empty {
+  text-align: center;
+  color: #8a8a8a; }
+  .u-empty-img {
+    height: 120rpx;
+    width: 120rpx; }

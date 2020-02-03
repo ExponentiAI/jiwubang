@@ -1,0 +1,16 @@
+{
+  "usingComponents": {
+    "u-page": "../../components/ui/Page/index",
+    "w-tab": "../../components/widget/Tab/index",
+    "at-tabs": "../../npm/taro-ui/dist/weapp/components/tabs/index",
+    "at-tabs-pane": "../../npm/taro-ui/dist/weapp/components/tabs-pane/index",
+    "w-message-item": "../../components/widget/MessageItem/index",
+    "at-divider": "../../npm/taro-ui/dist/weapp/components/divider/index",
+    "at-modal": "../../npm/taro-ui/dist/weapp/components/modal/index",
+    "at-modal-content": "../../npm/taro-ui/dist/weapp/components/modal/content/index",
+    "at-modal-action": "../../npm/taro-ui/dist/weapp/components/modal/action/index",
+    "at-search-bar": "../../npm/taro-ui/dist/weapp/components/search-bar/index"
+  },
+  "navigationBarTitleText": "信息求助",
+  "navigationStyle": "custom"
+}

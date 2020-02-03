@@ -6,7 +6,7 @@
  */
 
 {
-  var ReactIs = require("./npm/react-is/index.js");
+  var ReactIs = require("../react-is/index.js");
 
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod

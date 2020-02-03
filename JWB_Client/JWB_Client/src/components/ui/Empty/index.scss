@@ -1,0 +1,11 @@
+
+$prefixCls: u-empty;
+
+.#{$prefixCls}{
+  text-align: center;
+  color: #8a8a8a;
+  &-img{
+    height: 120px;
+    width: 120px;
+  }
+}

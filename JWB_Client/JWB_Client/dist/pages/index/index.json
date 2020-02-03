@@ -1,8 +1,0 @@
-{
-  "usingComponents": {
-    "at-modal": "../../npm/taro-ui/dist/weapp/components/modal/index",
-    "at-modal-content": "../../npm/taro-ui/dist/weapp/components/modal/content/index",
-    "at-modal-action": "../../npm/taro-ui/dist/weapp/components/modal/action/index"
-  },
-  "navigationBarTitleText": "信息求助"
-}

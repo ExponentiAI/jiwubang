@@ -1,0 +1,27 @@
+$prefixCls: 'u-page';
+
+.#{$prefixCls}{
+  height: 100%;
+  width: 100%;
+  &-top{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background: white;
+    transition: background .3s;
+    // @include border(bottom)
+  }
+  &-main{
+    // height: 100%;
+    width: 100%;
+  }
+  &-bottom{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+  }
+}

@@ -1,15 +1,16 @@
 {
-  "miniprogramRoot": "./",
-  "projectname": "bookkeeping-front",
-  "description": "老板记账app",
-  "appid": "wx2f6cce3026bec8b2",
-  "setting": {
-    "urlCheck": true,
-    "es6": false,
-    "postcss": false,
-    "minified": false,
-    "newFeature": true
-  },
-  "compileType": "miniprogram",
-  "condition": {}
+	"projectname": "jwb",
+	"description": "jwb描述",
+	"appid": "wx2f6cce3026bec8b2",
+	"setting": {
+		"urlCheck": true,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {}
 }

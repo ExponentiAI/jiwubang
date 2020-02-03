@@ -1,0 +1,13 @@
+<block wx:if="{{$taroCompReady}}">
+    <view style="{{anonymousState__temp}}" class="{{className + ' ' + prefix}}">
+        <block wx:if="{{tabList}}">
+            <button open-type="getUserInfo" bindgetuserinfo="onGetUserInfo" wx:key="text" class="{{prefix + '-btn ' + (idx === active ? prefix + '-btn-selected' : '')}}" hover-class="{{prefix + '-btn-hc'}}" wx:for="{{tabList}}" wx:for-item="item" wx:for-index="idx" data-e-getuserinfo-so="this" data-e-getuserinfo-a-a="{{item}}">
+                <block wx:if="{{idx !== active}}">
+                    <image class="{{prefix + '-btn-icon'}}" src="{{item.icon}}"></image>
+                </block>
+                <block wx:if="{{idx === active}}">
+                    <image class="{{prefix + '-btn-icon'}}" src="{{item.selectedIcon}}"></image>
+                </block>{{item.text}}</button>
+        </block>
+    </view>
+</block>

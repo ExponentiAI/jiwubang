@@ -1,0 +1,22 @@
+<block wx:if="{{$taroCompReady}}">
+    <view class="{{prefix + ' ' + className}}">
+        <view style="{{anonymousState__temp}}" class="{{prefix + '-top'}}" id="azzzz">
+            <slot name="top"></slot>
+        </view>
+        <scroll-view style="{{anonymousState__temp2}}" scroll-y="{{true}}" class="{{prefix + '-main'}}" bindscroll="funPrivateczzzz" id="bzzzz">
+            <block>
+                <block wx:if="{{empty}}">
+                    <u-empty compid="{{$compid__19}}"></u-empty>
+                </block>
+                <block wx:else>
+                    <slot></slot>
+                </block>
+            </block>
+        </scroll-view>
+        <block wx:if="{{showBottom}}">
+            <view class="{{prefix + '-bottom'}}" id="dzzzz">
+                <slot name="bottom"></slot>
+            </view>
+        </block>
+    </view>
+</block>

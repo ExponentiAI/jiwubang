@@ -1,0 +1,47 @@
+@import '../../../assets/styles/define.scss';
+
+$prefixCls: w-message-item;
+
+.#{$prefixCls}{
+  @include border(bottom);
+  padding: 30px 0;
+  margin: 0 36px;
+  &-top-wrap{
+    display: flex;
+    padding-bottom: 30px;
+    .#{$prefixCls}-img{
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+    }
+    .#{$prefixCls}-title{
+      margin-left: 26px;
+      font-size: 26px;
+      color: $primary-color;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .#{$prefixCls}-time{
+        color: #333;
+      }
+    }
+    .#{$prefixCls}-area{
+      color: $primary-color;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+    }
+  }
+  &-bottom-wrap{
+    font-size: 26px;
+    line-height: 1.6em;
+    color: #333;
+    .#{$prefixCls}-operation{
+      text-align: right;
+      color: #666;
+      font-size: 24px;
+      line-height: 1em;
+    }
+  }
+}

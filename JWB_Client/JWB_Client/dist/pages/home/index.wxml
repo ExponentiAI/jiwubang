@@ -1,0 +1,34 @@
+<block wx:if="{{$taroCompReady}}">
+    <u-page compid="{{$compid__1}}">
+        <map bindtap="mapClick" class="p-map" data-e-tap-so="this"></map>
+        <at-tabs compid="{{$compid__3}}">
+            <at-tabs-pane compid="{{$compid__4}}">
+                <w-message-item></w-message-item>
+                <w-message-item></w-message-item>
+                <w-message-item compid="{{$compid__5}}"></w-message-item>
+                <at-divider compid="{{$compid__6}}"></at-divider>
+            </at-tabs-pane>
+            <at-tabs-pane compid="{{$compid__7}}">
+                <w-message-item></w-message-item>
+                <at-divider compid="{{$compid__8}}"></at-divider>
+            </at-tabs-pane>
+            <at-tabs-pane compid="{{$compid__9}}">
+                <w-message-item compid="{{$compid__10}}"></w-message-item>
+                <at-divider compid="{{$compid__11}}"></at-divider>
+            </at-tabs-pane>
+        </at-tabs>
+        <at-modal compid="{{$compid__12}}">
+            <at-modal-content>为了您更好的体验小程序，建议您授权微信获取用户信息</at-modal-content>
+            <at-modal-action>
+                <button class="button-gray" bindtap="anonymousFunc0">取消</button>
+                <button open-type="getUserInfo" bindgetuserinfo="anonymousFunc1">获取授权</button>
+            </at-modal-action>
+        </at-modal>
+        <view slot="bottom">
+            <w-tab compid="{{$compid__2}}"></w-tab>
+        </view>
+        <view slot="top">
+            <at-search-bar compid="{{$compid__0}}"></at-search-bar>
+        </view>
+    </u-page>
+</block>

@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var taro = require("../npm/@tarojs/taro/index.js");
+var taro = require("../../taro/index.js");
 
 function _typeof(obj) {
   if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
@@ -1895,6 +1895,29 @@ function isFunction(arg) {
 function isArray(arg) {
   return Array.isArray(arg);
 }
+function cloneDeep(obj) {
+  var newObj;
+
+  if (isArray(obj)) {
+    newObj = [];
+    var len = obj.length;
+
+    for (var i = 0; i < len; i++) {
+      newObj.push(cloneDeep(obj[i]));
+    }
+  } else if (isPlainObject_1(obj)) {
+    newObj = {};
+
+    for (var key in obj) {
+      var ret = cloneDeep(obj[key]);
+      newObj[key] = ret;
+    }
+  } else {
+    return obj;
+  }
+
+  return newObj;
+}
 var keyList = Object.keys;
 var hasProp = Object.prototype.hasOwnProperty;
 
@@ -2174,10 +2197,8 @@ function () {
             var ComponentClass = observers[compid] && observers[compid].ComponentClass;
             if (!component || !ComponentClass || !component.__isReady) return;
             var extraProps = component.$scope && component.$scope.data && component.$scope.data.extraProps || null;
-            var nextProps = filterProps(ComponentClass.defaultProps, props, component.props, extraProps); // 这里原来是提前修改了 props, 实际更新又是nextTick异步的，这样可以会导致很多问题
-            // 很难保证如果开发者无意中多次并发更新，props可能提前于生命周期被获取到
-
-            component.nextProps = nextProps;
+            var nextProps = filterProps(ComponentClass.defaultProps, props, component.props, extraProps);
+            component.props = nextProps;
             nextTick(function () {
               component._unsafeCallUpdate = true;
               updateComponent(component);
@@ -2250,7 +2271,7 @@ function bindProperties(weappComponentConf, ComponentClass, isPage) {
           ComponentClass: component.constructor
         };
         var nextProps = filterProps(component.constructor.defaultProps, propsManager.map[newVal], component.props, extraProps || null);
-        this.$component.nextProps = nextProps;
+        this.$component.props = nextProps;
         nextTick(function () {
           _this.$component._unsafeCallUpdate = true;
           updateComponent(_this.$component);
@@ -2268,7 +2289,7 @@ function bindProperties(weappComponentConf, ComponentClass, isPage) {
       // update Component
       if (!this.$component || !this.$component.__isReady) return;
       var nextProps = filterProps(ComponentClass.defaultProps, {}, this.$component.props, this.data.extraProps);
-      this.$component.nextProps = nextProps;
+      this.$component.props = nextProps;
       nextTick(function () {
         _this2.$component._unsafeCallUpdate = true;
         updateComponent(_this2.$component);
@@ -2489,6 +2510,7 @@ function componentTrigger(component, key, args) {
 
     if (component['$$hasLoopRef']) {
       taro.Current.current = component;
+      taro.Current.index = 0;
       component._disableEffect = true;
 
       component._createData(component.state, component.props, true);
@@ -2677,7 +2699,7 @@ function createComponent(ComponentClass, isPage) {
         weappComponentConf.methods[fn] = function () {
           var component = this.$component;
 
-          if (component[fn] && typeof component[fn] === 'function') {
+          if (component && component[fn] && typeof component[fn] === 'function') {
             var _component$fn;
 
             // eslint-disable-next-line no-useless-call
@@ -2755,10 +2777,7 @@ function callGetSnapshotBeforeUpdate(component, props, state) {
 
 function updateComponent(component) {
   var props = component.props,
-      __propTypes = component.__propTypes; // 由 forceUpdate 或者组件自身 setState 发起的 update 可能是没有新的nextProps的
-
-  var nextProps = component.nextProps || props;
-  var prevProps = props;
+      __propTypes = component.__propTypes;
 
   if (isDEV && __propTypes) {
     var componentName = component.constructor.name;
@@ -2771,15 +2790,18 @@ function updateComponent(component) {
     propTypes.checkPropTypes(__propTypes, props, 'prop', componentName);
   }
 
+  var prevProps = component.prevProps || props;
+  component.props = prevProps;
+
   if (component.__mounted && component._unsafeCallUpdate === true && !hasNewLifecycle(component) && component.componentWillReceiveProps) {
     component._disable = true;
-    component.componentWillReceiveProps(nextProps);
+    component.componentWillReceiveProps(props);
     component._disable = false;
   }
 
   var state = component.getState();
   var prevState = component.prevState || state;
-  var stateFromProps = callGetDerivedStateFromProps(component, nextProps, state);
+  var stateFromProps = callGetDerivedStateFromProps(component, props, state);
 
   if (!isUndefined(stateFromProps)) {
     state = stateFromProps;
@@ -2788,14 +2810,14 @@ function updateComponent(component) {
   var skip = false;
 
   if (component.__mounted) {
-    if (typeof component.shouldComponentUpdate === 'function' && !component._isForceUpdate && component.shouldComponentUpdate(nextProps, state) === false) {
+    if (typeof component.shouldComponentUpdate === 'function' && !component._isForceUpdate && component.shouldComponentUpdate(props, state) === false) {
       skip = true;
     } else if (!hasNewLifecycle(component) && isFunction(component.componentWillUpdate)) {
-      component.componentWillUpdate(nextProps, state);
+      component.componentWillUpdate(props, state);
     }
   }
 
-  component.props = nextProps;
+  component.props = props;
   component.state = state;
   component._dirty = false;
   component._isForceUpdate = false;
@@ -2804,7 +2826,7 @@ function updateComponent(component) {
     doUpdate(component, prevProps, prevState);
   }
 
-  delete component.nextProps;
+  component.prevProps = component.props;
   component.prevState = component.state;
 }
 function mountComponent(component) {
@@ -2833,6 +2855,7 @@ function mountComponent(component) {
   }
 
   doUpdate(component, props, component.state);
+  component.prevProps = component.props;
   component.prevState = component.state;
 }
 
@@ -2892,8 +2915,8 @@ function doUpdate(component, prevProps, prevState) {
       }
 
       if (_typeof(val) === 'object') {
-        if (isEmptyObject(val)) return taro.internal_safe_set(_data, key, {}); // 避免筛选完 Fn 后产生了空对象还去渲染
-
+        if (isEmptyObject(val)) return taro.internal_safe_set(_data, key, {});
+        val = cloneDeep(val);
         if (!isEmptyObject(val)) taro.internal_safe_set(_data, key, val);
       } else {
         taro.internal_safe_set(_data, key, val);
@@ -2903,7 +2926,7 @@ function doUpdate(component, prevProps, prevState) {
   }
 
   data['$taroCompReady'] = true;
-  var dataDiff = diffObjToPath(data, component.$scope.data);
+  var dataDiff = taro.getIsUsingDiff() ? diffObjToPath(data, component.$scope.data) : data;
   var __mounted = component.__mounted;
   var snapshot;
 
@@ -2940,6 +2963,7 @@ function doUpdate(component, prevProps, prevState) {
 
       if (component['$$hasLoopRef']) {
         taro.Current.current = component;
+        taro.Current.index = 0;
         component._disableEffect = true;
 
         component._createData(component.state, component.props, true);
@@ -3249,38 +3273,63 @@ function createApp(AppClass) {
 }
 
 var RequestQueue = {
-  MAX_REQUEST: 5,
+  MAX_REQUEST: 10,
   queue: [],
+  pendingQueue: [],
   request: function request(options) {
-    this.push(options); // 返回request task
-
-    return this.run();
-  },
-  push: function push(options) {
     this.queue.push(options);
+    return this.run();
   },
   run: function run() {
     var _this = this;
 
-    if (!this.queue.length) {
-      return;
-    }
+    if (!this.queue.length) return;
 
-    if (this.queue.length <= this.MAX_REQUEST) {
-      var options = this.queue.shift();
-      var completeFn = options.complete;
+    var _loop = function _loop() {
+      var options = _this.queue.shift();
 
-      options.complete = function () {
+      var successFn = options.success;
+      var failFn = options.fail;
+
+      options.success = function () {
+        _this.pendingQueue = _this.pendingQueue.filter(function (item) {
+          return item !== options;
+        });
+
+        _this.run();
+
         for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
         }
 
-        completeFn && completeFn.apply(options, args);
-
-        _this.run();
+        successFn && successFn.apply(options, args);
       };
 
-      return wx.request(options);
+      options.fail = function () {
+        _this.pendingQueue = _this.pendingQueue.filter(function (item) {
+          return item !== options;
+        });
+
+        _this.run();
+
+        for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+          args[_key2] = arguments[_key2];
+        }
+
+        failFn && failFn.apply(options, args);
+      };
+
+      _this.pendingQueue.push(options);
+
+      return {
+        v: wx.request(options)
+      };
+    };
+
+    while (this.pendingQueue.length < this.MAX_REQUEST) {
+      var _ret = _loop();
+
+      if (_typeof(_ret) === "object") return _ret.v;
     }
   }
 };
@@ -3356,8 +3405,8 @@ function processApis(taro$$1) {
 
     if (!taro.onAndSyncApis[key] && !taro.noPromiseApis[key]) {
       taro$$1[key] = function (options) {
-        for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-          args[_key2 - 1] = arguments[_key2];
+        for (var _len3 = arguments.length, args = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+          args[_key3 - 1] = arguments[_key3];
         }
 
         options = options || {};
@@ -3374,7 +3423,7 @@ function processApis(taro$$1) {
           return wx[key](options);
         }
 
-        if (key === 'navigateTo' || key === 'redirectTo' || key === 'switchTab') {
+        if (key === 'navigateTo' || key === 'redirectTo') {
           var url = obj['url'] ? obj['url'].replace(/^\//, '') : '';
           if (url.indexOf('?') > -1) url = url.split('?')[0];
           var Component = cacheDataGet(url);
@@ -3464,8 +3513,8 @@ function processApis(taro$$1) {
       };
     } else {
       taro$$1[key] = function () {
-        for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-          args[_key3] = arguments[_key3];
+        for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+          args[_key4] = arguments[_key4];
         }
 
         var argsLen = args.length;
@@ -3523,6 +3572,16 @@ function wxCloud(taro$$1) {
   taro$$1.cloud = wxcloud;
 }
 
+function wxEnvObj(taro$$1) {
+  var wxEnv = wx.env || {};
+  var taroEnv = {};
+  var envList = ['USER_DATA_PATH'];
+  envList.forEach(function (key) {
+    return taroEnv[key] = wxEnv[key];
+  });
+  taro$$1.env = taroEnv;
+}
+
 function initNativeApi(taro$$1) {
   processApis(taro$$1);
   taro$$1.request = link.request.bind(link);
@@ -3535,6 +3594,7 @@ function initNativeApi(taro$$1) {
   taro$$1.pxTransform = pxTransform.bind(taro$$1);
   taro$$1.canIUseWebp = canIUseWebp;
   wxCloud(taro$$1);
+  wxEnvObj(taro$$1);
 }
 
 /* eslint-disable camelcase */
@@ -3554,7 +3614,7 @@ var Taro = {
   internal_inline_style: taro.internal_inline_style,
   createComponent: createComponent,
   internal_get_original: taro.internal_get_original,
-  getElementById: getElementById,
+  handleLoopRef: taro.handleLoopRef(getElementById),
   propsManager: propsManager,
   interceptors: taro.interceptors,
   RefsArray: taro.RefsArray,
@@ -3580,7 +3640,8 @@ var Taro = {
   useContext: taro.useContext,
   createContext: taro.createContext,
   memo: taro.memo,
-  shallowEqual: shallowEqual
+  shallowEqual: shallowEqual,
+  setIsUsingDiff: taro.setIsUsingDiff
 };
 initNativeApi(Taro);
 

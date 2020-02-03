@@ -1,0 +1,31 @@
+
+.w-tab {
+  color: #8a8a8a;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-shadow: 0 -6rpx 20rpx #e1e1e1;
+          box-shadow: 0 -6rpx 20rpx #e1e1e1;
+  background-color: #f8f8f8; }
+  .w-tab-btn {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    font-size: 24rpx;
+    padding: 20rpx 0 0;
+    border-radius: 0; }
+    .w-tab-btn:after {
+      border: none;
+      display: none; }
+    .w-tab-btn-hc {
+      background-color: #fff; }
+    .w-tab-btn-icon {
+      display: block;
+      width: 45rpx;
+      height: 45rpx;
+      margin: 0 auto; }
+    .w-tab-btn-selected {
+      color: #3d91ed;
+      border-radius: 0; }

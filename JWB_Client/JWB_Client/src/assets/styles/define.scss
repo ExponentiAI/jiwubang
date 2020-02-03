@@ -1,0 +1,14 @@
+@function tint(
+  $color,
+  $percent
+) {
+  @return mix(#FFF, $color, $percent);
+}
+
+$primary-color: #3d91ed;
+
+/* 边框颜色 */
+$color-border-base: #C5D9E8;
+$color-border-split: tint($color-border-base, 20%); // 分割线
+
+@import "./mixin.scss";

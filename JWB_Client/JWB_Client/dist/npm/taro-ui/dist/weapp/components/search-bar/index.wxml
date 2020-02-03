@@ -1,0 +1,12 @@
+<block wx:if="{{$taroCompReady}}">
+    <view class="{{rootCls}}" style="{{anonymousState__temp}}">
+        <view class="at-search-bar__input-cnt">
+            <view class="at-search-bar__placeholder-wrap" style="{{anonymousState__temp2}}"><text class="at-icon at-icon-search"></text><text class="at-search-bar__placeholder" style="{{anonymousState__temp3}}">{{isFocus ? '' : placeholder}}</text>
+            </view>
+            <input class="at-search-bar__input" type="{{inputType}}" confirm-type="search" value="{{value}}" focus="{{isFocus}}" disabled="{{disabled}}" maxlength="{{maxLength}}" bindinput="handleChange" bindfocus="handleFocus" bindblur="handleBlur" bindconfirm="handleConfirm" />
+            <view class="at-search-bar__clear" style="{{anonymousState__temp4}}" bindtouchstart="handleClear"><text class="at-icon at-icon-close-circle"></text>
+            </view>
+        </view>
+        <view class="at-search-bar__action" style="{{anonymousState__temp5}}" bindtap="handleActionClick">{{actionName}}</view>
+    </view>
+</block>

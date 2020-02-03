@@ -32,29 +32,12 @@ var _App = function (_BaseComponent) {
     var _this = _possibleConstructorReturn(this, (_App.__proto__ || Object.getPrototypeOf(_App)).apply(this, arguments));
 
     _this.config = {
-      pages: ['pages/index/index', 'pages/list/index'],
+      pages: ['pages/home/index', 'pages/demand/index'],
       window: {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#fff',
         navigationBarTitleText: 'WeChat',
         navigationBarTextStyle: 'black'
-      },
-      tabBar: {
-        color: '#bbc0ca',
-        selectedColor: '1f83e1',
-        backgroundColor: '#feffff',
-        borderStyle: 'black',
-        list: [{
-          pagePath: 'pages/index/index',
-          iconPath: 'assets/images/icon/report-ico1.png',
-          selectedIconPath: 'assets/images/icon/report-ico2.png',
-          text: '信息求助'
-        }, {
-          pagePath: 'pages/list/index',
-          iconPath: 'assets/images/icon/bill-ico1.png',
-          selectedIconPath: 'assets/images/icon/bill-ico2.png',
-          text: '信息提供'
-        }]
       }
     };
     return _this;

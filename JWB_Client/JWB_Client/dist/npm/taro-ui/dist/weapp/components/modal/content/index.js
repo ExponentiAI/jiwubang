@@ -52,7 +52,7 @@ var AtModalContent = (_temp2 = _class = function (_AtComponent) {
     value: function _constructor(props) {
       _get(AtModalContent.prototype.__proto__ || Object.getPrototypeOf(AtModalContent.prototype), "_constructor", this).call(this, props);
 
-      this.$$refs = [];
+      this.$$refs = new _index2.default.RefsArray();
     }
   }, {
     key: "_createData",
@@ -72,7 +72,7 @@ var AtModalContent = (_temp2 = _class = function (_AtComponent) {
   }]);
 
   return AtModalContent;
-}(_component2.default), _class.$$events = [], _class.$$componentPath = "d:/\u4E2A\u4EBA\u9879\u76EE/learning/jiwubang/JWB_Client/JWB_Client/node_modules/taro-ui/dist/weapp/components/modal/content/index", _temp2);
+}(_component2.default), _class.$$events = [], _class.$$componentPath = "home/wukuy/code/work/jiwubang/JWB_Client/JWB_Client/node_modules/taro-ui/dist/weapp/components/modal/content/index", _temp2);
 exports.default = AtModalContent;
 
 Component(require('../../../../../../@tarojs/taro-weapp/index.js').default.createComponent(AtModalContent));

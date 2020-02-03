@@ -56,7 +56,7 @@ var AtModalAction = (_temp2 = _class = function (_AtComponent) {
     value: function _constructor(props) {
       _get(AtModalAction.prototype.__proto__ || Object.getPrototypeOf(AtModalAction.prototype), "_constructor", this).call(this, props);
 
-      this.$$refs = [];
+      this.$$refs = new _index2.default.RefsArray();
     }
   }, {
     key: "_createData",
@@ -79,7 +79,7 @@ var AtModalAction = (_temp2 = _class = function (_AtComponent) {
   }]);
 
   return AtModalAction;
-}(_component2.default), _class.$$events = [], _class.$$componentPath = "d:/\u4E2A\u4EBA\u9879\u76EE/learning/jiwubang/JWB_Client/JWB_Client/node_modules/taro-ui/dist/weapp/components/modal/action/index", _temp2);
+}(_component2.default), _class.$$events = [], _class.$$componentPath = "home/wukuy/code/work/jiwubang/JWB_Client/JWB_Client/node_modules/taro-ui/dist/weapp/components/modal/action/index", _temp2);
 
 
 AtModalAction.defaultProps = {

@@ -1,0 +1,22 @@
+
+.u-page {
+  height: 100%;
+  width: 100%; }
+  .u-page-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background: white;
+    -webkit-transition: background .3s;
+    -o-transition: background .3s;
+    transition: background .3s; }
+  .u-page-main {
+    width: 100%; }
+  .u-page-bottom {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100; }

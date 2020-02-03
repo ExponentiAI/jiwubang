@@ -1,0 +1,8 @@
+<block wx:if="{{$taroCompReady}}">
+    <view class="{{rootCls}}" style="{{anonymousState__temp}}">
+        <textarea class="at-textarea__textarea" style="{{anonymousState__temp2}}" placeholder-style="{{placeholderStyle}}" placeholder-class="{{placeholderCls}}" cursor-spacing="{{cursorSpacing}}" value="{{value}}" confirm-type="完成" maxlength="{{actualMaxLength}}" max-length="{{actualMaxLength}}" placeholder="{{placeholder}}" disabled="{{disabled}}" auto-focus="{{autoFocus}}" focus="{{focus}}" show-confirm-bar="{{showConfirmBar}}" selection-start="{{selectionStart}}" selection-end="{{selectionEnd}}" fixed="{{fixed}}" bindinput="handleInput" bindfocus="handleFocus" bindblur="handleBlur" bindconfirm="handleConfirm" bindlinechange="handleLinechange" show-count="{{false}}"></textarea>
+        <block wx:if="{{count}}">
+            <view class="at-textarea__counter">{{value.length}}/{{_maxLength}}</view>
+        </block>
+    </view>
+</block>

@@ -1,0 +1,15 @@
+<block wx:if="{{$taroCompReady}}">
+    <view style="{{anonymousState__temp}}" class="{{className + ' ' + prefix}}">
+        <view class="{{prefix + '-top-wrap'}}">
+            <image src="https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3094462453,75056796&fm=26&gp=0.jpg" class="{{prefix + '-img'}}"></image>
+            <view class="{{prefix + '-title'}}">神龙药房
+                <view class="{{prefix + '-time'}}">14:35</view>
+            </view>
+            <view class="{{prefix + '-area'}}">铁西区五马路 2 km</view>
+        </view>
+        <view class="{{prefix + '-bottom-wrap'}}">今日购进100只n95，的浪费我我欧热舞肉IEuoifka金坷垃附近开了积分大路考无人诶UR温热我罚款链接
+            <view class="{{prefix + '-operation'}}"><text class="{{prefix + '-comment'}}">评论</text>
+            </view>
+        </view>
+    </view>
+</block>

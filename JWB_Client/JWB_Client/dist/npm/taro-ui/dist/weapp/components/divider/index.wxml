@@ -1,0 +1,13 @@
+<block wx:if="{{$taroCompReady}}">
+    <view class="{{anonymousState__temp}}" style="{{anonymousState__temp2}}">
+        <view class="at-divider__content" style="{{anonymousState__temp3}}">
+            <block>
+                <block wx:if="{{content === ''}}">
+                    <slot></slot>
+                </block>
+                <block wx:else>{{content}}</block>
+            </block>
+        </view>
+        <view class="at-divider__line" style="{{anonymousState__temp4}}"></view>
+    </view>
+</block>

@@ -20,7 +20,7 @@
                     </at-modal-content>
                 </block>
                 <block wx:if="{{_$isRenderAction}}">
-                    <at-modal-action compid="{{$compid__1}}">
+                    <at-modal-action compid="{{$compid__20}}">
                         <block wx:if="{{cancelText}}">
                             <button bindtap="handleCancel">{{cancelText}}</button>
                         </block>

@@ -56,7 +56,7 @@ var AtModal = (_temp2 = _class = function (_AtComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AtModal.__proto__ || Object.getPrototypeOf(AtModal)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["_$isRenderAction", "_$anonymousState__temp", "$compid__1", "title", "content", "isWEB", "cancelText", "confirmText", "rootClass", "_isOpened", "isOpened", "closeOnClickOverlay", "className", "children"], _this.handleClickOverlay = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AtModal.__proto__ || Object.getPrototypeOf(AtModal)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["_$isRenderAction", "_$anonymousState__temp", "$compid__20", "title", "content", "isWEB", "cancelText", "confirmText", "rootClass", "_isOpened", "isOpened", "closeOnClickOverlay", "className", "children"], _this.handleClickOverlay = function () {
       if (_this.props.closeOnClickOverlay) {
         _this.setState({
           _isOpened: false
@@ -90,7 +90,7 @@ var AtModal = (_temp2 = _class = function (_AtComponent) {
         _isOpened: isOpened,
         isWEB: _index2.default.getEnv() === _index2.default.ENV_TYPE.WEB
       };
-      this.$$refs = [];
+      this.$$refs = new _index2.default.RefsArray();
     }
   }, {
     key: "componentWillReceiveProps",
@@ -119,10 +119,10 @@ var AtModal = (_temp2 = _class = function (_AtComponent) {
       var __prefix = this.$prefix;
       ;
 
-      var _genCompid = (0, _index.genCompid)(__prefix + "$compid__1"),
+      var _genCompid = (0, _index.genCompid)(__prefix + "$compid__20"),
           _genCompid2 = _slicedToArray(_genCompid, 2),
-          $prevCompid__1 = _genCompid2[0],
-          $compid__1 = _genCompid2[1];
+          $prevCompid__20 = _genCompid2[0],
+          $compid__20 = _genCompid2[1];
 
       var _state = this.__state,
           _isOpened = _state._isOpened,
@@ -142,13 +142,13 @@ var AtModal = (_temp2 = _class = function (_AtComponent) {
         _$anonymousState__temp = content ? isWEB ? { __html: content.replace(/\n/g, '<br/>') } : null : null;
         _$isRenderAction && _index.propsManager.set({
           "isSimple": true
-        }, $compid__1, $prevCompid__1);
+        }, $compid__20, $prevCompid__20);
       }
 
       Object.assign(this.__state, {
         _$isRenderAction: _$isRenderAction,
         _$anonymousState__temp: _$anonymousState__temp,
-        $compid__1: $compid__1,
+        $compid__20: $compid__20,
         title: title,
         content: content,
         cancelText: cancelText,
@@ -160,7 +160,7 @@ var AtModal = (_temp2 = _class = function (_AtComponent) {
   }]);
 
   return AtModal;
-}(_component2.default), _class.$$events = ["handleClickOverlay", "handleCancel", "handleConfirm", "handleTouchMove"], _class.$$componentPath = "d:/\u4E2A\u4EBA\u9879\u76EE/learning/jiwubang/JWB_Client/JWB_Client/node_modules/taro-ui/dist/weapp/components/modal/index", _temp2);
+}(_component2.default), _class.$$events = ["handleClickOverlay", "handleCancel", "handleConfirm", "handleTouchMove"], _class.$$componentPath = "home/wukuy/code/work/jiwubang/JWB_Client/JWB_Client/node_modules/taro-ui/dist/weapp/components/modal/index", _temp2);
 
 
 AtModal.defaultProps = {
