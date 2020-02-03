@@ -1,0 +1,29 @@
+@import '../../assets/styles/define.scss';
+
+.p-demand-page{
+  .p-bottom-wrap{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 30px 20px;
+    box-shadow: 0 -6px 20px #e1e1e1;
+    .p-clause{
+      display: flex;
+      align-items: center;
+      .p-text{
+        color: $primary-color;
+      }
+    }
+    .p-submit{
+      flex: 1;
+      text-align: right;
+      &-btn{
+        display: inline-block;
+      }
+    }
+  }
+
+  .p-map{
+    width: 100vw;
+  }
+}

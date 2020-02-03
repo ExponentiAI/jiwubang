@@ -17,8 +17,9 @@ class App extends Component {
   }
   config: Config = {
     pages: [
-      'pages/home/index',  // 信息求助
+      'pages/home/index',  // 首页
       'pages/demand/index',  // 信息提供
+      'pages/help/index',  // 信息求助
     ],
     window: {
       backgroundTextStyle: 'light',

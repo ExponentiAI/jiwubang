@@ -8,6 +8,7 @@ import QQMapWX from '../../libs/qqmap-wx-jssdk'
 import myLocation from '../../assets/images/icon/my-location.png'
 import markerPic from '../../assets/images/icon/marker.png'
 import './index.less'
+import { scrollUpIco } from '../../assets/images/icon'
 
 // eslint-disable-next-line
 const { regeneratorRuntime } = global;
@@ -161,6 +162,9 @@ export default class Index extends Component<{}, State> {
           scale='15'
           className='p-map'
         />
+
+        <view style={{display:"none", justifyContent:'center'}}>
+         <Image src={scrollUpIco} style='width:25px; height:20px;position:absolute;top:40%;left:48%' ></Image></view>
 
         <AtTabs className='p-tabs' current={tabsIdx} tabList={this.tabList} onClick={this.tabsClick.bind(this)}>
           <AtTabsPane className='p-tabs-pane' current={tabsIdx} index={0} >
