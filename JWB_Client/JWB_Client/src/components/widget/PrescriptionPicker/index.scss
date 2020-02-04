@@ -1,0 +1,24 @@
+.picker{
+    height: 40rpx;
+    display: flex;
+    justify-content: space-between;
+    padding: 20rpx;
+    border-top: 4rpx solid #EAF1F7;
+    border-bottom: 4rpx solid #EAF1F7;
+    padding-top: 30rpx;
+    padding-bottom: 30rpx;
+
+    margin-top: 20rpx;
+    margin-bottom: 20rpx;
+    margin-left: 10rpx;
+    margin-right: 10rpx;
+    font-size: .8em;
+}
+
+.picker-left{
+
+}
+
+.picker-right{
+    color: #3E92ED;
+}

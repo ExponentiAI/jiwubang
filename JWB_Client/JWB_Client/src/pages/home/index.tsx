@@ -48,22 +48,11 @@ export default class Index extends Component<{}, State> {
 
   componentWillMount() {
 
-    // Taro.getLocation({
-    //   　　　　type: 'wgs84',
-    //   　　　　success:(res) => {
-    //   　　　　　　this.setState({
-    //   　　　　　　　　latitude: res.latitude,
-    //   　　　　　　　　longitude: res.longitude
-    //   　　　　　})
-    //   　　　}
-    // })
-
-    
-
     this.getLocationInfo()
 
   }
 
+  // 从腾讯地图获取用当前所在的坐标和地址信息
   async getLocationInfo() {
     let qqmapsdk = new QQMapWX({
       key: 'E56BZ-VCOLX-Q7Q4N-7OE7Y-LHKK3-MPBD5'
@@ -85,8 +74,8 @@ export default class Index extends Component<{}, State> {
             id: 1,
             latitude,
             longitude,
-            width: 30,
-            height: 30,
+            width: 40,
+            height: 40,
             callout:{
               content:"我的位置",
               // padding:10,
@@ -126,9 +115,29 @@ export default class Index extends Component<{}, State> {
   searchChange() {
 
   }
-  // mapClick({ detail: { longitude, latitude } }: MapProps) {
-  //   console.log(longitude, latitude)
-  // }
+
+  // 绘制
+  markerDisplay({ detail: { longitude, latitude } }: MapProps) {
+    console.log(longitude, latitude)
+    let newMarkers = this.state.markers
+    newMarkers.push({
+      iconPath: markerPic,
+            id: 2,
+            latitude,
+            longitude,
+            width: 40,
+            height: 40,
+            callout:{
+              content: "2020年2月3日\n" + "沃尔玛超市\n" + " N95口罩-" + "10元",
+              // padding:10,
+              display:'ALWAYS',
+              textAlign:'center'
+            }
+    })
+    this.setState({
+      markers: newMarkers
+    })
+  }
   tabsClick(value) {
     this.setState({
       tabsIdx: value
@@ -158,7 +167,7 @@ export default class Index extends Component<{}, State> {
           markers={markers}
           latitude={latitude}
           longitude={longitude}
-          // onClick={this.mapClick.bind(this)}
+          onClick={this.markerDisplay.bind(this)}
           scale='15'
           className='p-map'
         />
