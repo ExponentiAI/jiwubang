@@ -16,9 +16,20 @@
 }
 
 .goods-right{
-    width:16%;
+    align-items: center;
+    width:24%;
     padding-right: 30rpx;
     display: flex;
     justify-content: flex-end;
     color: #3E92ED;
+}
+
+.goods-right Input{
+    text-align: right;
+    direction: rtl;
+}
+
+.goods-right View{
+    margin-left: 6rpx;
+    min-width: fit-content;
 }

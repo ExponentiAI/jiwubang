@@ -50,7 +50,7 @@ class Tab extends Component<Props, State> {
   
 
   onGetUserInfo(item, e) {
-      setGlobalData('userinfo',e.detail.userInfo)
+      // setGlobalData('userinfo',e.detail.userInfo)
       console.log(e.detail.userInfo)
     if( e.detail.userInfo) {
       pageToSwicth = item.jump
