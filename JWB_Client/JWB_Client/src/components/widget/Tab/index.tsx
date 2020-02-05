@@ -4,8 +4,13 @@ import Component from '../../common/component';
 import './index.scss';
 import { infoRIco, infoPIco } from '../../../assets/images/icon'
 import { login } from '../../../models/home'
+import {getGlobalData, setGlobalData} from "global"
+
+
+
 
 // eslint-disable-next-line
+
 const { regeneratorRuntime } = global;
 var pageToSwicth = 0;
 
@@ -33,7 +38,7 @@ class Tab extends Component<Props, State> {
   ]
 
   async login() {
-    let data = await login({})
+    let data = await login({ u_type: '', openid: '', nick_name:'', avatar_url:'' , gender:'' })
     if(data && pageToSwicth==1) {    
       Taro.navigateTo({url: '/pages/demand/index'})
     }
@@ -42,12 +47,18 @@ class Tab extends Component<Props, State> {
     }
   }
 
+  
+
   onGetUserInfo(item, e) {
+      setGlobalData('userinfo',e.detail.userInfo)
+      console.log(e.detail.userInfo)
     if( e.detail.userInfo) {
       pageToSwicth = item.jump
       this.login()
     }
   }
+
+ 
 
   render() {
     const { style, className = '' } = this.props

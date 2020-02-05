@@ -9,6 +9,7 @@ import myLocation from '../../assets/images/icon/my-location.png'
 import markerPic from '../../assets/images/icon/marker.png'
 import './index.less'
 import { scrollUpIco } from '../../assets/images/icon'
+import {getGlobalData, setGlobalData} from "global"
 
 // eslint-disable-next-line
 const { regeneratorRuntime } = global;
@@ -74,8 +75,8 @@ export default class Index extends Component<{}, State> {
             id: 1,
             latitude,
             longitude,
-            width: 50,
-            height: 50,
+            width: 40,
+            height: 40,
             callout:{
               content:"我的位置",
               color: "#FFFFFF",
@@ -109,7 +110,7 @@ export default class Index extends Component<{}, State> {
   //   })
   // }
 
-  tabList = [{ title: '最新' }, { title: '我的' }]
+  tabList = [{ title: '热门' }, { title: '最新' }, { title: '我的' }]
 
   tabbarClick() {
 
@@ -142,6 +143,11 @@ export default class Index extends Component<{}, State> {
       markers: newMarkers
     })
   }
+  tabsClick(value) {
+    this.setState({
+      tabsIdx: value
+    })
+  }
 
   render() {
     const { keyword, tabBarIdx, markers, tabsIdx, latitude, longitude } = this.state
@@ -167,12 +173,9 @@ export default class Index extends Component<{}, State> {
           latitude={latitude}
           longitude={longitude}
           onClick={this.markerDisplay.bind(this)}
-          // show-compass='true'
           scale='15'
           className='p-map'
-        >
-          <AtButton className='relocating' iconPath={relocatingPic}>测试</AtButton>
-        </Map>
+        />
 
         <view style={{display:"none", justifyContent:'center'}}>
          <Image src={scrollUpIco} style='width:25px; height:20px;position:absolute;top:40%;left:48%' ></Image></view>
