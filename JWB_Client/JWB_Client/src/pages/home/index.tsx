@@ -7,6 +7,7 @@ import { WTab, WMessageItem } from '../../components/widget'
 import QQMapWX from '../../libs/qqmap-wx-jssdk'
 import myLocation from '../../assets/images/icon/my-location.png'
 import markerPic from '../../assets/images/icon/marker.png'
+import relocating from '../../assets/images/icon/relocating.png'
 import './index.less'
 import { scrollUpIco } from '../../assets/images/icon'
 import {getGlobalData, setGlobalData} from "global"
@@ -23,7 +24,9 @@ export interface State {
   latitude: number;
   longitude: number;
   address: any;
-  markers: Array<any>,
+  markers: Array<any>;
+  testResData: any; // 测试地图绘制用的数据,实际操作时会使用服务器的返回数据
+
 }
 
 export default class Index extends Component<{}, State> {
@@ -43,7 +46,24 @@ export default class Index extends Component<{}, State> {
       latitude: 0,
       longitude: 0,
       address: {},
-      markers: []
+      markers: [],
+      testResData: {
+        "id":xxx,
+        "location":{
+            "longitude":xxx,
+            "latitude":xxx
+        },
+        "address":{
+            "nation":xxx,
+            "province":xxx,
+            "city":xxx,
+            "street":xxx,
+        },
+        "content":xxx,
+        "goods":{
+            "口罩":xxx
+        }
+    } // 测试地图绘制用的数据,实际操作时会使用服务器的返回数据
     }
   }
 
@@ -55,6 +75,11 @@ export default class Index extends Component<{}, State> {
 
   // 从腾讯地图获取用当前所在的坐标和地址信息
   async getLocationInfo() {
+    this.reLocation()
+  }
+
+  //重新获取位置
+  reLocation() {
     let qqmapsdk = new QQMapWX({
       key: 'E56BZ-VCOLX-Q7Q4N-7OE7Y-LHKK3-MPBD5'
     })
@@ -119,7 +144,7 @@ export default class Index extends Component<{}, State> {
 
   }
 
-  // 绘制
+  // 把从服务器的查询结果绘制成marker
   markerDisplay({ detail: { longitude, latitude } }: MapProps) {
     console.log(longitude, latitude)
     let newMarkers = this.state.markers
