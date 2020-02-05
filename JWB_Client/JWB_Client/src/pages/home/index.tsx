@@ -9,7 +9,7 @@ import myLocation from '../../assets/images/icon/my-location.png'
 import markerPic from '../../assets/images/icon/marker.png'
 import './index.less'
 import { scrollUpIco } from '../../assets/images/icon'
-import {getGlobalData, setGlobalData} from "global"
+import {getGlobalData, setGlobalData} from "../../models/globalData"
 
 // eslint-disable-next-line
 const { regeneratorRuntime } = global;
