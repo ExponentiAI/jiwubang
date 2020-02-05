@@ -4,7 +4,7 @@ import Component from '../../common/component';
 import './index.scss';
 import { infoRIco, infoPIco } from '../../../assets/images/icon'
 import { login } from '../../../models/home'
-import {getGlobalData, setGlobalData} from "global"
+import { getGlobalData, setGlobalData } from "global"
 
 
 
@@ -17,6 +17,9 @@ var pageToSwicth = 0;
 interface Props {
   className?: string;
   style?: string;
+  latitude?: number;
+  longitude?: number;
+  address?: any;
 }
 
 interface State {
@@ -34,31 +37,30 @@ class Tab extends Component<Props, State> {
   prefix = 'w-tab'
   tabList = [
     { text: '信息求助', jump: 0, icon: infoRIco, selectedIcon: infoRIco },
-    { text: '信息提供', jump: 1,  icon: infoPIco, selectedIcon: infoPIco }
+    { text: '信息提供', jump: 1, icon: infoPIco, selectedIcon: infoPIco }
   ]
 
   async login() {
-    let data = await login({ u_type: '', openid: '', nick_name:'', avatar_url:'' , gender:'' })
-    if(data && pageToSwicth==1) {    
-      Taro.navigateTo({url: '/pages/demand/index'})
+    let data = await login({ u_type: '', openid: '', nick_name: '', avatar_url: '', gender: '' })
+    if (data && pageToSwicth == 1) {
+      Taro.navigateTo({ url: `/pages/demand/index?latitude=${this.props.latitude}&longitude=${this.props.longitude}&address=${JSON.stringify(this.props.address)}` })
     }
-    if(data && pageToSwicth==0) {    
-      Taro.navigateTo({url: '/pages/help/index'})
+    if (data && pageToSwicth == 0) {
+      Taro.navigateTo({ url: `/pages/help/index?latitude=${this.props.latitude}&longitude=${this.props.longitude}&address=${JSON.stringify(this.props.address)}` })
     }
   }
 
-  
+
 
   onGetUserInfo(item, e) {
-      // setGlobalData('userinfo',e.detail.userInfo)
-      console.log(e.detail.userInfo)
-    if( e.detail.userInfo) {
+    // setGlobalData('userinfo',e.detail.userInfo)
+    if (e.detail.userInfo) {
       pageToSwicth = item.jump
       this.login()
     }
   }
 
- 
+
 
   render() {
     const { style, className = '' } = this.props

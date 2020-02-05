@@ -26,6 +26,9 @@ export interface State {
   goodsChecked: Array<any>;
   unitToast: boolean;
   submitClick: boolean;
+  latitude: number;
+  longitude: number;
+  address: any;
 }
 
 export default class Index extends Component {
@@ -38,6 +41,15 @@ export default class Index extends Component {
 
   componentDidMount() {
 
+  }
+
+  componentWillMount() {
+    let latitude = this.$router.params.latitude;
+    let longitude = this.$router.params.longitude;
+    let address = this.$router.params.address;
+    this.setState({latitude: latitude})
+    this.setState({longitude: longitude})
+    this.setState({address: JSON.parse(address)})
   }
 
   constructor() {
@@ -57,6 +69,9 @@ export default class Index extends Component {
       goodsChecked: [false, false, false, false, false],
       unitToast: false,
       submitClick: false,
+      latitude: 0,
+      longitude: 0,
+      address: '',
     }
   }
 
@@ -265,14 +280,14 @@ export default class Index extends Component {
             url: 'https://jwb.comdesignlab.com/SupAndDem/',
             data: {
               u_id: 123,
-              lon: 12.1,
-              lat: 22.32,
-              nation: '中国',
-              province: '广东省',
-              city: '汕头市',
-              district: '澄海区',
-              street: '溪南镇',
-              street_number: '19',
+              lon: this.state.longitude,
+              lat: this.state.latitude,
+              nation: this.state.address.nation,
+              province: this.state.address.province,
+              city: this.state.address.city,
+              district: this.state.address.district,
+              street: this.state.address.street,
+              street_number: this.state.address.street_number,
               content: this.state.contentValue,
               type: 0,
               goods: JSON.stringify(goodsData),

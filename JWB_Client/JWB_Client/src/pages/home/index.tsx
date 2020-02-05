@@ -12,6 +12,8 @@ import './index.less'
 import { scrollUpIco } from '../../assets/images/icon'
 import {getGlobalData, setGlobalData} from "global"
 
+import http from '../libs/http'
+
 // eslint-disable-next-line
 const { regeneratorRuntime } = global;
 
@@ -71,7 +73,27 @@ export default class Index extends Component<{}, State> {
 
     this.getLocationInfo()
 
+    this.getNeerInfo()
   }
+
+  /*
+  * 预加载
+  * 
+  * */
+  async getNeerInfo(){
+    Taro.request({
+      url: 'https://jwb.comdesignlab.com/SearchResult',
+      data: {
+        keyword: 5
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      method: 'GET',
+    })
+    .then(res => console.log(res.data))
+  }
+
 
   // 从腾讯地图获取用当前所在的坐标和地址信息
   async getLocationInfo() {
@@ -172,6 +194,7 @@ export default class Index extends Component<{}, State> {
     })
   }
   tabsClick(value) {
+    console.log("value" + value)
     this.setState({
       tabsIdx: value
     })
@@ -208,14 +231,17 @@ export default class Index extends Component<{}, State> {
   // }
 
   render() {
-    const { keyword, tabBarIdx, markers, tabsIdx, latitude, longitude } = this.state
+    const { keyword, tabBarIdx, markers, tabsIdx, latitude, longitude, address } = this.state
+
 
     return (
       <UPage
         className='p-home-page'
         showBottom
         renderBottom={
-          <WTab className='g-safe-area'></WTab>
+          <WTab className='g-safe-area' latitude={latitude} longitude={longitude} address={address}>
+            
+          </WTab>
         }
         renderTop={
           <AtSearchBar
@@ -238,7 +264,9 @@ export default class Index extends Component<{}, State> {
         <view style={{display:"none", justifyContent:'center'}}>
          <Image src={scrollUpIco} style='width:25px; height:20px;position:absolute;top:40%;left:48%' ></Image></view>
 
-        <AtTabs className='p-tabs' current={tabsIdx} tabList={this.tabList} onClick={this.tabsClick.bind(this)}>
+        <AtTabs 
+          className='p-tabs' current={tabsIdx} tabList={this.tabList} 
+          onClick={this.tabsClick.bind(this)}>
           <AtTabsPane className='p-tabs-pane' current={tabsIdx} index={0} >
             <WMessageItem></WMessageItem>
             <WMessageItem></WMessageItem>
