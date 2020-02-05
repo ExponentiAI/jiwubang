@@ -74,10 +74,12 @@ export default class Index extends Component<{}, State> {
             id: 1,
             latitude,
             longitude,
-            width: 40,
-            height: 40,
+            width: 50,
+            height: 50,
             callout:{
               content:"我的位置",
+              color: "#FFFFFF",
+              bgColor: "#3D91ED",
               // padding:10,
               display:'ALWAYS',
               textAlign:'center'
@@ -125,22 +127,19 @@ export default class Index extends Component<{}, State> {
             id: 2,
             latitude,
             longitude,
-            width: 40,
-            height: 40,
+            width: 20,
+            height: 30,
             callout:{
               content: "2020年2月3日\n" + "沃尔玛超市\n" + " N95口罩-" + "10元",
+              color: "#FFFFFF",
+              bgColor: "#3D91ED",
               // padding:10,
-              display:'ALWAYS',
+              display:'BYCLICK',
               textAlign:'center'
             }
     })
     this.setState({
       markers: newMarkers
-    })
-  }
-  tabsClick(value) {
-    this.setState({
-      tabsIdx: value
     })
   }
 
@@ -168,9 +167,12 @@ export default class Index extends Component<{}, State> {
           latitude={latitude}
           longitude={longitude}
           onClick={this.markerDisplay.bind(this)}
+          // show-compass='true'
           scale='15'
           className='p-map'
-        />
+        >
+          <AtButton className='relocating' iconPath={relocatingPic}>测试</AtButton>
+        </Map>
 
         <view style={{display:"none", justifyContent:'center'}}>
          <Image src={scrollUpIco} style='width:25px; height:20px;position:absolute;top:40%;left:48%' ></Image></view>
