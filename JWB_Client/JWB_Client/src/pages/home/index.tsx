@@ -48,22 +48,22 @@ export default class Index extends Component<{}, State> {
       address: {},
       markers: [],
       testResData: {
-        "id":xxx,
-        "location":{
-            "longitude":xxx,
-            "latitude":xxx
+        id: 123,
+        location:{
+            longitude: 112.93202877044678,
+            latitude: 28.233057579731508
         },
-        "address":{
-            "nation":xxx,
-            "province":xxx,
-            "city":xxx,
-            "street":xxx,
+        address:{
+            nation: "中国",
+            province: "湖南",
+            city: "长沙",
+            street: "测试街道",
         },
-        "content":xxx,
-        "goods":{
-            "口罩":xxx
+        content: "今天在沃尔玛",
+        goods:{
+            item: "口罩-10元/只"
         }
-    } // 测试地图绘制用的数据,实际操作时会使用服务器的返回数据
+     } // 测试地图绘制用的数据,实际操作时会使用服务器的返回数据
     }
   }
 
@@ -145,25 +145,28 @@ export default class Index extends Component<{}, State> {
   }
 
   // 把从服务器的查询结果绘制成marker
-  markerDisplay({ detail: { longitude, latitude } }: MapProps) {
-    console.log(longitude, latitude)
+  markerDisplay() {
     let newMarkers = this.state.markers
+    let newData = this.state.testResData
+    console.log(newData.location.latitude)
+
     newMarkers.push({
       iconPath: markerPic,
-            id: 2,
-            latitude,
-            longitude,
-            width: 20,
-            height: 30,
-            callout:{
-              content: "2020年2月3日\n" + "沃尔玛超市\n" + " N95口罩-" + "10元",
-              color: "#FFFFFF",
-              bgColor: "#3D91ED",
-              // padding:10,
-              display:'BYCLICK',
-              textAlign:'center'
-            }
+      id: newData.id,
+      latitude: newData.location.latitude,
+      longitude: newData.location.longitude,
+      width: 20,
+      height: 30,
+      callout:{
+        content: newData.address.street + '\n' + newData.content + '\n' + newData.goods.item,
+        color: "#FFFFFF",
+        bgColor: "#3D91ED",
+        // padding:10,
+        display:'BYCLICK',
+        textAlign:'center'
+      }
     })
+
     this.setState({
       markers: newMarkers
     })
@@ -173,6 +176,36 @@ export default class Index extends Component<{}, State> {
       tabsIdx: value
     })
   }
+
+
+  // markerDisplay({ detail: { longitude, latitude } }: MapProps) {
+  //   console.log(longitude, latitude)
+  //   let newMarkers = this.state.markers
+  //   newMarkers.push({
+  //     iconPath: markerPic,
+  //           id: 2,
+  //           latitude,
+  //           longitude,
+  //           width: 20,
+  //           height: 30,
+  //           callout:{
+  //             content: "2020年2月3日\n" + "沃尔玛超市\n" + " N95口罩-" + "10元",
+  //             color: "#FFFFFF",
+  //             bgColor: "#3D91ED",
+  //             // padding:10,
+  //             display:'BYCLICK',
+  //             textAlign:'center'
+  //           }
+  //   })
+  //   this.setState({
+  //     markers: newMarkers
+  //   })
+  // }
+  // tabsClick(value) {
+  //   this.setState({
+  //     tabsIdx: value
+  //   })
+  // }
 
   render() {
     const { keyword, tabBarIdx, markers, tabsIdx, latitude, longitude } = this.state
