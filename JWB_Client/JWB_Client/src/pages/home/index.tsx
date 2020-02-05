@@ -107,7 +107,7 @@ export default class Index extends Component<{}, State> {
   //   })
   // }
 
-  tabList = [{ title: '热门' }, { title: '最新' }, { title: '我的' }]
+  tabList = [{ title: '最新' }, { title: '我的' }]
 
   tabbarClick() {
 
