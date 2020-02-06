@@ -27,8 +27,7 @@ export interface State {
   longitude: number;
   address: any;
   markers: Array<any>;
-  testResData: any; // 测试地图绘制用的数据,实际操作时会使用服务器的返回数据
-
+  resData: Array<any>;
 }
 
 export default class Index extends Component<{}, State> {
@@ -49,23 +48,7 @@ export default class Index extends Component<{}, State> {
       longitude: 0,
       address: {},
       markers: [],
-      testResData: {
-        id: 123,
-        location:{
-            longitude: 112.93202877044678,
-            latitude: 28.233057579731508
-        },
-        address:{
-            nation: "中国",
-            province: "湖南",
-            city: "长沙",
-            street: "测试街道",
-        },
-        content: "今天在沃尔玛",
-        goods:{
-            item: "口罩-10元/只"
-        }
-     } // 测试地图绘制用的数据,实际操作时会使用服务器的返回数据
+      resData: [],
     }
   }
 
@@ -73,41 +56,53 @@ export default class Index extends Component<{}, State> {
 
     this.getLocationInfo()
 
-    this.getNeerInfo()
+    //this.getNeerInfo()
   }
 
   /*
   * 预加载
   * 
   * */
- async getNeerInfo(){
-  console.log(this.state.latitude)
+ async getNearInfo(finishCallback){
   if(this.state.latitude != 0){
     Taro.request({
       url: 'https://jwb.comdesignlab.com/new/1/',
-      data: {
+      data: JSON.stringify({
         longitude: this.state.longitude,
         latitude: this.state.latitude,
         search_range: 10,
         page_items_count: 6,
-      },
+      }),
       header: {
         'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       method: 'POST',
     })
-    .then(res => console.log(res.data))
+    .then(res => { 
+      this.setState({
+        resData: res.data
+      }, finishCallback)
+    })
+    // .then(res => this.setState({...}, finishCallback))
   }
 }
 
 
   // 预加载用户当前所在的坐标和地址信息
-  async getLocationInfo() {
-    this.reLocation()
+  getLocationInfo() {
+    // this.reLocation(()=>{this.markerPush()})
+    // this.reLocation(()=>{this.getNearInfo()})
+
+    this.reLocation(
+      ()=>{this.getNearInfo(
+        ()=>{this.markerPush()}
+      )}
+    )
+    
   }
 
   //重新获取位置
-  reLocation() {
+  async reLocation(finishCallback) {
     let qqmapsdk = new QQMapWX({
       key: 'E56BZ-VCOLX-Q7Q4N-7OE7Y-LHKK3-MPBD5'
     })
@@ -115,7 +110,6 @@ export default class Index extends Component<{}, State> {
     qqmapsdk.reverseGeocoder({
       get_poi: 0,
       success:(res) =>{
-        // console.log(res.result.address_component)
         const latitude = res.result.location.lat
         const longitude = res.result.location.lng
 
@@ -134,12 +128,11 @@ export default class Index extends Component<{}, State> {
               content:"我的位置",
               color: "#FFFFFF",
               bgColor: "#3D91ED",
-              // padding:10,
               display:'ALWAYS',
               textAlign:'center'
             }
           }]
-        })
+        }, finishCallback)
       }
     })
   }
@@ -172,28 +165,36 @@ export default class Index extends Component<{}, State> {
 
   }
 
-  // 把从服务器的查询结果绘制成marker
-  markerDisplay() {
+  // 把从服务器的查询结果添加到markers列表中
+  markerPush() {
     let newMarkers = this.state.markers
-    let newData = this.state.testResData
+    let resData = this.state.resData
+    console.log(resData)
 
-    newMarkers.push({
-      iconPath: markerPic,
-      id: newData.id,
-      latitude: newData.location.latitude,
-      longitude: newData.location.longitude,
-      width: 20,
-      height: 30,
-      callout:{
-        content: newData.address.street + '\n' + newData.content + '\n' + newData.goods.item,
-        color: "#FFFFFF",
-        bgColor: "#3D91ED",
-        // padding:10,
-        display:'BYCLICK',
-        textAlign:'center'
+    if(resData.length > 0) {
+
+      for (let i = 0; i < resData.length; i++) {
+        console.log()
+        newMarkers.push({
+          iconPath: markerPic,
+          id: resData[i].u_id,
+          latitude: resData[i].s_lat,
+          longitude: resData[i].s_lon,
+          width: 20,
+          height: 30,
+          callout: {
+            content: resData[i].s_street + '\n' + resData[i].s_content,
+            // content: '测试',
+            color: "#FFFFFF",
+            bgColor: "#3D91ED",
+            display:'BYCLICK',
+            textAlign:'center'
+          }
+        })
+        
       }
-    })
-
+    }
+    
     this.setState({
       markers: newMarkers
     })
@@ -205,30 +206,11 @@ export default class Index extends Component<{}, State> {
     })
   }
 
+  // 用户手动点击地图选择位置信息（该功能准备在下一版中开放）
+  getLocationByTap({ detail: { longitude, latitude } }: MapProps) {
+    console.log('你点击的位置是： ' + '[ ' + longitude + ', ' + latitude + ' ]')
+  }
 
-  // markerDisplay({ detail: { longitude, latitude } }: MapProps) {
-  //   console.log(longitude, latitude)
-  //   let newMarkers = this.state.markers
-  //   newMarkers.push({
-  //     iconPath: markerPic,
-  //           id: 2,
-  //           latitude,
-  //           longitude,
-  //           width: 20,
-  //           height: 30,
-  //           callout:{
-  //             content: "2020年2月3日\n" + "沃尔玛超市\n" + " N95口罩-" + "10元",
-  //             color: "#FFFFFF",
-  //             bgColor: "#3D91ED",
-  //             // padding:10,
-  //             display:'BYCLICK',
-  //             textAlign:'center'
-  //           }
-  //   })
-  //   this.setState({
-  //     markers: newMarkers
-  //   })
-  // }
   // tabsClick(value) {
   //   this.setState({
   //     tabsIdx: value
@@ -237,7 +219,7 @@ export default class Index extends Component<{}, State> {
 
   render() {
     const { keyword, tabBarIdx, markers, tabsIdx, latitude, longitude, address } = this.state
-
+    //this.markerPush()
 
     return (
       <UPage
@@ -261,7 +243,7 @@ export default class Index extends Component<{}, State> {
           markers={markers}
           latitude={latitude}
           longitude={longitude}
-          onClick={this.markerDisplay.bind(this)}
+          // onClick={this.getLocationByTap.bind(this)} //在地图中手动选择位置（预留在下一版app中开放）
           scale='15'
           className='p-map'
         />

@@ -143,6 +143,9 @@ export default class Index extends Component {
           title='我的位置'
         >
           <Map
+            // latitude={latitude} //把纬度传到这里
+            // longitude={longitude} //把经度传到这里
+            show-location
             // onClick={this.mapClick.bind(this)}
             className='p-map'
           />
@@ -154,6 +157,8 @@ export default class Index extends Component {
           title='商店所在位置'
         >
           <Map
+            // latitude={latitude} //把纬度传到这里
+            // longitude={longitude} //把经度传到这里
             // onClick={this.mapClick.bind(this)}
             className='p-map'
           />
