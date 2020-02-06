@@ -80,22 +80,28 @@ export default class Index extends Component<{}, State> {
   * 预加载
   * 
   * */
-  async getNeerInfo(){
+ async getNeerInfo(){
+  console.log(this.state.latitude)
+  if(this.state.latitude != 0){
     Taro.request({
-      url: 'https://jwb.comdesignlab.com/SearchResult',
+      url: 'https://jwb.comdesignlab.com/new/1/',
       data: {
-        keyword: 5
+        longitude: this.state.longitude,
+        latitude: this.state.latitude,
+        search_range: 10,
+        page_items_count: 6,
       },
       header: {
         'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      method: 'GET',
+      method: 'POST',
     })
     .then(res => console.log(res.data))
   }
+}
 
 
-  // 从腾讯地图获取用当前所在的坐标和地址信息
+  // 预加载用户当前所在的坐标和地址信息
   async getLocationInfo() {
     this.reLocation()
   }
@@ -170,7 +176,6 @@ export default class Index extends Component<{}, State> {
   markerDisplay() {
     let newMarkers = this.state.markers
     let newData = this.state.testResData
-    console.log(newData.location.latitude)
 
     newMarkers.push({
       iconPath: markerPic,
