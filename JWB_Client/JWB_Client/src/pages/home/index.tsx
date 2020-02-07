@@ -28,6 +28,8 @@ export interface State {
   address: any;
   markers: Array<any>;
   resData: Array<any>;
+  qqmapsdk: QQMapWX;
+  distances:Array<any>;
 }
 
 export default class Index extends Component<{}, State> {
@@ -49,6 +51,10 @@ export default class Index extends Component<{}, State> {
       address: {},
       markers: [],
       resData: [],
+      qqmapsdk: new QQMapWX({
+        key: 'E56BZ-VCOLX-Q7Q4N-7OE7Y-LHKK3-MPBD5'
+      }),
+      distances: []
     }
   }
 
@@ -84,8 +90,29 @@ export default class Index extends Component<{}, State> {
       }, finishCallback)
     })
     // .then(res => this.setState({...}, finishCallback))
+    }
   }
-}
+
+  // 计算checkin位置到用户当前位置的距离，结果保存在this.state.distances里
+  getDistance() {
+    let resData = this.state.resData
+    let locations = []
+
+    for (let i = 0; i < resData.length; i++) {
+      locations.push({
+        latitude: resData[i].s_lat,
+        longitude: resData[i].s_lon,
+      })
+    }
+    this.state.qqmapsdk.calculateDistance({
+      to: locations,
+      success: (res) => {
+        this.setState({
+          distances: res.result.elements
+        })
+      }
+    })
+  }
 
 
   // 预加载用户当前所在的坐标和地址信息
@@ -95,7 +122,10 @@ export default class Index extends Component<{}, State> {
 
     this.reLocation(
       ()=>{this.getNearInfo(
-        ()=>{this.markerPush()}
+        ()=>{
+          this.markerPush()
+          this.getDistance()
+        }
       )}
     )
     
@@ -103,11 +133,8 @@ export default class Index extends Component<{}, State> {
 
   //重新获取位置
   async reLocation(finishCallback) {
-    let qqmapsdk = new QQMapWX({
-      key: 'E56BZ-VCOLX-Q7Q4N-7OE7Y-LHKK3-MPBD5'
-    })
 
-    qqmapsdk.reverseGeocoder({
+    this.state.qqmapsdk.reverseGeocoder({
       get_poi: 0,
       success:(res) =>{
         const latitude = res.result.location.lat
@@ -119,7 +146,7 @@ export default class Index extends Component<{}, State> {
           address: res.result.address_component,
           markers: [{
             iconPath: myLocation,
-            id: 1,
+            id: 0,
             latitude,
             longitude,
             width: 40,
@@ -169,32 +196,53 @@ export default class Index extends Component<{}, State> {
   markerPush() {
     let newMarkers = this.state.markers
     let resData = this.state.resData
-    console.log(resData)
+    // console.log(resData)
 
     if(resData.length > 0) {
 
       for (let i = 0; i < resData.length; i++) {
-        console.log()
-        newMarkers.push({
-          iconPath: markerPic,
-          id: resData[i].u_id,
-          latitude: resData[i].s_lat,
-          longitude: resData[i].s_lon,
-          width: 20,
-          height: 30,
-          callout: {
-            content: resData[i].s_street + '\n' + resData[i].s_content,
-            // content: '测试',
-            color: "#FFFFFF",
-            bgColor: "#3D91ED",
-            display:'BYCLICK',
-            textAlign:'center'
-          }
-        })
+        if(resData[i].s_type == 1) {
+          newMarkers.push({
+            iconPath: markerPic,
+            id: i+1,
+            latitude: resData[i].s_lat,
+            longitude: resData[i].s_lon,
+            width: 20,
+            height: 30,
+            callout: {
+              content: resData[i].s_street + '\n' + resData[i].s_content + '\n' + resData[i].s_subtime,
+              // content: '测试',
+              color: "#FFFFFF",
+              bgColor: "#3D91ED",
+              display:'BYCLICK',
+              textAlign:'center'
+            }
+          })
+        } else {
+          newMarkers.push({
+            iconPath: markerPic,
+            id: i+1,
+            latitude: resData[i].s_lat,
+            longitude: resData[i].s_lon,
+            width: 20,
+            height: 30,
+            callout: {
+              content: resData[i].s_street + '\n' + resData[i].s_content + '\n' + resData[i].s_subtime,
+              // content: '测试',
+              color: "#3D91ED",
+              bgColor: "#FFFFFF",
+              display:'BYCLICK',
+              textAlign:'center'
+            }
+          })
+        }
+        
         
       }
     }
     
+    // console.log(newMarkers)
+
     this.setState({
       markers: newMarkers
     })
@@ -244,7 +292,8 @@ export default class Index extends Component<{}, State> {
           latitude={latitude}
           longitude={longitude}
           // onClick={this.getLocationByTap.bind(this)} //在地图中手动选择位置（预留在下一版app中开放）
-          scale='15'
+          // onClick={this.getDistance.bind(this)} //测试计算距离
+          scale='14'
           className='p-map'
         />
 
