@@ -10,7 +10,7 @@ import markerPic from '../../assets/images/icon/marker.png'
 import relocating from '../../assets/images/icon/relocating.png'
 import './index.less'
 import { scrollUpIco } from '../../assets/images/icon'
-import {getGlobalData, setGlobalData} from "global"
+import {getGlobalData, setGlobalData, getLogininfo} from "../../models/globalData"
 
 import http from '../libs/http'
 
@@ -28,8 +28,11 @@ export interface State {
   address: any;
   markers: Array<any>;
   resData: Array<any>;
+  submitresult: number;
+
   qqmapsdk: QQMapWX;
   distances:Array<any>;
+  myData: Array<any>;
 }
 
 export default class Index extends Component<{}, State> {
@@ -51,10 +54,13 @@ export default class Index extends Component<{}, State> {
       address: {},
       markers: [],
       resData: [],
+      submitresult: -1,
+
       qqmapsdk: new QQMapWX({
         key: 'E56BZ-VCOLX-Q7Q4N-7OE7Y-LHKK3-MPBD5'
       }),
-      distances: []
+      distances: [],
+      myData: [],
     }
   }
 
@@ -62,6 +68,11 @@ export default class Index extends Component<{}, State> {
 
     this.getLocationInfo()
 
+    let submitResult = this.$router.params.submit_id;
+    // this.setState({ submitresult: parseInt(submitResult)})
+    if(parseInt(submitResult) == 1){
+      Taro.showToast({title: '发布成功'})
+    }
     //this.getNeerInfo()
   }
 
@@ -69,7 +80,7 @@ export default class Index extends Component<{}, State> {
   * 预加载
   * 
   * */
- async getNearInfo(finishCallback){
+  getNearInfo(finishCallback){
   if(this.state.latitude != 0){
     Taro.request({
       url: 'https://jwb.comdesignlab.com/new/1/',
@@ -85,35 +96,37 @@ export default class Index extends Component<{}, State> {
       method: 'POST',
     })
     .then(res => { 
+      console.log(res)
       this.setState({
         resData: res.data
       }, finishCallback)
     })
     // .then(res => this.setState({...}, finishCallback))
-    }
   }
+}
 
-  // 计算checkin位置到用户当前位置的距离，结果保存在this.state.distances里
-  getDistance() {
-    let resData = this.state.resData
-    let locations = []
 
-    for (let i = 0; i < resData.length; i++) {
-      locations.push({
-        latitude: resData[i].s_lat,
-        longitude: resData[i].s_lon,
-      })
-    }
-    this.state.qqmapsdk.calculateDistance({
-      to: locations,
-      success: (res) => {
-        this.setState({
-          distances: res.result.elements
-        })
-      }
+// 计算checkin位置到用户当前位置的距离，结果保存在this.state.distances里
+getDistance() {
+  let resData = this.state.resData
+  let locations = []
+
+  for (let i = 0; i < resData.length; i++) {
+    locations.push({
+      latitude: resData[i].s_lat,
+      longitude: resData[i].s_lon,
     })
   }
-
+  this.state.qqmapsdk.calculateDistance({
+    to: locations,
+    success: (res) => {
+      console.log(res)
+      this.setState({
+        distances: res.result.elements
+      })
+    }
+  })
+}
 
   // 预加载用户当前所在的坐标和地址信息
   getLocationInfo() {
@@ -139,14 +152,19 @@ export default class Index extends Component<{}, State> {
       success:(res) =>{
         const latitude = res.result.location.lat
         const longitude = res.result.location.lng
+        const address = res.result.address_component
+        
+        setGlobalData('latitude', latitude)
+        setGlobalData('longitude', longitude)
+        setGlobalData('address', address)
 
         this.setState({
           latitude,
           longitude,
-          address: res.result.address_component,
+          address: address,
           markers: [{
             iconPath: myLocation,
-            id: 0,
+            id: 1,
             latitude,
             longitude,
             width: 40,
@@ -154,7 +172,7 @@ export default class Index extends Component<{}, State> {
             callout:{
               content:"我的位置",
               color: "#FFFFFF",
-              bgColor: "#3D91ED",
+              bgColor: "#455a64",
               display:'ALWAYS',
               textAlign:'center'
             }
@@ -183,7 +201,7 @@ export default class Index extends Component<{}, State> {
   //   })
   // }
 
-  tabList = [{ title: '热门' }, { title: '最新' }, { title: '我的' }]
+  tabList = [{ title: '附近' }, { title: '我的' }]
 
   tabbarClick() {
 
@@ -196,7 +214,6 @@ export default class Index extends Component<{}, State> {
   markerPush() {
     let newMarkers = this.state.markers
     let resData = this.state.resData
-    // console.log(resData)
 
     if(resData.length > 0) {
 
@@ -204,13 +221,13 @@ export default class Index extends Component<{}, State> {
         if(resData[i].s_type == 1) {
           newMarkers.push({
             iconPath: markerPic,
-            id: i+1,
+            id: i+2,
             latitude: resData[i].s_lat,
             longitude: resData[i].s_lon,
             width: 20,
             height: 30,
             callout: {
-              content: resData[i].s_street + '\n' + resData[i].s_content + '\n' + resData[i].s_subtime,
+              content: resData[i].s_street + '\n有' + resData[i].details_info[0].goods_name + resData[i].details_info[0].count + '元/个\n' + resData[i].s_subtime,
               // content: '测试',
               color: "#FFFFFF",
               bgColor: "#3D91ED",
@@ -227,7 +244,7 @@ export default class Index extends Component<{}, State> {
             width: 20,
             height: 30,
             callout: {
-              content: resData[i].s_street + '\n' + resData[i].s_content + '\n' + resData[i].s_subtime,
+              content: resData[i].s_street + '\n需' + resData[i].details_info[0].goods_name + resData[i].details_info[0].count + '个\n' + resData[i].s_subtime,
               // content: '测试',
               color: "#3D91ED",
               bgColor: "#FFFFFF",
@@ -241,17 +258,31 @@ export default class Index extends Component<{}, State> {
       }
     }
     
-    // console.log(newMarkers)
-
     this.setState({
       markers: newMarkers
     })
   }
   tabsClick(value) {
-    console.log("value" + value)
     this.setState({
       tabsIdx: value
     })
+    Taro.request({
+      url: 'https://jwb.comdesignlab.com/me/1/',
+      data: JSON.stringify({
+        u_id: 1,
+        page_items_count: 10,
+      }),
+      header: {
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      method: 'POST',
+    })
+    .then(res => { 
+      this.setState({
+        myData: res.data
+      })
+    })
+    
   }
 
   // 用户手动点击地图选择位置信息（该功能准备在下一版中开放）
@@ -269,13 +300,21 @@ export default class Index extends Component<{}, State> {
     const { keyword, tabBarIdx, markers, tabsIdx, latitude, longitude, address } = this.state
     //this.markerPush()
 
+    // console.log(this.state.resData)
+    // console.log(this.state.myData)
+
+
     return (
       <UPage
         className='p-home-page'
         showBottom
         renderBottom={
-          <WTab className='g-safe-area' latitude={latitude} longitude={longitude} address={address}>
-            
+          <WTab 
+            className='g-safe-area' 
+            latitude={latitude} 
+            longitude={longitude} 
+            address={address}
+            >
           </WTab>
         }
         renderTop={
@@ -291,10 +330,10 @@ export default class Index extends Component<{}, State> {
           markers={markers}
           latitude={latitude}
           longitude={longitude}
+          scale={14}
+          className='p-map'
           // onClick={this.getLocationByTap.bind(this)} //在地图中手动选择位置（预留在下一版app中开放）
           // onClick={this.getDistance.bind(this)} //测试计算距离
-          scale='14'
-          className='p-map'
         />
 
         <view style={{display:"none", justifyContent:'center'}}>
@@ -303,22 +342,33 @@ export default class Index extends Component<{}, State> {
         <AtTabs 
           className='p-tabs' current={tabsIdx} tabList={this.tabList} 
           onClick={this.tabsClick.bind(this)}>
-          <AtTabsPane className='p-tabs-pane' current={tabsIdx} index={0} >
-            <WMessageItem></WMessageItem>
-            <WMessageItem></WMessageItem>
-            <WMessageItem></WMessageItem>
-            <WMessageItem></WMessageItem>
-            <WMessageItem></WMessageItem>
-            <WMessageItem></WMessageItem>
-            <WMessageItem></WMessageItem>
-            <WMessageItem></WMessageItem>
-            <WMessageItem style='border-bottom: none'></WMessageItem>
+          <AtTabsPane className='p-tabs-pane' current={tabsIdx} index={0}>
+            {
+              this.state.resData.map((item) => {
+                return (
+                  <WMessageItem 
+                    id = {item.index}
+                    itemData = {item}
+                    style='border-bottom: 3rpx solid #666'
+                    >
+                  </WMessageItem>
+                )
+              })
+            }
           </AtTabsPane>
           <AtTabsPane className='p-tabs-pane' current={tabsIdx} index={1}>
-            <WMessageItem></WMessageItem>
-          </AtTabsPane>
-          <AtTabsPane className='p-tabs-pane' current={tabsIdx} index={2}>
-            <WMessageItem style='border-bottom: none'></WMessageItem>
+          {
+              this.state.myData.map((item) => {
+                return (
+                  <WMessageItem 
+                    id = {item.index}
+                    itemData = {item}
+                    style='border-bottom: 3rpx solid #666'
+                    >
+                  </WMessageItem>
+                )
+              })
+            }
           </AtTabsPane>
         </AtTabs>
       </UPage>

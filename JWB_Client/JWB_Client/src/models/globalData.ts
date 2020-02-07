@@ -5,8 +5,10 @@
     gender: 1,
     language: "0",
     nickName: "",
-    province: "",}
-  
+    province: "",},
+    latitude: 0,
+    longitude: 0,
+    address: [],
   }
   var logininfo = {
      u_type: 0,

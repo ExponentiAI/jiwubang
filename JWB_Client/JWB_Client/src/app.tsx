@@ -25,6 +25,7 @@ class App extends Component {
       'pages/home/index',  // 首页
       'pages/demand/index',  // 信息提供
       'pages/help/index',  // 信息求助
+      'pages/about/index',  //关于页面
     ],
     window: {
       backgroundTextStyle: 'light',

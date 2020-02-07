@@ -1,15 +1,21 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component, Config, getUserInfo } from '@tarojs/taro'
 import { View, Checkbox, Text, Map, Progress, CheckboxGroup } from '@tarojs/components'
 import { UPage } from '../../components/ui'
-import { LocationPicker, PrescriptionPicker, WGoods } from '../../components/widget'
+import { LocationPicker, PrescriptionPicker, WGoods, UserInfo } from '../../components/widget'
 import {
   AtButton, AtAccordion, AtTextarea,
-  AtModal, AtDivider, AtToast 
+  AtModal, AtAvatar
 } from 'taro-ui'
+
+import QQMapWX from '../../libs/qqmap-wx-jssdk'
+
+import myLocation from '../../assets/images/icon/my-location.png'
 
 import './index.scss'
 
 import http from '../../libs/http'
+
+import {getGlobalData, setGlobalData, getLogininfo} from "../../models/globalData"
 
 export interface State {
   showMyAccordion: boolean;
@@ -24,11 +30,13 @@ export interface State {
   prescriptionValue: number;
   goodsValue: Array<any>;
   goodsChecked: Array<any>;
-  unitToast: boolean;
+  // unitToast: boolean;
   submitClick: boolean;
   latitude: number;
   longitude: number;
   address: any;
+  markers: Array<any>;
+  progress: number;
 }
 
 export default class Index extends Component {
@@ -44,12 +52,59 @@ export default class Index extends Component {
   }
 
   componentWillMount() {
-    let latitude = this.$router.params.latitude;
-    let longitude = this.$router.params.longitude;
-    let address = this.$router.params.address;
-    this.setState({latitude: latitude})
-    this.setState({longitude: longitude})
-    this.setState({address: JSON.parse(address)})
+    // let latitude = this.$router.params.latitude;
+    // let longitude = this.$router.params.longitude;
+    // let address = this.$router.params.address;
+
+    let latitude = getGlobalData('latitude')
+    let longitude = getGlobalData('longitude')
+    let address = getGlobalData('address')
+
+    this.setState({ latitude: latitude })
+    this.setState({ longitude: longitude })
+    this.setState({ address: address })
+
+    this.getLocationInfo()
+  }
+
+  // 预加载用户当前所在的坐标和地址信息
+  getLocationInfo() {
+    this.reLocation()
+  }
+
+  //重新获取位置
+  async reLocation() {
+    let qqmapsdk = new QQMapWX({
+      key: 'E56BZ-VCOLX-Q7Q4N-7OE7Y-LHKK3-MPBD5'
+    })
+
+    qqmapsdk.reverseGeocoder({
+      get_poi: 0,
+      success: (res) => {
+        const latitude = res.result.location.lat
+        const longitude = res.result.location.lng
+        this.setState({
+          latitude,
+          longitude,
+          address: res.result.address_component,
+          markers: [{
+            iconPath: myLocation,
+            id: 1,
+            latitude,
+            longitude,
+            width: 40,
+            height: 40,
+            callout: {
+              content: "我的位置",
+              color: "#FFFFFF",
+              bgColor: "#455a64",
+              display: 'ALWAYS',
+              textAlign: 'center'
+            }
+          }]
+        })
+      }
+    })
   }
 
   constructor() {
@@ -67,11 +122,13 @@ export default class Index extends Component {
       prescriptionValue: 1,
       goodsValue: [-1, -1, -1, -1, -1],
       goodsChecked: [false, false, false, false, false],
-      unitToast: false,
+      // unitToast: false,
       submitClick: false,
       latitude: 0,
       longitude: 0,
       address: '',
+      markers: [],
+      progress: 25,
     }
   }
 
@@ -114,6 +171,8 @@ export default class Index extends Component {
 
     // this.setState({submitClick: false})
 
+    const userInfo = getLogininfo()
+
     return (
       <UPage
         className='p-demand-page'
@@ -121,7 +180,7 @@ export default class Index extends Component {
         titleImmerse
         renderBottom={
           <View>
-            <Progress className='p-progress' percent={25} strokeWidth={2} activeColor='#FFC82C' />
+            <Progress className='p-progress' percent={this.state.progress} strokeWidth={2} activeColor='#FFC82C' />
             <View className='p-bottom-wrap g-safe-area'>
               <CheckboxGroup onChange={this.onChange.bind(this)}>
                 <Checkbox className='p-clause' value='isRead'>我已阅读</Checkbox>
@@ -132,7 +191,7 @@ export default class Index extends Component {
                   circle size='normal' customStyle={{ width: '100%' }}
                   disabled={this.state.isRead}
                   onClick={this.onSubmit.bind(this)}
-                  >提交</AtButton>
+                >提交</AtButton>
               </View>
             </View>
           </View>
@@ -149,27 +208,47 @@ export default class Index extends Component {
         >
         </AtModal>
 
-        <AtAccordion
-          open={showMyAccordion}
-          onClick={(val) => this.setState({ showMyAccordion: val })}
-          title='用户绑定'
-        >
-          {/* <Map
-            // onClick={this.mapClick.bind(this)}
-            className='p-map'
-          /> */}
-        </AtAccordion>
 
-        <AtAccordion
-          open={showShopAccordion}
-          onClick={(val) => this.setState({ showShopAccordion: val })}
-          title='所需位置'
-        >
-          <Map
-            // onClick={this.mapClick.bind(this)}
-            className='p-map'
-          />
-        </AtAccordion>
+        <View className='p-accordion'>
+          <Text className='p-tips'>已加载</Text>
+          <AtAccordion
+            open={showMyAccordion}
+            onClick={(val) => this.setState({ showMyAccordion: val })}
+            title='用户绑定'
+          >
+            <View className='p-userInfoPanel'>
+              <AtAvatar className='p-userimage'
+                image = {userInfo.avatar_url}
+                openData = {{type: 'userAvatarUrl'}}
+                circle
+                size='normal'>
+              </AtAvatar>
+              <Text className='p-username'>
+                {userInfo.nick_name}
+              </Text>
+            </View> 
+          </AtAccordion>
+        </View>
+
+
+        <View className='p-accordion'>
+          <Text className='p-tips'>已加载</Text>
+          <AtAccordion
+            open={showShopAccordion}
+            onClick={(val) => this.setState({ showShopAccordion: val })}
+            title='所需位置'
+            isAnimation
+          >
+            <Map
+              markers={this.state.markers}
+              latitude={this.state.latitude}
+              longitude={this.state.longitude}
+              scale={15}
+              className='p-map'
+            />
+          </AtAccordion>
+
+        </View>
 
         <AtTextarea
           customStyle={{ border: 'none', borderRadius: 0 }}
@@ -193,25 +272,21 @@ export default class Index extends Component {
               value={option.value}
               label={option.label}
               unit={option.unit}
-              checked = {option.checked}
-              handleValue = {this.handleGoodsValue.bind(this)}
+              checked={option.checked}
+              handleValue={this.handleGoodsValue.bind(this)}
             ></WGoods>)
           })
         }
 
         <LocationPicker
-          handleValue = {this.handleLocationValue.bind(this)}>
+          handleValue={this.handleLocationValue.bind(this)}>
 
         </LocationPicker>
 
         <PrescriptionPicker
-          handleValue = {this.handlePrescriptionValue.bind(this)}>
+          handleValue={this.handlePrescriptionValue.bind(this)}>
 
         </PrescriptionPicker>
-
-        {/* <AtToast isOpened={this.state.unitToast && this.state.submitClick} text="有数据尚未填写"></AtToast> */}
-        
-        {this.state.unitToast  && <AtToast isOpened text="有数据尚未填写"></AtToast>}
 
       </UPage>
 
@@ -219,12 +294,27 @@ export default class Index extends Component {
   }
 
   handleGoodsValue(data) {
-    if(data.checked){
-      this.state.goodsChecked[parseInt(data.index)-1] = true
-      this.state.goodsValue[parseInt(data.index)-1] = data.value
-    }else{
-      this.state.goodsChecked[parseInt(data.index)-1] = false
-      this.state.goodsValue[parseInt(data.index)-1] = 0
+    if (data.checked) {
+      this.state.goodsChecked[parseInt(data.index) - 1] = true
+      this.state.goodsValue[parseInt(data.index) - 1] = data.value
+      if(data.value != -1){
+        this.setState({progress: 100})
+      }else{
+        this.setState({progress: 25})
+      }
+    } else {
+      this.state.goodsChecked[parseInt(data.index) - 1] = false
+      this.state.goodsValue[parseInt(data.index) - 1] = -1
+      
+      let check, flag = false
+      for (check in this.state.goodsChecked){
+        if(this.state.goodsChecked[check]){
+          flag = true
+        }
+      }
+      if(!flag){
+        this.setState({progress: 25})
+      }
     }
   }
 
@@ -245,30 +335,49 @@ export default class Index extends Component {
   }
 
   onSubmit = (e) => {
-    const time = new Date().getTime()
+    // const time = new Date()
+
+    const date = new Date()
+			
+    const year = date.getFullYear()        //年 ,从 Date 对象以四位数字返回年份
+    const month = date.getMonth() + 1      //月 ,从 Date 对象返回月份 (0 ~ 11) ,date.getMonth()比实际月份少 1 个月
+    const day = date.getDate()             //日 ,从 Date 对象返回一个月中的某一天 (1 ~ 31)
+    
+    const hours = date.getHours()          //小时 ,返回 Date 对象的小时 (0 ~ 23)
+    const minutes = date.getMinutes()      //分钟 ,返回 Date 对象的分钟 (0 ~ 59)
+    const seconds = date.getSeconds()      //秒 ,返回 Date 对象的秒数 (0 ~ 59) 
+
+    
+    const currentDate = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds
 
     let check
 
     let flag = true
 
+    let goods_input_flag = false  //判断用户是否填写物品信息，为true表示可以提交，false表示不可以提交
+
     // this.setState({submitClick: true})
 
-    for(check in this.state.goodsChecked){
-      // console.log(this.state.goodsChecked[check])
-      // console.log(this.state.goodsValue[check])
-      if(this.state.goodsChecked[check] && this.state.goodsValue[check]==-1){
+    for (check in this.state.goodsChecked) {
+      if (this.state.goodsChecked[check] && this.state.goodsValue[check] == -1) {
         flag = false
       }
     }
-    // console.log(check)
-    // console.log(flag)
-    if(!flag){    //填写不符合要求
-      this.setState({unitToast: true})
-    }else{
-      this.setState({unitToast: false})
+    
+    for (check in this.state.goodsChecked) {
+      if (this.state.goodsChecked[check]){
+        goods_input_flag = true
+      }
+    }
+
+    if (!flag) {    //填写不符合要求
+      Taro.showToast({ title: '有数据尚未填写', icon: 'none' })
+    } else if (!goods_input_flag) {
+      Taro.showToast({ title: '物品尚未选择', icon: 'none' })
+    } else {
       let goodsData = []
-      for(var i = 0; i < this.state.goodsChecked.length; i++){
-        if(this.state.goodsChecked[i]){     //如果有勾选
+      for (var i = 0; i < this.state.goodsChecked.length; i++) {
+        if (this.state.goodsChecked[i]) {     //如果有勾选
           goodsData.push({
             'goods_name': this.checkboxOption[i].label,
             'num_or_price': this.state.goodsValue[i]
@@ -276,33 +385,38 @@ export default class Index extends Component {
         }
       }
       console.log(goodsData)
+
       Taro.request({
-            url: 'https://jwb.comdesignlab.com/SupAndDem/',
-            data: {
-              u_id: 123,
-              lon: this.state.longitude,
-              lat: this.state.latitude,
-              nation: this.state.address.nation,
-              province: this.state.address.province,
-              city: this.state.address.city,
-              district: this.state.address.district,
-              street: this.state.address.street,
-              street_number: this.state.address.street_number,
-              content: this.state.contentValue,
-              type: 0,
-              goods: JSON.stringify(goodsData),
-              range: this.state.locationValue,
-              aging: this.state.prescriptionValue,
-              subtime: time,
-            },
-            header: {
-              'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-            },
-            method: 'POST',
-          })
-          .then(res => console.log(res.data))
-
+        url: 'https://jwb.comdesignlab.com/SupAndDem/',
+        data: {
+          u_id: 123,
+          lon: this.state.longitude,
+          lat: this.state.latitude,
+          nation: this.state.address.nation,
+          province: this.state.address.province,
+          city: this.state.address.city,
+          district: this.state.address.district,
+          street: this.state.address.street,
+          street_number: this.state.address.street_number,
+          content: this.state.contentValue,
+          type: 0,
+          goods: JSON.stringify(goodsData),
+          range: this.state.locationValue,
+          aging: this.state.prescriptionValue,
+          subtime: currentDate,
+        },
+        header: {
+          'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+        },
+        method: 'POST',
+      }).then(res => {
+          console.log(res.data.msg)
+          if(res.data.msg == '操作成功！'){
+            Taro.redirectTo({
+              url: `../home/index?submit_id=${1}`
+            })
+          }
+        })
     }
-
   }
 }

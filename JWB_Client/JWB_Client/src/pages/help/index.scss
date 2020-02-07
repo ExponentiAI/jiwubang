@@ -73,3 +73,31 @@
   background-color: #EAF1F7;
   height: 4rpx;
 }
+
+.p-accordion{
+  position: relative;
+  .p-tips{
+    position: absolute;
+    font-size: .7em;
+    color: #4897EE;
+    right: 80rpx;
+    // top: 50%;
+    top: 50rpx;
+    transform: translateY(-50%);
+    // line-height: 42.6rpx;
+  }
+}
+.p-userInfoPanel{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx;
+  .p-userimage{
+    align-self: center;
+  }
+  .p-username{
+    font-size: .8em;
+    align-self: center;
+  }
+}

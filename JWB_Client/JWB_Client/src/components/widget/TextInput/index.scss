@@ -1,0 +1,24 @@
+.picker{
+    height: 40rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24rpx;
+    border-bottom: 4rpx solid #EAF1F7;
+    padding-top: 30rpx;
+    padding-bottom: 30rpx;
+
+    margin-bottom: 20rpx;
+    font-size: .8em;
+    padding-right: 24rpx;
+}
+
+.picker-left{
+
+}
+
+.input{
+    // color: #3E92ED;
+    text-align: right;
+    direction: rtl;
+}

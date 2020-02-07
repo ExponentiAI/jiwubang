@@ -4,11 +4,11 @@ $prefixCls: w-message-item;
 
 .#{$prefixCls}{
   @include border(bottom);
-  padding: 30px 0;
-  margin: 0 36px;
+  padding: 30rpx 0;
+  margin: 0 36rpx;
   &-top-wrap{
     display: flex;
-    padding-bottom: 30px;
+    padding-bottom: 10rpx;
     .#{$prefixCls}-img{
       width: 80px;
       height: 80px;
@@ -41,7 +41,7 @@ $prefixCls: w-message-item;
       text-align: right;
       color: #666;
       font-size: 24px;
-      line-height: 1em;
+      line-height: 1.2em;
     }
   }
 }

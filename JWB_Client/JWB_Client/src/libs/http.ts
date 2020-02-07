@@ -31,7 +31,7 @@ class Http {
       Taro.request({
         url: `${this.BASEURL + api}`,
         method,
-        data: qs.stringify(data),
+        data: JSON.stringify(data),
         credentials: 'include',
         header: {
           'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
