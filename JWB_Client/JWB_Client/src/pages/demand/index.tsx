@@ -201,7 +201,11 @@ export default class Index extends Component {
           confirmText='确认'
           onClose={() => { this.setState({ isOpened: false }) }}
           onConfirm={() => { this.setState({ isOpened: false }) }}
-          content='欢迎使用急物帮'
+          content='1. 用户须对在“急物帮”的注册信息的真实性、合法性承担全部责任。
+          2. 用户承诺不得以任何方式利用“急物帮”直接或间接从事违反中国法律以及社会公德的行为，“急物帮”有权对违反上述承诺的内容予以删除。
+          3. 用户须填写真实、准确、可靠的信息，“急物帮”对虚假、谣传、诽谤信息，保留上报行政机关的义务和追究法律责任的权利。
+          4. 用户须参考周边疫情分布情况，避免到易感染区域采购生活物资。
+          5. 声明：部分数据来自全国各地的志愿者，根据官方发布的信息进行整理，精确度存在一定偏移，一切以官方为准。'
         >
         </AtModal>
 
