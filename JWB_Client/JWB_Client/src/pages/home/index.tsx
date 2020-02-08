@@ -75,7 +75,8 @@ export default class Index extends Component<{}, State> {
       submitresult: -1,
 
       qqmapsdk: new QQMapWX({
-        key: 'E56BZ-VCOLX-Q7Q4N-7OE7Y-LHKK3-MPBD5'
+        key: 'WHEBZ-3YWEX-R7V4Y-7U6AV-HXTKK-7EFIN'
+        // key: 'E56BZ-VCOLX-Q7Q4N-7OE7Y-LHKK3-MPBD5'
       }),
       distances: [],
       myData: [],
