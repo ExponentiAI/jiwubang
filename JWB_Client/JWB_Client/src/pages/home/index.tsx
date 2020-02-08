@@ -6,8 +6,8 @@ import { UPage } from '../../components/ui'
 import { WTab, WMessageItem } from '../../components/widget'
 import QQMapWX from '../../libs/qqmap-wx-jssdk'
 import myLocation from '../../assets/images/icon/my-location.png'
-import markerPic from '../../assets/images/icon/marker.png'
-import relocating from '../../assets/images/icon/relocating.png'
+import demandMarker from '../../assets/images/icon/marker1.png'
+import supplyMarker from '../../assets/images/icon/marker2.png'
 import './index.less'
 import { scrollUpIco } from '../../assets/images/icon'
 import {getGlobalData, setGlobalData, getLogininfo} from "../../models/globalData"
@@ -219,15 +219,16 @@ getDistance() {
 
       for (let i = 0; i < resData.length; i++) {
         if(resData[i].s_type == 1) {
+          console.log(resData[i])
           newMarkers.push({
-            iconPath: markerPic,
+            iconPath: supplyMarker,
             id: i+2,
             latitude: resData[i].s_lat,
             longitude: resData[i].s_lon,
             width: 20,
             height: 30,
             callout: {
-              content: resData[i].s_street + '\n有' + resData[i].details_info[0].goods_name + resData[i].details_info[0].count + '元/个\n' + resData[i].s_subtime,
+              content: resData[i].s_street + '\n' + resData[i].store_name + '\n有' + resData[i].details_info[0].goods_name + resData[i].details_info[0].count + '元/个\n' + resData[i].s_subtime,
               // content: '测试',
               color: "#FFFFFF",
               bgColor: "#3D91ED",
@@ -237,7 +238,7 @@ getDistance() {
           })
         } else {
           newMarkers.push({
-            iconPath: markerPic,
+            iconPath: demandMarker,
             id: i+1,
             latitude: resData[i].s_lat,
             longitude: resData[i].s_lon,
