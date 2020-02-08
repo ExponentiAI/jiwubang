@@ -15,13 +15,11 @@
 ![](https://github.com/ExponentiAI/jiwubang/blob/master/JWB_UI/function%20part1.png)
 
 2. 搜索周边物资信息，规划购买行程。
-
 在小程序中直接搜索所需物资，可以从商店、口罩、消毒液三种类别的入口进行搜索，并规划自身的购买行程。
 
 ![](https://github.com/ExponentiAI/jiwubang/blob/master/JWB_UI/function%20part2.png)
 
 3. 发布物资求助信息，从线上社区中获得反馈。
-
 当搜索的信息无法满足资源需求时，居民可以通过“信息求助”板块，发布自己所需物资的基本信息、所在位置、家庭生活的基本状况，向线上社区中的他人求助，从而获得信息帮助。
 
 ![](https://github.com/ExponentiAI/jiwubang/blob/master/JWB_UI/function%20part3.png)
