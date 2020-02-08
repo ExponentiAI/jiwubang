@@ -16,3 +16,19 @@
 - UI交互设计：https://github.com/ExponentiAI/jiwubang/tree/master/JWB_UI
 - 后台服务：https://github.com/ExponentiAI/JWB_Server_API
 - 测试数据：https://github.com/ExponentiAI/jiwubang/tree/master/JWB_Data
+
+## 项目开发团队
+
+- 湖南大学数据智能与服务协同实验室
+- 湖南大学嵌入式与网络计算湖南省重点实验室
+- 国防科技大学高性能计算国家重点实验室
+- 中山大学大数据与计算之后能研究所
+
+### 项目开发
+
+- 指导老师：吴迪、胡莹、吴涛、袁翔、刘芳、吴诚堃、余从刚
+- 前端开发学生：邓晗晖、蚁佳才、郭烨婷
+- 后台开发学生：罗杰、廖学文、李硕、金航、唐安遥
+- 交互设计学生：赵一迪、杜韦柯
+- 社会推广学生：蔡傲彪、何璇、万紫荆、陈朵怡
+- 技术支持人员：吴筐宇、莫凡、Jation、王忠、欧阳微娜
