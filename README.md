@@ -1,5 +1,5 @@
-# jiwubang
-## 急物帮：新型肺炎生活（应急）物资小帮手。
+# jiwubang (JWB)
+## 急物帮：新型肺炎生活（应急）物资小帮手
 
 ![](https://github.com/ExponentiAI/jiwubang/blob/master/JWB_UI/jiwubang000.png)
 
