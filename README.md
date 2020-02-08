@@ -10,7 +10,6 @@
 本项目的交互设计如下：
 
 1. 结合地理位置收集物资信息，构建周边物资数据库。
-
 鼓励居民、药店通过“信息提供”板块反馈信息，提供物资所在位置、种类、价格等结构化信息，帮助构建周边物资数据库。
 
 ![](https://github.com/ExponentiAI/jiwubang/blob/master/JWB_UI/function%20part1.png)
