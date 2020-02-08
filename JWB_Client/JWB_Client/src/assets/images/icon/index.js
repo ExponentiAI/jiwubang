@@ -9,6 +9,10 @@ import infoPIco from './一级图标2.png';
 import scrollUpIco from './上滑键.png';
 import scrollDownIco from './下滑键.png';
 
+import aboutIcon from './Icon-guanyu.png';
+import disco from './disco.png';
+import bottomIcon from './logo9.png';
+
 export { 
     billIco1,
     billIco2,
@@ -20,5 +24,7 @@ export {
     infoPIco,
     scrollUpIco,
     scrollDownIco,
- 
+    aboutIcon,
+    disco,
+    bottomIcon,
 }

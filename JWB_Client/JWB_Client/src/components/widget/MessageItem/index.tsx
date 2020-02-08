@@ -8,29 +8,15 @@ interface Props {
   id?: number;
   className?: string;
   style?: string;
-  // itemData?: {
-  //   avatar_url: '',
-  //   details_info: [],
-  //   s_aging: 0,
-  //   s_city: '', 
-  //   s_content: '', 
-  //   s_lat: 0,
-  //   s_lon: 0,
-  //   s_nation: '',
-  //   s_province: '',
-  //   s_range: 0,
-  //   s_street: '',
-  //   s_street_number: '',
-  //   s_subtime: '',
-  //   s_type: -1,
-  //   store_name: ''
-  // };
+  distance: Array<any>;
   itemData?: any;
 }
 
 interface State {
   active: number;
 }
+
+
 
 class Tab extends Component<Props, State> {
   prefix = 'w-message-item'
@@ -42,7 +28,7 @@ class Tab extends Component<Props, State> {
   }
 
   render() {
-    const { style, className = '', itemData } = this.props
+    const { style, className = '' } = this.props
 
     const goodsInfo = []
     let item
@@ -80,7 +66,7 @@ class Tab extends Component<Props, State> {
           </View>
         </View>
         <View className={`${this.prefix}-area`}>
-          {this.props.itemData.s_street} {this.props.itemData.s_street_number} {this.props.itemData.s_range} km
+           {this.props.itemData.s_street_number} {this.props.distance.distance} km
         </View>
       </View>
       <View className={`${this.prefix}-bottom-wrap`}>

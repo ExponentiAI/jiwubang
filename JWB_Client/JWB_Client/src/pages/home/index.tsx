@@ -13,7 +13,6 @@ import { scrollUpIco } from '../../assets/images/icon'
 import {getGlobalData, setGlobalData, getLogininfo} from "../../models/globalData"
 
 import http from '../libs/http'
-
 // eslint-disable-next-line
 const { regeneratorRuntime } = global;
 
@@ -36,9 +35,28 @@ export interface State {
 }
 
 export default class Index extends Component<{}, State> {
+
+  state: State
+
   config: Config = {
     navigationBarTitleText: '信息求助',
     navigationStyle: 'custom',
+  }
+
+  onShareAppMessage(e) {
+    return {
+      title: '急物帮',
+      path: `pages/home/index`,
+      imageUrl: bottomIcon,
+      success: function (res) {
+        console.log(res);
+        console.log("转发成功:" + JSON.stringify(res));
+      },
+      fail: function (res) {
+        // 转发失败
+        console.log("转发失败:" + JSON.stringify(res));
+      }
+    }
   }
 
   constructor(props) {
@@ -80,7 +98,7 @@ export default class Index extends Component<{}, State> {
   * 预加载
   * 
   * */
-  getNearInfo(finishCallback){
+async getNearInfo(finishCallback){
   if(this.state.latitude != 0){
     Taro.request({
       url: 'https://jwb.comdesignlab.com/new/1/',
@@ -96,7 +114,6 @@ export default class Index extends Component<{}, State> {
       method: 'POST',
     })
     .then(res => { 
-      console.log(res)
       this.setState({
         resData: res.data
       }, finishCallback)
@@ -120,7 +137,6 @@ getDistance() {
   this.state.qqmapsdk.calculateDistance({
     to: locations,
     success: (res) => {
-      console.log(res)
       this.setState({
         distances: res.result.elements
       })
@@ -263,6 +279,7 @@ getDistance() {
       markers: newMarkers
     })
   }
+
   tabsClick(value) {
     this.setState({
       tabsIdx: value
@@ -302,9 +319,9 @@ getDistance() {
     //this.markerPush()
 
     // console.log(this.state.resData)
-    // console.log(this.state.myData)
+    // console.log(this.state.distances)
 
-
+    
     return (
       <UPage
         className='p-home-page'
@@ -345,12 +362,13 @@ getDistance() {
           onClick={this.tabsClick.bind(this)}>
           <AtTabsPane className='p-tabs-pane' current={tabsIdx} index={0}>
             {
-              this.state.resData.map((item) => {
+              this.state.resData.map((item, index) => {
                 return (
                   <WMessageItem 
-                    id = {item.index}
+                    key = {index}
                     itemData = {item}
                     style='border-bottom: 3rpx solid #666'
+                    distance = {this.state.distances[index]}
                     >
                   </WMessageItem>
                 )
@@ -359,12 +377,13 @@ getDistance() {
           </AtTabsPane>
           <AtTabsPane className='p-tabs-pane' current={tabsIdx} index={1}>
           {
-              this.state.myData.map((item) => {
+              this.state.myData.map((item, index) => {
                 return (
                   <WMessageItem 
-                    id = {item.index}
+                    key = {index}
                     itemData = {item}
                     style='border-bottom: 3rpx solid #666'
+                    distance = {[]}
                     >
                   </WMessageItem>
                 )

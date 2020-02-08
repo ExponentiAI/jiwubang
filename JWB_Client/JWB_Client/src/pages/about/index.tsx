@@ -1,11 +1,8 @@
-import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, Canvas, Navigator, Button, Map } from '@tarojs/components'
-import { UPage } from '../../components/ui'
-import { WTab, WMessageItem } from '../../components/widget'
+import Taro, { Component, Config, base64ToArrayBuffer } from '@tarojs/taro'
+import { View, Text, Image } from '@tarojs/components'
 import './index.scss'
 import { AtIcon } from 'taro-ui'
-import { scrollUpIco } from '../../assets/images/icon'
-import {getGlobalData, setGlobalData, getLogininfo} from "../../models/globalData"
+import { aboutIcon, disco, bottomIcon } from '../../assets/images/icon'
 
 
 export default class About extends Component {
@@ -13,31 +10,77 @@ export default class About extends Component {
     navigationBarTitleText: '关于我们'
   }
 
+
   render () {
     return (
-      // <View className='mainPanel'>
       <View className='at-col'>
-        {/* <View className='at-icon at-icon-sketch' size={40}></View> */}
         <View className='at-row at-row__justify--center'>
-          <AtIcon value='sketch' size='40' color='#F00'></AtIcon>
+          <Image
+            style='width: 120rpx; height: 120rpx; background: #fff;'
+            src={aboutIcon}
+          />
         </View>
         <View className='at-row at-row__justify--center'>
           <Text className='about_text'>关于</Text>
         </View>
-        <View className='maintext-box'>
-          <View className='maintext'>
-            所有数据均来源于官方渠道。任何谣言或未经官方确定一律屏蔽。
+        <View className='subtitle-box'>
+          <View className='at-row at-row__justify--center'>
+            <Text className='subtitle'>研发团队</Text>
           </View>
-          <View className='maintext'>
-            如有提供数据来源、地址位置错误、反馈改进，请填写意见反馈，这是反馈唯一快速通道
+          <View className='at-row at-row__justify--center'>
+            <Image
+              style='width: 300rpx; height: 48rpx; background: #fff;'
+              src={disco}
+            />
           </View>
-          <View className='maintext'>
-            声明：来自全国各地的志愿者、根据官方发布的信息进行整理。整理数据的位置存在一定偏移，一切以官方为准。
+          <View className='at-row at-row__justify--center'>
+            <Text className='mainlab'>湖南大学数据智能与服务协同实验室</Text>
+          </View>
+          <View className='at-row at-row__justify--center'>
+            <Text style='color: black;font-size: .7em;'>&</Text>
+          </View>
+          <View className='sublab-box'>
+            <View className='sublab'>
+              湖南大学嵌入式与网络计算湖南省重点实验室
+            </View>
+            <View className='sublab'>
+              国防科技大学高性能计算国家重点实验室
+            </View>
+            <View className='sublab'>
+              中山大学大数据与计算智能研究所
+            </View>
           </View>
         </View>
+        <View className='subtitle-box'>
+          <View className='at-row at-row__justify--center'>
+            <Text className='subtitle'>联系方式</Text>
+          </View>
+
+          <View className='at-row at-row__justify--center'>
+            <Text className='mainlab'>技术支持：taotaomails@gmail.com</Text>
+          </View>
+          <View className='at-row at-row__justify--center'>
+            <Text className='mainlab'>公益支持：whoing@hnu.edu.cn</Text>
+          </View>
+        </View>
+        <View className='subtitle-box'>
+          <View className='at-row at-row__justify--center'>
+            <Text className='subtitle'>Github开源地址</Text>
+          </View>
+
+          <View className='at-row at-row__justify--center'>
+            <Text className='mainlab'>https://github.com/ExponentiAI/jiwubang</Text>
+          </View>
+        </View>
+
+        <View className='bottom-icon'>
+            <Image
+                style='width: 560rpx; height: 72rpx; background: #fff;'
+                src={bottomIcon}
+            />
+        </View>
+
       </View>
-      
-      
     )
   }
 }
