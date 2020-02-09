@@ -41,7 +41,7 @@ class Tab extends Component<Props, State> {
 
   async login() {
     let data
-    if(!data)
+    if(!data&&pageToSwicth!=2)
       data = await login(getLogininfo())
     if (data && pageToSwicth == 1) {
       // Taro.navigateTo({ url: `/pages/demand/index?latitude=${this.props.latitude}&longitude=${this.props.longitude}&address=${JSON.stringify(this.props.address)}` })
