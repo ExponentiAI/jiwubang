@@ -41,8 +41,11 @@ class Tab extends Component<Props, State> {
 
   async login() {
     let data
-    if(!data&&pageToSwicth!=2)
+    if(!data&&pageToSwicth!=2){
+      // console.log('test', getLogininfo())
+      // console.log('test', decodeURIComponent(encodeURIComponent(getLogininfo().nick_name)))
       data = await login(getLogininfo())
+    } 
     if (data && pageToSwicth == 1) {
       // Taro.navigateTo({ url: `/pages/demand/index?latitude=${this.props.latitude}&longitude=${this.props.longitude}&address=${JSON.stringify(this.props.address)}` })
       Taro.redirectTo({ url: `/pages/demand/index` })
@@ -59,13 +62,14 @@ class Tab extends Component<Props, State> {
 
 
   onGetUserInfo(item, e) {
-      
     if (e.detail.userInfo) {
       setGlobalData('userinfo',e.detail.userInfo)
-      // console.log(getLogininfo())
-
       pageToSwicth = item.jump
+    }
+    if(item.jump == 0 || item.jump == 1){
       this.login()
+    }else if(item.jump == 2){
+      Taro.redirectTo({ url: `/pages/about/index` })
     }
   }
 

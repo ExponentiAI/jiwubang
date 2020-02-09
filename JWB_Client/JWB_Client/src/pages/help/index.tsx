@@ -65,6 +65,7 @@ export default class Index extends Component {
     this.setState({ address: address })
 
     this.getLocationInfo()
+
   }
 
   // 预加载用户当前所在的坐标和地址信息
@@ -170,6 +171,7 @@ export default class Index extends Component {
       isOpened, contentValue } = this.state
 
     // this.setState({submitClick: false})
+    // console.log(getLogininfo().openid)
 
     const userInfo = getLogininfo()
 
@@ -388,12 +390,13 @@ export default class Index extends Component {
           })
         }
       }
-      console.log(goodsData)
+      // console.log(goodsData)
 
       Taro.request({
         url: 'https://jwb.comdesignlab.com/SupAndDem/',
+        // url: 'http://121.43.233.66:8009/SupAndDem/',
         data: {
-          u_id: 123,
+          u_id: getLogininfo().openid,
           lon: this.state.longitude,
           lat: this.state.latitude,
           nation: this.state.address.nation,
@@ -408,17 +411,21 @@ export default class Index extends Component {
           range: this.state.locationValue,
           aging: this.state.prescriptionValue,
           subtime: currentDate,
+          store_name: '',
         },
         header: {
+          // 'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
           'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
         },
         method: 'POST',
       }).then(res => {
-          console.log(res.data.msg)
+          // console.log(res.data.msg)
           if(res.data.msg == '操作成功！'){
             Taro.redirectTo({
               url: `../home/index?submit_id=${1}`
             })
+          }else if(res.data.msg == '内容涉及敏感词！'){
+            Taro.showToast({title: '内容涉及敏感词！'})
           }
         })
     }

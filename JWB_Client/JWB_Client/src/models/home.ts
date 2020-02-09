@@ -8,7 +8,7 @@ export const login = ( userdata:{ u_type: number; openid: string; nick_name: str
   data: JSON.stringify({
     u_type: userdata.u_type,
     open_id: userdata.openid,
-    nick_name: userdata.nick_name,
+    nick_name: encodeURIComponent(userdata.nick_name),
     avatar_url: userdata.avatar_url,
     gender: userdata.gender,
     nation: getGlobalData('address')['nation'],
@@ -20,18 +20,15 @@ export const login = ( userdata:{ u_type: number; openid: string; nick_name: str
     store_name: '口罩',
     m_longitude: getGlobalData('latitude'),
     m_latitude: getGlobalData('longitude'),
-     
-    
 }),
   success: res => {
    let mdata = res.data
-   console.log(mdata.msg)
+  //  console.log(mdata.msg)
     if(mdata.msg){
     // 储存返回的用户状态（新/旧）
     Taro.setStorageSync(
       'login_status',
       mdata.msg
-      
     )
     } else if(!mdata.msg) {
       Taro.showToast({

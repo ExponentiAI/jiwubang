@@ -9,7 +9,7 @@ import myLocation from '../../assets/images/icon/my-location.png'
 import demandMarker from '../../assets/images/icon/marker1.png'
 import supplyMarker from '../../assets/images/icon/marker2.png'
 import './index.less'
-import { scrollUpIco } from '../../assets/images/icon'
+import { scrollUpIco, bottomIcon } from '../../assets/images/icon'
 import {getGlobalData, setGlobalData, getLogininfo,setLogininfo} from "../../models/globalData"
 import {gotologin} from '../../models/gotoLogin'
 
@@ -27,7 +27,7 @@ export interface State {
   longitude: number;
   address: any;
   markers: Array<any>;
-  resData: Array<any>;
+  resData: Array<Object>;
   submitresult: number;
 
   qqmapsdk: QQMapWX;
@@ -85,7 +85,7 @@ export default class Index extends Component<{}, State> {
   }
 
   componentWillMount() {
-    console.log(getStorageSync('logininfo'))
+    // console.log('测试一下'+getStorageSync('logininfo'))
     Taro.checkSession({
       success: function() {
         //console.log("session_key 未过期")
@@ -129,6 +129,7 @@ async getNearInfo(finishCallback){
       method: 'POST',
     })
     .then(res => { 
+      // console.log(res.data)
       this.setState({
         resData: res.data
       }, finishCallback)
@@ -245,50 +246,59 @@ getDistance() {
   markerPush() {
     let newMarkers = this.state.markers
     let resData = this.state.resData
+    let goodsInfo = ''
+    // console.log(resData)
 
     if(resData.length > 0) {
-
       for (let i = 0; i < resData.length; i++) {
-        if(resData[i].s_type == 1) {
-          console.log(resData[i])
-          newMarkers.push({
-            iconPath: supplyMarker,
-            id: i+2,
-            latitude: resData[i].s_lat,
-            longitude: resData[i].s_lon,
-            width: 20,
-            height: 30,
-            callout: {
-              content: resData[i].s_street + '\n' + resData[i].store_name + '\n有' + resData[i].details_info[0].goods_name + resData[i].details_info[0].count + '元/个\n' + resData[i].s_subtime,
-              // content: '测试',
-              color: "#FFFFFF",
-              bgColor: "#3D91ED",
-              display:'BYCLICK',
-              textAlign:'center'
+        if(resData[i].details_info.length > 0) {
+          if(resData[i].s_type == 1) {
+            // console.log(resData[i])
+            
+            for(let j = 0; j < resData[i].details_info.length; j++) {
+              goodsInfo = resData[i].details_info[j].goods_name + resData[i].details_info[j].count + '元/个\n'
             }
-          })
-        } else {
-          newMarkers.push({
-            iconPath: demandMarker,
-            id: i+1,
-            latitude: resData[i].s_lat,
-            longitude: resData[i].s_lon,
-            width: 20,
-            height: 30,
-            callout: {
-              content: resData[i].s_street + '\n需' + resData[i].details_info[0].goods_name + resData[i].details_info[0].count + '个\n' + resData[i].s_subtime,
-              // content: '测试',
-              color: "#3D91ED",
-              bgColor: "#FFFFFF",
-              display:'BYCLICK',
-              textAlign:'center'
+            newMarkers.push({
+              iconPath: supplyMarker,
+              id: i+2,
+              latitude: resData[i].s_lat,
+              longitude: resData[i].s_lon,
+              width: 20,
+              height: 30,
+              callout: {
+                content: resData[i].s_street + '\n' + resData[i].store_name + '\n有' + goodsInfo + resData[i].s_subtime,
+                // content: '测试',
+                color: "#FFFFFF",
+                bgColor: "#3D91ED",
+                display:'BYCLICK',
+                textAlign:'center'
+              }
+            })
+          } else {
+            for(let j = 0; j < resData[i].details_info.length; j++) {
+              goodsInfo = resData[i].details_info[j].goods_name + resData[i].details_info[j].count + '个\n'
             }
-          })
+            newMarkers.push({
+              iconPath: demandMarker,
+              id: i+1,
+              latitude: resData[i].s_lat,
+              longitude: resData[i].s_lon,
+              width: 20,
+              height: 30,
+              callout: {
+                content: resData[i].s_street + '\n需' + goodsInfo + resData[i].s_subtime,
+                // content: '测试',
+                color: "#3D91ED",
+                bgColor: "#FFFFFF",
+                display:'BYCLICK',
+                textAlign:'center'
+              }
+            })
+          }
         }
-        
-        
       }
     }
+    // console.log(newMarkers)
     
     this.setState({
       markers: newMarkers

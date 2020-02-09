@@ -355,7 +355,7 @@ export default class Index extends Component {
       Taro.request({
         url: 'https://jwb.comdesignlab.com/SupAndDem/',
         data: {
-          u_id: 123,
+          u_id: getLogininfo().openid,
           lon: this.state.longitude,
           lat: this.state.latitude,
           nation: this.state.address.nation,
@@ -383,6 +383,8 @@ export default class Index extends Component {
             Taro.redirectTo({
               url: `../home/index?submit_id=${1}`
             })
+          }else if(res.data.msg == '内容涉及敏感词！'){
+            Taro.showToast({title: '内容涉及敏感词！'})
           }
       })
     }
