@@ -1,4 +1,4 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { Component, Config, getStorageSync } from '@tarojs/taro'
 import { MapProps } from '@tarojs/components/types/Map'
 import { View, Text, Image, Navigator, Button, Map } from '@tarojs/components'
 import { AtModal, AtModalContent, AtModalAction, AtTabBar, AtSearchBar, AtTabs, AtTabsPane, AtDivider } from 'taro-ui'
@@ -10,7 +10,8 @@ import demandMarker from '../../assets/images/icon/marker1.png'
 import supplyMarker from '../../assets/images/icon/marker2.png'
 import './index.less'
 import { scrollUpIco } from '../../assets/images/icon'
-import {getGlobalData, setGlobalData, getLogininfo} from "../../models/globalData"
+import {getGlobalData, setGlobalData, getLogininfo,setLogininfo} from "../../models/globalData"
+import {gotologin} from '../../models/gotoLogin'
 
 import http from '../libs/http'
 // eslint-disable-next-line
@@ -84,6 +85,19 @@ export default class Index extends Component<{}, State> {
   }
 
   componentWillMount() {
+    console.log(getStorageSync('logininfo'))
+    Taro.checkSession({
+      success: function() {
+        //console.log("session_key 未过期")
+        //session_key 未过期，并且在本生命周期一直有效
+      },
+      fail: function() {
+        // session_key 已经失效，需要重新执行登录流程
+        // 登录
+        gotologin()
+        setLogininfo()
+      }
+    })
 
     this.getLocationInfo()
 

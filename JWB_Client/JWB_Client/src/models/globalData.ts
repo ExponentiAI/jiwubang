@@ -1,3 +1,5 @@
+import { getStorageSync } from "@tarojs/taro"
+   
   const globalData = {
     userinfo:{avatarUrl: "",
     city: "",
@@ -12,7 +14,7 @@
   }
   var logininfo = {
      u_type: 0,
-     openid: 0,
+     openid: '',
      nick_name: "",
      avatar_url: "",
      gender: "",
@@ -24,6 +26,8 @@
     return globalData[key]
   }
   export function getLogininfo () {
+    if(getStorageSync('logininfo')['openid']){
+    logininfo['openid'] = getStorageSync('logininfo')['openid']}
     logininfo['nick_name'] = globalData['userinfo']['nickName']
     logininfo['avatar_url'] = globalData['userinfo']['avatarUrl']
     if(globalData['userinfo']['gender']==1){
@@ -33,5 +37,15 @@
     }
     return logininfo
   }
-
-  
+  export function setLogininfo () {
+    if(getStorageSync('logininfo')['openid']){
+    logininfo['openid'] = getStorageSync('logininfo')['openid']}
+    logininfo['nick_name'] = globalData['userinfo']['nickName']
+    logininfo['avatar_url'] = globalData['userinfo']['avatarUrl']
+    if(globalData['userinfo']['gender']==1){
+        logininfo['gender'] = '男'
+    } else if(globalData['userinfo']['gender']==2){
+        logininfo['gender'] = '女'
+    }
+    
+  }
