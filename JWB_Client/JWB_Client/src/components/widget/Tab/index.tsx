@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro';
 import { View, Image, Button } from '@tarojs/components';
 import Component from '../../common/component';
 import './index.scss';
-import { infoRIco, infoPIco } from '../../../assets/images/icon'
+import { tabbar_icon1, tabbar_icon2, tabbar_icon3 } from '../../../assets/images/icon'
 import { login } from '../../../models/home'
 import {getGlobalData, setGlobalData, getLogininfo} from "../../../models/globalData"
 
@@ -34,9 +34,9 @@ class Tab extends Component<Props, State> {
 
   prefix = 'w-tab'
   tabList = [
-    { text: '信息求助', jump: 0, icon: infoRIco, selectedIcon: infoRIco },
-    { text: '信息提供', jump: 1, icon: infoPIco, selectedIcon: infoPIco },
-    { text: '关于我们', jump: 2, icon: infoPIco, selected: infoPIco},
+    { text: '信息求助', jump: 0, icon: tabbar_icon1, selectedIcon: tabbar_icon1 },
+    { text: '信息提供', jump: 1, icon: tabbar_icon2, selectedIcon: tabbar_icon2 },
+    { text: '关于我们', jump: 2, icon: tabbar_icon3, selectedIcon: tabbar_icon3 },
   ]
 
   async login() {

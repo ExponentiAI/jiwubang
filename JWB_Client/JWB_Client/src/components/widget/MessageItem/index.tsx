@@ -91,7 +91,7 @@ class Tab extends Component<Props, State> {
         }
       }
 
-      let goods_str = this.props.itemData.s_street
+      let goods_str = '#' + this.props.itemData.s_street
 
       if (this.props.itemData.s_type == 0){
         goods_str += '需 '

@@ -27,7 +27,7 @@ class TextInput extends Component<Props> {
           <View className='page-section'>
             <View className='picker'>
               <View className="picker-left">{this.props.label}</View>
-              <Input name='number' type='number' value = ''
+              <Input name='number' type='text' value = ''
                 placeholder={this.props.value} className='input'
                 onInput={this.onBlur.bind(this)}/>                
             </View>

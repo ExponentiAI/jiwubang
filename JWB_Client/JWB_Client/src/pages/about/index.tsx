@@ -1,5 +1,5 @@
-import Taro, { Component, Config, base64ToArrayBuffer } from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
+import Taro, { Component, Config, base64ToArrayBuffer  } from '@tarojs/taro'
+import { View, Text, Image, Navigator  } from '@tarojs/components'
 import './index.scss'
 import { AtIcon } from 'taro-ui'
 import { aboutIcon, disco, bottomIcon } from '../../assets/images/icon'
@@ -60,7 +60,7 @@ export default class About extends Component {
             <Text className='mainlab'>技术支持：taotaomails@gmail.com</Text>
           </View>
           <View className='at-row at-row__justify--center'>
-            <Text className='mainlab'>公益支持：whoing@hnu.edu.cn</Text>
+            <Text className='mainlab'>公益支援：whoing@hnu.edu.cn</Text>
           </View>
         </View>
         <View className='subtitle-box'>
@@ -69,17 +69,16 @@ export default class About extends Component {
           </View>
 
           <View className='at-row at-row__justify--center'>
-            <Text className='mainlab'>https://github.com/ExponentiAI/jiwubang</Text>
+            <View className='mainlab' >https://github.com/ExponentiAI/jiwubang</View>
           </View>
         </View>
 
         <View className='bottom-icon'>
             <Image
-                style='width: 560rpx; height: 72rpx; background: #fff;'
+                style='width: 380rpx; height: 200rpx; background: #fff;'
                 src={bottomIcon}
             />
         </View>
-
       </View>
     )
   }

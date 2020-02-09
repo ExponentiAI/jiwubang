@@ -335,8 +335,8 @@ getDistance() {
 
   // 点击位置实现导航
   goThere({ markerId }: MapProps) {
-    console.log(this.state.markers[markerId])
-    console.log(markerId)
+    // console.log(this.state.markers[markerId])
+    // console.log(markerId)
     let latitude = this.state.markers[markerId].latitude
     let longitude = this.state.markers[markerId].longitude
 
