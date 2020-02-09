@@ -196,7 +196,7 @@ getDistance() {
           address: address,
           markers: [{
             iconPath: myLocation,
-            id: 1,
+            id: 0,
             latitude,
             longitude,
             width: 40,
@@ -260,7 +260,7 @@ getDistance() {
             }
             newMarkers.push({
               iconPath: supplyMarker,
-              id: i+2,
+              id: i+1,
               latitude: resData[i].s_lat,
               longitude: resData[i].s_lon,
               width: 20,
@@ -333,6 +333,20 @@ getDistance() {
     console.log('你点击的位置是： ' + '[ ' + longitude + ', ' + latitude + ' ]')
   }
 
+  // 点击位置实现导航
+  goThere({ markerId }: MapProps) {
+    console.log(this.state.markers[markerId])
+    console.log(markerId)
+    let latitude = this.state.markers[markerId].latitude
+    let longitude = this.state.markers[markerId].longitude
+
+    Taro.openLocation({
+      latitude: latitude,
+      longitude: longitude,
+      scale: 15,
+    })
+  }
+
   // tabsClick(value) {
   //   this.setState({
   //     tabsIdx: value
@@ -377,6 +391,8 @@ getDistance() {
           className='p-map'
           // onClick={this.getLocationByTap.bind(this)} //在地图中手动选择位置（预留在下一版app中开放）
           // onClick={this.getDistance.bind(this)} //测试计算距离
+          // onClick={this.goThere.bind(this)}
+          onCalloutTap={this.goThere.bind(this)}
         />
 
         <view style={{display:"none", justifyContent:'center'}}>
