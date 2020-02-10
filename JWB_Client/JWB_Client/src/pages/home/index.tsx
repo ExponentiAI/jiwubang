@@ -85,19 +85,17 @@ export default class Index extends Component<{}, State> {
   }
 
   componentWillMount() {
-    // console.log('测试一下'+getStorageSync('logininfo'))
-    Taro.checkSession({
-      success: function() {
-        //console.log("session_key 未过期")
-        //session_key 未过期，并且在本生命周期一直有效
-      },
-      fail: function() {
-        // session_key 已经失效，需要重新执行登录流程
-        // 登录
-        gotologin()
-        setLogininfo()
-      }
-    })
+    // Taro.checkSession({
+    //   success: function() {
+    //     //session_key 未过期，并且在本生命周期一直有效
+    //   },
+    //   fail: function() {
+    //     // session_key 已经失效，需要重新执行登录流程
+    //     // 登录
+    // gotologin()
+    // setLogininfo()
+      // }
+    // })
 
     this.getLocationInfo()
 
@@ -106,22 +104,22 @@ export default class Index extends Component<{}, State> {
     if(parseInt(submitResult) == 1){
       Taro.showToast({title: '发布成功'})
     }
-    //this.getNeerInfo()
   }
 
   /*
-  * 预加载
+  * 预加载 附近信息
   * 
   * */
 async getNearInfo(finishCallback){
   if(this.state.latitude != 0){
     Taro.request({
+      // url: 'http://121.43.233.66:8009/new/1/',
       url: 'https://jwb.comdesignlab.com/new/1/',
       data: JSON.stringify({
         longitude: this.state.longitude,
         latitude: this.state.latitude,
-        search_range: 10,
-        page_items_count: 6,
+        search_range:20,
+        page_items_count: 10,
       }),
       header: {
         'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -129,13 +127,82 @@ async getNearInfo(finishCallback){
       method: 'POST',
     })
     .then(res => { 
-      // console.log(res.data)
       this.setState({
-        resData: res.data
+        resData: res.data?res.data:[]
       }, finishCallback)
     })
     // .then(res => this.setState({...}, finishCallback))
   }
+}
+
+/*
+  * 预加载 我的信息
+  * 
+  * */
+ async getMyInfo(){
+  Taro.request({
+    url: 'https://jwb.comdesignlab.com/me/1/',
+    data: JSON.stringify({
+      u_id: getLogininfo().openid,
+      page_items_count: 10,
+    }),
+    header: {
+      'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+    },
+    method: 'POST',
+  }).then(res => {
+    if(res.statusCode == 500) {
+      Taro.showToast({
+        title: '您尚未发布任何信息”',
+        icon: 'none',
+        duration: 2000
+      })
+    } else {
+      this.setState({
+        myData: res.data?res.data:[]
+      })
+    }
+  })
+  
+}
+
+
+
+// async getMyInfo(){
+//   Taro.request({
+//     url: 'https://jwb.comdesignlab.com/me/1/',
+//     data: JSON.stringify({
+//       u_id: getLogininfo().openid,
+//       page_items_count: 10,
+//     }),
+//     header: {
+//       'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+//     },
+//     method: 'POST',
+//   })
+//   .then(res => { 
+//     this.setState({
+//       myData: res.data?res.data:[]
+//     })
+//   })
+// }
+
+
+//点击位置实现导航
+goThere({markerId}: MapProps){
+  let lat, lon
+  if(this.state.markers[markerId].latitude){
+    lat = this.state.markers[markerId].latitude
+  }
+  if(this.state.markers[markerId].longitude){
+    lon = this.state.markers[markerId].longitude
+  }
+
+  Taro.openLocation({
+    latitude: lat,
+    longitude: lon,
+    scale: 15,
+  })
 }
 
 
@@ -170,6 +237,7 @@ getDistance() {
         ()=>{
           this.markerPush()
           this.getDistance()
+          this.getMyInfo()
         }
       )}
     )
@@ -247,13 +315,11 @@ getDistance() {
     let newMarkers = this.state.markers
     let resData = this.state.resData
     let goodsInfo = ''
-    // console.log(resData)
 
     if(resData.length > 0) {
       for (let i = 0; i < resData.length; i++) {
         if(resData[i].details_info.length > 0) {
           if(resData[i].s_type == 1) {
-            // console.log(resData[i])
             
             for(let j = 0; j < resData[i].details_info.length; j++) {
               goodsInfo = resData[i].details_info[j].goods_name + resData[i].details_info[j].count + '元/个\n'
@@ -298,7 +364,6 @@ getDistance() {
         }
       }
     }
-    // console.log(newMarkers)
     
     this.setState({
       markers: newMarkers
@@ -309,42 +374,28 @@ getDistance() {
     this.setState({
       tabsIdx: value
     })
-    Taro.request({
-      url: 'https://jwb.comdesignlab.com/me/1/',
-      data: JSON.stringify({
-        u_id: 1,
-        page_items_count: 10,
-      }),
-      header: {
-        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-      },
-      method: 'POST',
-    })
-    .then(res => { 
-      this.setState({
-        myData: res.data
-      })
-    })
-    
+    // Taro.request({
+    //   url: 'https://jwb.comdesignlab.com/me/1/',
+    //   // url: 'http://121.43.233.66:8009/me/1/',
+    //   data: JSON.stringify({
+    //     u_id: getLogininfo().openid,
+    //     page_items_count: 10,
+    //   }),
+    //   header: {
+    //     'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+    //   },
+    //   method: 'POST',
+    // })
+    // .then(res => { 
+    //   this.setState({
+    //     myData: res.data?res.data:[]
+    //   })
+    // })
   }
 
   // 用户手动点击地图选择位置信息（该功能准备在下一版中开放）
   getLocationByTap({ detail: { longitude, latitude } }: MapProps) {
     console.log('你点击的位置是： ' + '[ ' + longitude + ', ' + latitude + ' ]')
-  }
-
-  // 点击位置实现导航
-  goThere({ markerId }: MapProps) {
-    // console.log(this.state.markers[markerId])
-    // console.log(markerId)
-    let latitude = this.state.markers[markerId].latitude
-    let longitude = this.state.markers[markerId].longitude
-
-    Taro.openLocation({
-      latitude: latitude,
-      longitude: longitude,
-      scale: 15,
-    })
   }
 
   // tabsClick(value) {
@@ -356,9 +407,6 @@ getDistance() {
   render() {
     const { keyword, tabBarIdx, markers, tabsIdx, latitude, longitude, address } = this.state
     //this.markerPush()
-
-    // console.log(this.state.resData)
-    // console.log(this.state.distances)
 
     
     return (
@@ -389,10 +437,9 @@ getDistance() {
           longitude={longitude}
           scale={14}
           className='p-map'
+          onCalloutTap={this.goThere.bind(this)}
           // onClick={this.getLocationByTap.bind(this)} //在地图中手动选择位置（预留在下一版app中开放）
           // onClick={this.getDistance.bind(this)} //测试计算距离
-          // onClick={this.goThere.bind(this)}
-          onCalloutTap={this.goThere.bind(this)}
         />
 
         <view style={{display:"none", justifyContent:'center'}}>
@@ -424,7 +471,7 @@ getDistance() {
                     key = {index}
                     itemData = {item}
                     style='border-bottom: 3rpx solid #666'
-                    distance = {[]}
+                    distance = {{distance: 0}}
                     >
                   </WMessageItem>
                 )

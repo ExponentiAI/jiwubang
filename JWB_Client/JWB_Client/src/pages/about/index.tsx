@@ -1,5 +1,5 @@
 import Taro, { Component, Config, base64ToArrayBuffer  } from '@tarojs/taro'
-import { View, Text, Image, Navigator  } from '@tarojs/components'
+import { View, Text, Image, Navigator, WebView  } from '@tarojs/components'
 import './index.scss'
 import { AtIcon } from 'taro-ui'
 import { aboutIcon, disco, bottomIcon } from '../../assets/images/icon'
@@ -69,7 +69,7 @@ export default class About extends Component {
           </View>
 
           <View className='at-row at-row__justify--center'>
-            <View className='mainlab' >https://github.com/ExponentiAI/jiwubang</View>
+            <Text className='mainlab'>https://github.com/ExponentiAI/jiwubang/</Text>
           </View>
         </View>
 

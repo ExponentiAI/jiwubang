@@ -55,10 +55,6 @@ export default class Index extends Component {
     let longitude = getGlobalData('longitude')
     let address = getGlobalData('address')
 
-    // console.log(address)
-    // console.log(latitude)
-    // console.log(longitude)
-
     this.setState({ latitude: latitude })
     this.setState({ longitude: longitude })
     this.setState({ address: address })
@@ -267,7 +263,7 @@ export default class Index extends Component {
         <View className='divider'/>
 
         <View className='itemTitle'>
-          所需物品
+          拥有物品
         </View>
 
         {

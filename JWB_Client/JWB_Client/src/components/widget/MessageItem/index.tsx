@@ -82,6 +82,7 @@ class Tab extends Component<Props, State> {
   render() {
     const { style, className = '' } = this.props
 
+
     const goodsInfo = []
     let item
     if (this.props.itemData){
@@ -94,17 +95,17 @@ class Tab extends Component<Props, State> {
       let goods_str = '#' + this.props.itemData.s_street
 
       if (this.props.itemData.s_type == 0){
-        goods_str += '需 '
+        goods_str += ' 需 '
         for(item in goodsInfo){
-          goods_str += goodsInfo[item].goods_name + goodsInfo[item].count + "个 " + (item == goodsInfo.length-1?'':',')
+          goods_str += goodsInfo[item].goods_name + goodsInfo[item].count + "个" + (item == goodsInfo.length-1?'':',')
         }
-        goods_str += '#' + this.props.itemData.s_content
+        goods_str += '# ' + this.props.itemData.s_content
       }else{
-        goods_str += '有 '
+        goods_str += ' ' + this.props.itemData.store_name + ' 有 '
         for(item in goodsInfo){
-          goods_str += goodsInfo[item].goods_name + goodsInfo[item].count + "元/个 " + (item == goodsInfo.length-1?'':',')
+          goods_str += goodsInfo[item].goods_name + goodsInfo[item].count + "元/个" + (item == goodsInfo.length-1?'':',')
         }
-        goods_str += '#' + this.props.itemData.s_content
+        goods_str += '# ' + this.props.itemData.s_content
       }
   
       return <View style={style} className={`${className} ${this.prefix}`}>
@@ -115,13 +116,15 @@ class Tab extends Component<Props, State> {
             : <Image src={this.props.itemData.avatar_url} className={`${this.prefix}-img`}></Image>
           }
           <View className={`${this.prefix}-title`}>
-            {this.props.itemData.store_name}
+            {decodeURIComponent(this.props.itemData.nick_name)}
             <View className={`${this.prefix}-time`}>
               {this.props.itemData.s_subtime}
             </View>
           </View>
           <View className={`${this.prefix}-area`}>
-             {this.props.itemData.s_street_number} {this.props.distance.distance} km
+             {this.props.itemData.s_street_number} 
+             {this.props.itemData.store_name + ' '} 
+             {this.props.distance.distance} km
           </View>
         </View>
         <View className={`${this.prefix}-bottom-wrap`}>

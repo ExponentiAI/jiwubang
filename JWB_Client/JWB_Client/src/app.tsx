@@ -3,7 +3,8 @@ import Index from './pages/home/index'
 import 'taro-ui/dist/style/index.scss'
 import './app.scss'
 import '@tarojs/async-await'
-
+import {setLogininfo} from "./models/globalData"
+import {gotologin} from './models/gotoLogin'
 
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
@@ -15,6 +16,8 @@ class App extends Component {
 
   componentWillMount () {
     // Taro.hideTabBar()
+    gotologin()
+    setLogininfo()
   }
   config: Config = {
     pages: [

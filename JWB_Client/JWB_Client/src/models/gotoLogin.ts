@@ -13,11 +13,12 @@ export function gotologin(){
           //发起网络请求
           Taro.request({
             url: 'https://jwb.comdesignlab.com/UserLogin?js_code='+res.code,
+            // url: 'http://121.43.233.66:8009/UserLogin?js_code='+res.code,
             method:'GET',
             
             success: res => {
               let mylogininfo = res.data
-              console.log(mylogininfo)
+              // console.log(mylogininfo)
               
               if (mylogininfo) {
                 Taro.setStorageSync('logininfo', mylogininfo)
