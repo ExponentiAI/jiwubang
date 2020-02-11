@@ -9,6 +9,7 @@ interface Props {
   className?: string;
   style?: string;
   distance: Array<any>;
+  showdistance: boolean;
   itemData?: {
     avatar_url?: string;
     details_info?: Array<any>;
@@ -85,7 +86,7 @@ class Tab extends Component<Props, State> {
 
     const goodsInfo = []
     let item
-    if (this.props.itemData){
+    if (this.props.itemData && this.props.distance){
       if(this.props.itemData.details_info){
         for (item in this.props.itemData.details_info){
           goodsInfo.push(this.props.itemData.details_info[item])
@@ -124,7 +125,9 @@ class Tab extends Component<Props, State> {
           <View className={`${this.prefix}-area`}>
              {this.props.itemData.s_street_number} 
              {this.props.itemData.store_name + ' '} 
-             {this.props.distance.distance} km
+             {
+               this.props.showdistance?(Math.round(this.props.distance.distance/100)/10).toFixed(1) + ' km': ''
+             }
           </View>
         </View>
         <View className={`${this.prefix}-bottom-wrap`}>

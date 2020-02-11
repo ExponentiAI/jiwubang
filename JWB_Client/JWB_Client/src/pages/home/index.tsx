@@ -31,7 +31,7 @@ export interface State {
   submitresult: number;
 
   qqmapsdk: QQMapWX;
-  neerdistances: Array<any>;
+  neardistances: Array<any>;
   newestdistances: Array<any>;
   myData: Array<any>;
   newestData: Array<any>;
@@ -81,7 +81,7 @@ export default class Index extends Component<{}, State> {
         key: 'WHEBZ-3YWEX-R7V4Y-7U6AV-HXTKK-7EFIN'
         // key: 'E56BZ-VCOLX-Q7Q4N-7OE7Y-LHKK3-MPBD5'
       }),
-      neerdistances: [],
+      neardistances: [],
       newestdistances: [],
       myData: [],
       newestData: [],
@@ -322,13 +322,15 @@ getDistance(value) {
   this.state.qqmapsdk.calculateDistance({
     to: locations,
     success: (res) => {
-      value == 0 
-      ? this.setState({
-        newestdistances: res.result.elements
-      })
-      : this.setState({
-        neerdistances: res.result.elements
-      })
+      // console.log(res)
+      if(value ==0) {
+        this.setState({
+          newestdistances: res.result.elements
+        })
+      } else if(value == 1) {
+        this.setState({
+          neardistances: res.result.elements
+      }
     }
   })
 }
@@ -550,6 +552,7 @@ getDistance(value) {
                   itemData = {item}
                   style='border-bottom: 3rpx solid #666'
                   distance = {this.state.newestdistances[index]}
+                  showdistance={true}
                   >
                 </WMessageItem>
               )
@@ -565,7 +568,8 @@ getDistance(value) {
                     key = {index}
                     itemData = {item}
                     style='border-bottom: 3rpx solid #666'
-                    distance = {this.state.neerdistances[index]}
+                    distance = {this.state.neardistances[index]}
+                    showdistance={true}
                     >
                   </WMessageItem>
                 )
@@ -582,6 +586,7 @@ getDistance(value) {
                     itemData = {item}
                     style='border-bottom: 3rpx solid #666'
                     distance = {{distance: 0}}
+                    showdistance={false}
                     >
                   </WMessageItem>
                 )
