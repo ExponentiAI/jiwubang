@@ -31,8 +31,10 @@ export interface State {
   submitresult: number;
 
   qqmapsdk: QQMapWX;
-  distances:Array<any>;
+  neerdistances: Array<any>;
+  newestdistances: Array<any>;
   myData: Array<any>;
+  newestData: Array<any>;
 }
 
 export default class Index extends Component<{}, State> {
@@ -79,8 +81,10 @@ export default class Index extends Component<{}, State> {
         key: 'WHEBZ-3YWEX-R7V4Y-7U6AV-HXTKK-7EFIN'
         // key: 'E56BZ-VCOLX-Q7Q4N-7OE7Y-LHKK3-MPBD5'
       }),
-      distances: [],
+      neerdistances: [],
+      newestdistances: [],
       myData: [],
+      newestData: [],
     }
   }
 
@@ -107,19 +111,35 @@ export default class Index extends Component<{}, State> {
   }
 
   /*
-  * 预加载 附近信息
+  * 预加载 最新信息
   * 
   * */
-async getNearInfo(finishCallback){
+ async getNewestInfo(finishCallback){
+  const date = new Date()
+			
+  const year = date.getFullYear()        //年 ,从 Date 对象以四位数字返回年份
+  const month = date.getMonth() + 1      //月 ,从 Date 对象返回月份 (0 ~ 11) ,date.getMonth()比实际月份少 1 个月
+  const day = date.getDate()             //日 ,从 Date 对象返回一个月中的某一天 (1 ~ 31)
+    
+  const hours = date.getHours()          //小时 ,返回 Date 对象的小时 (0 ~ 23)
+  const minutes = date.getMinutes()      //分钟 ,返回 Date 对象的分钟 (0 ~ 59)
+  const seconds = date.getSeconds()      //秒 ,返回 Date 对象的秒数 (0 ~ 59) 
+
+    
+  const end_time = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds
+
+  const start_time = year + "-" + month + "-" + (day-1) + " " + hours + ":" + minutes + ":" + seconds
+  
   if(this.state.latitude != 0){
     Taro.request({
-      // url: 'http://121.43.233.66:8009/new/1/',
       url: 'https://jwb.comdesignlab.com/new/1/',
       data: JSON.stringify({
         longitude: this.state.longitude,
         latitude: this.state.latitude,
-        search_range:20,
+        search_range: 10,
         page_items_count: 10,
+        start_time: start_time,
+        end_time: end_time, 
       }),
       header: {
         'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -127,9 +147,84 @@ async getNearInfo(finishCallback){
       method: 'POST',
     })
     .then(res => { 
-      this.setState({
-        resData: res.data?res.data:[]
-      }, finishCallback)
+      if(res.statusCode == 500) {
+        Taro.showToast({
+          title: '附近尚无用户发布信息',
+          icon: 'none',
+          duration: 2000
+        })
+      } else if(res.statusCode == 502) {
+        Taro.showToast({
+          title: '当前访问人数过多，请稍后再试...',
+          icon: 'none',
+          duration: 2000
+        })
+      } else {
+        this.setState({
+          newestData: res.data?res.data:[]
+        }, finishCallback)
+      }
+    })
+    // .then(res => this.setState({...}, finishCallback))
+  }
+}
+
+
+
+  /*
+  * 预加载 附近信息
+  * 
+  * */
+async getNearInfo(finishCallback){
+  const date = new Date()
+			
+  const year = date.getFullYear()        //年 ,从 Date 对象以四位数字返回年份
+  const month = date.getMonth() + 1      //月 ,从 Date 对象返回月份 (0 ~ 11) ,date.getMonth()比实际月份少 1 个月
+  const day = date.getDate()             //日 ,从 Date 对象返回一个月中的某一天 (1 ~ 31)
+    
+  const hours = date.getHours()          //小时 ,返回 Date 对象的小时 (0 ~ 23)
+  const minutes = date.getMinutes()      //分钟 ,返回 Date 对象的分钟 (0 ~ 59)
+  const seconds = date.getSeconds()      //秒 ,返回 Date 对象的秒数 (0 ~ 59) 
+
+    
+  const end_time = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds
+
+  const start_time = year + "-" + month + "-" + (day-3) + " " + hours + ":" + minutes + ":" + seconds
+  
+  if(this.state.latitude != 0){
+    Taro.request({
+      url: 'https://jwb.comdesignlab.com/new/1/',
+      data: JSON.stringify({
+        longitude: this.state.longitude,
+        latitude: this.state.latitude,
+        search_range: 1,
+        page_items_count: 10,
+        start_time: start_time,
+        end_time: end_time, 
+      }),
+      header: {
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      method: 'POST',
+    })
+    .then(res => { 
+      if(res.statusCode == 500) {
+        Taro.showToast({
+          title: '附近尚无用户发布信息',
+          icon: 'none',
+          duration: 2000
+        })
+      } else if(res.statusCode == 502) {
+        Taro.showToast({
+          title: '当前访问人数过多，请稍后再试...',
+          icon: 'none',
+          duration: 2000
+        })
+      } else {
+        this.setState({
+          resData: res.data?res.data:[]
+        }, finishCallback)
+      }
     })
     // .then(res => this.setState({...}, finishCallback))
   }
@@ -140,11 +235,29 @@ async getNearInfo(finishCallback){
   * 
   * */
  async getMyInfo(){
+
+  const date = new Date()
+			
+  const year = date.getFullYear()        //年 ,从 Date 对象以四位数字返回年份
+  const month = date.getMonth() + 1      //月 ,从 Date 对象返回月份 (0 ~ 11) ,date.getMonth()比实际月份少 1 个月
+  const day = date.getDate()             //日 ,从 Date 对象返回一个月中的某一天 (1 ~ 31)
+    
+  const hours = date.getHours()          //小时 ,返回 Date 对象的小时 (0 ~ 23)
+  const minutes = date.getMinutes()      //分钟 ,返回 Date 对象的分钟 (0 ~ 59)
+  const seconds = date.getSeconds()      //秒 ,返回 Date 对象的秒数 (0 ~ 59) 
+
+    
+  const end_time = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds
+
+  const start_time = year + "-" + month + "-" + (day-3) + " " + hours + ":" + minutes + ":" + seconds
+
   Taro.request({
     url: 'https://jwb.comdesignlab.com/me/1/',
     data: JSON.stringify({
       u_id: getLogininfo().openid,
       page_items_count: 10,
+      start_time: start_time,
+      end_time: end_time,
     }),
     header: {
       'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -153,7 +266,13 @@ async getNearInfo(finishCallback){
   }).then(res => {
     if(res.statusCode == 500) {
       Taro.showToast({
-        title: '您尚未发布任何信息”',
+        title: '您尚未发布任何信息',
+        icon: 'none',
+        duration: 2000
+      })
+    } else if(res.statusCode == 502) {
+      Taro.showToast({
+        title: '当前访问人数过多，请稍后再试...',
         icon: 'none',
         duration: 2000
       })
@@ -165,27 +284,6 @@ async getNearInfo(finishCallback){
   })
   
 }
-
-
-
-// async getMyInfo(){
-//   Taro.request({
-//     url: 'https://jwb.comdesignlab.com/me/1/',
-//     data: JSON.stringify({
-//       u_id: getLogininfo().openid,
-//       page_items_count: 10,
-//     }),
-//     header: {
-//       'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-//     },
-//     method: 'POST',
-//   })
-//   .then(res => { 
-//     this.setState({
-//       myData: res.data?res.data:[]
-//     })
-//   })
-// }
 
 
 //点击位置实现导航
@@ -207,10 +305,14 @@ goThere({markerId}: MapProps){
 
 
 // 计算checkin位置到用户当前位置的距离，结果保存在this.state.distances里
-getDistance() {
-  let resData = this.state.resData
+getDistance(value) {
+  let resData
+  if(value == 0){
+    resData = this.state.newestData
+  }else if(value == 1){
+    resData = this.state.resData
+  }
   let locations = []
-
   for (let i = 0; i < resData.length; i++) {
     locations.push({
       latitude: resData[i].s_lat,
@@ -220,8 +322,12 @@ getDistance() {
   this.state.qqmapsdk.calculateDistance({
     to: locations,
     success: (res) => {
-      this.setState({
-        distances: res.result.elements
+      value == 0 
+      ? this.setState({
+        newestdistances: res.result.elements
+      })
+      : this.setState({
+        neerdistances: res.result.elements
       })
     }
   })
@@ -233,11 +339,16 @@ getDistance() {
     // this.reLocation(()=>{this.getNearInfo()})
 
     this.reLocation(
-      ()=>{this.getNearInfo(
+      ()=>{this.getNewestInfo(
         ()=>{
-          this.markerPush()
-          this.getDistance()
-          this.getMyInfo()
+          this.getDistance(0)
+          this.getNearInfo(
+            () => {
+              this.markerPush()
+              this.getDistance(1)
+              this.getMyInfo()
+            }
+          )
         }
       )}
     )
@@ -282,26 +393,7 @@ getDistance() {
     })
   }
 
-  // async getLocation() {
-  //   const location = await Taro.getLocation({isHighAccuracy: true}) as Taro.getLocation.SuccessCallbackResult
-  //   const latitude = location.latitude
-  //   const longitude = location.longitude
-
-  //   this.setState({
-  //     latitude,
-  //     longitude,
-  //     markers: [{
-  //       iconPath: mapLocation,
-  //       id: 0,
-  //       latitude,
-  //       longitude,
-  //       width: 50,
-  //       height: 50
-  //     }]
-  //   })
-  // }
-
-  tabList = [{ title: '附近' }, { title: '我的' }]
+  tabList = [{ title: '最新' }, { title: '附近' }, { title: '我的' }]
 
   tabbarClick() {
 
@@ -435,7 +527,7 @@ getDistance() {
           markers={markers}
           latitude={latitude}
           longitude={longitude}
-          scale={14}
+          scale={15}
           className='p-map'
           onCalloutTap={this.goThere.bind(this)}
           // onClick={this.getLocationByTap.bind(this)} //在地图中手动选择位置（预留在下一版app中开放）
@@ -448,7 +540,24 @@ getDistance() {
         <AtTabs 
           className='p-tabs' current={tabsIdx} tabList={this.tabList} 
           onClick={this.tabsClick.bind(this)}>
+          {/* 最新 */}
           <AtTabsPane className='p-tabs-pane' current={tabsIdx} index={0}>
+          {
+            this.state.newestData.map((item, index) => {
+              return (
+                <WMessageItem 
+                  key = {index}
+                  itemData = {item}
+                  style='border-bottom: 3rpx solid #666'
+                  distance = {this.state.newestdistances[index]}
+                  >
+                </WMessageItem>
+              )
+            })
+          }
+          </AtTabsPane>
+          {/* 附近 */}
+          <AtTabsPane className='p-tabs-pane' current={tabsIdx} index={1}>
             {
               this.state.resData.map((item, index) => {
                 return (
@@ -456,14 +565,15 @@ getDistance() {
                     key = {index}
                     itemData = {item}
                     style='border-bottom: 3rpx solid #666'
-                    distance = {this.state.distances[index]}
+                    distance = {this.state.neerdistances[index]}
                     >
                   </WMessageItem>
                 )
               })
             }
           </AtTabsPane>
-          <AtTabsPane className='p-tabs-pane' current={tabsIdx} index={1}>
+          {/* 我的 */}
+          <AtTabsPane className='p-tabs-pane' current={tabsIdx} index={2}>
           {
               this.state.myData.map((item, index) => {
                 return (
