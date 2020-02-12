@@ -1,6 +1,6 @@
 import Taro, { Component, Config, getStorageSync } from '@tarojs/taro'
 import { MapProps } from '@tarojs/components/types/Map'
-import { View, Text, Image, Navigator, Button, Map } from '@tarojs/components'
+import { View, Text, Image, Navigator, Button, Map, CoverView, CoverImage } from '@tarojs/components'
 import { AtModal, AtModalContent, AtModalAction, AtTabBar, AtSearchBar, AtTabs, AtTabsPane, AtDivider } from 'taro-ui'
 import { UPage } from '../../components/ui'
 import { WTab, WMessageItem } from '../../components/widget'
@@ -8,6 +8,7 @@ import QQMapWX from '../../libs/qqmap-wx-jssdk'
 import myLocation from '../../assets/images/icon/my-location.png'
 import demandMarker from '../../assets/images/icon/marker1.png'
 import supplyMarker from '../../assets/images/icon/marker2.png'
+import refreshButton from '../../assets/images/icon/refresh.png'
 import './index.less'
 import { scrollUpIco, bottomIcon } from '../../assets/images/icon'
 import {getGlobalData, setGlobalData, getLogininfo,setLogininfo} from "../../models/globalData"
@@ -492,6 +493,11 @@ getDistance(value) {
     console.log('你点击的位置是： ' + '[ ' + longitude + ', ' + latitude + ' ]')
   }
 
+  // 刷新用户当前的位置信息
+  refreshLoation() {    
+    this.getLocationInfo()
+  }
+
   // tabsClick(value) {
   //   this.setState({
   //     tabsIdx: value
@@ -534,7 +540,14 @@ getDistance(value) {
           onCalloutTap={this.goThere.bind(this)}
           // onClick={this.getLocationByTap.bind(this)} //在地图中手动选择位置（预留在下一版app中开放）
           // onClick={this.getDistance.bind(this)} //测试计算距离
-        />
+        >
+          <CoverImage
+              className='refresh'
+              src={refreshButton}
+              onClick={this.refreshLoation.bind(this)} 
+          />
+          
+        </Map>
 
         <view style={{display:"none", justifyContent:'center'}}>
          <Image src={scrollUpIco} style='width:25px; height:20px;position:absolute;top:40%;left:48%' ></Image></view>

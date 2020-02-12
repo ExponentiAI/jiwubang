@@ -11,6 +11,7 @@ interface Props {
   unit?: string;
   checked?: boolean;
   handleValue?(event): void;
+  type: number;
 };
 
 interface State {
@@ -60,7 +61,7 @@ export default class WGoods extends Component<Props> {
             </CheckboxGroup>
             <View className='goods-right'>
               {
-                this.state.isShow && <Input name='number' type='number' value = ''
+                this.state.isShow && <Input name='number' type={this.props.type==1?'number':'digit'} value = ''
                 placeholder='请输入' className='input' onInput={this.onClick.bind(this)}
                 // onInput={(e) => {this.setState({goodsValue: e.target.value})}}
               />}

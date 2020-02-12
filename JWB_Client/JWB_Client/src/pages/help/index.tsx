@@ -167,7 +167,7 @@ export default class Index extends Component {
   ]
 
   render() {
-    const { showMyAccordion, showShopAccordion,
+    const { showMyAccordion, showShopAccordion = false,
       isOpened, contentValue } = this.state
 
     // this.setState({submitClick: false})
@@ -245,13 +245,15 @@ export default class Index extends Component {
             title='所需位置'
             isAnimation
           >
-            <Map
+            { showShopAccordion &&
+              <Map
               markers={this.state.markers}
               latitude={this.state.latitude}
               longitude={this.state.longitude}
               scale={15}
-              className='p-map'
+              className='{p-map}'
             />
+            }
           </AtAccordion>
 
         </View>
@@ -280,6 +282,7 @@ export default class Index extends Component {
               unit={option.unit}
               checked={option.checked}
               handleValue={this.handleGoodsValue.bind(this)}
+              type={1}
             ></WGoods>)
           })
         }
@@ -425,7 +428,7 @@ export default class Index extends Component {
               url: `../home/index?submit_id=${1}`
             })
           }else if(res.data.msg == '内容涉及敏感词！'){
-            Taro.showToast({title: '内容涉及敏感词！'})
+            Taro.showToast({title: '内容涉及敏感词！', icon: 'none'})
           }
         })
     }

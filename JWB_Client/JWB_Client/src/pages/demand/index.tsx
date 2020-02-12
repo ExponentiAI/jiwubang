@@ -162,7 +162,7 @@ export default class Index extends Component {
   ]
 
   render() {
-    const { showMyAccordion, showShopAccordion, showMeAccordion,
+    const { showMyAccordion, showShopAccordion, showMeAccordion = false,
       isOpened, contentValue } = this.state
 
     const userInfo = getLogininfo()
@@ -232,15 +232,16 @@ export default class Index extends Component {
             open={showMeAccordion}
             onClick={(val) => this.setState({ showMeAccordion: val })}
             title='我的位置'
-            isAnimation
           >
-            <Map
+            { showMeAccordion &&
+              <Map
               markers={this.state.markers}
               latitude={this.state.latitude}
               longitude={this.state.longitude}
               scale={15}
-              className='p-map'
+              className='{p-map}'
             />
+            }
           </AtAccordion>
 
         </View>
@@ -257,7 +258,7 @@ export default class Index extends Component {
           value={contentValue}
           onChange={(e) => {this.setState({contentValue: e.detail.value})}}
           maxLength={100}
-          placeholder='描述你的信息需求...'
+          placeholder='描述你的提供信息...(非必填)'
         />
 
         <View className='divider'/>
@@ -276,6 +277,7 @@ export default class Index extends Component {
               unit={option.unit}
               checked = {option.checked}
               handleValue = {this.handleGoodsValue.bind(this)}
+              type={2}
             ></WGoods>)
           })
         }
@@ -328,14 +330,25 @@ export default class Index extends Component {
     
     const currentDate = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds
 
+    let goods_input_flag = false  //判断用户是否填写物品信息，为true表示可以提交，false表示不可以提交
+
     for(check in this.state.goodsChecked){
       if(this.state.goodsChecked[check] && this.state.goodsValue[check]==-1){
         flag = false
       }
     }
+
+    for (check in this.state.goodsChecked) {
+      if (this.state.goodsChecked[check]){
+        goods_input_flag = true
+      }
+    }
+
     if(!flag){    //填写不符合要求
       // this.setState({unitToast: true})
       Taro.showToast({ title: '有数据尚未填写', icon: 'none' })
+    } else if(!goods_input_flag) {
+      Taro.showToast({ title: '物品尚未选择', icon: 'none' })
     }else{
       // this.setState({unitToast: false})
       let goodsData = []
@@ -380,7 +393,7 @@ export default class Index extends Component {
               url: `../home/index?submit_id=${1}`
             })
           }else if(res.data.msg == '内容涉及敏感词！'){
-            Taro.showToast({title: '内容涉及敏感词！'})
+            Taro.showToast({title: '内容涉及敏感词！', icon: 'none'})
           }
       })
     }
