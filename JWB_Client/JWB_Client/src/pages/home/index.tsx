@@ -32,6 +32,7 @@ export interface State {
   submitresult: number;
 
   qqmapsdk: QQMapWX;
+  mapScale: number;
   neardistances: Array<any>;
   newestdistances: Array<any>;
   myData: Array<any>;
@@ -82,6 +83,7 @@ export default class Index extends Component<{}, State> {
         key: 'WHEBZ-3YWEX-R7V4Y-7U6AV-HXTKK-7EFIN'
         // key: 'E56BZ-VCOLX-Q7Q4N-7OE7Y-LHKK3-MPBD5'
       }),
+      mapScale: 12,
       neardistances: [],
       newestdistances: [],
       myData: [],
@@ -198,8 +200,8 @@ async getNearInfo(finishCallback){
       data: JSON.stringify({
         longitude: this.state.longitude,
         latitude: this.state.latitude,
-        search_range: 1,
-        page_items_count: 10,
+        search_range: 2,
+        page_items_count: 1,
         start_time: start_time,
         end_time: end_time, 
       }),
@@ -290,6 +292,9 @@ async getNearInfo(finishCallback){
 //点击位置实现导航
 goThere({markerId}: MapProps){
   let lat, lon
+  console.log(markerId)
+  console.log(this.state.markers[markerId])
+  // console.log(this.state.markers[markerId])
   if(this.state.markers[markerId].latitude){
     lat = this.state.markers[markerId].latitude
   }
@@ -347,7 +352,7 @@ getDistance(value) {
           this.getDistance(0)
           this.getNearInfo(
             () => {
-              this.markerPush()
+              this.markerPush(0)
               this.getDistance(1)
               this.getMyInfo()
             }
@@ -379,6 +384,7 @@ getDistance(value) {
           markers: [{
             iconPath: myLocation,
             id: 0,
+            // markerId: 0,
             latitude,
             longitude,
             width: 40,
@@ -406,12 +412,22 @@ getDistance(value) {
   }
 
   // 把从服务器的查询结果添加到markers列表中
-  markerPush() {
+  markerPush(value) {
     let newMarkers = this.state.markers
-    let resData = this.state.resData
+    let resData
+    let scale
+    if(value == 0) {
+      resData = this.state.newestData
+      scale = 12
+    } else if(value == 1) {
+      resData = this.state.resData
+      scale = 14
+    }
+    // console.log(resData.length)
     let goodsInfo = ''
 
     if(resData.length > 0) {
+      let idCount = 0
       for (let i = 0; i < resData.length; i++) {
         if(resData[i].details_info.length > 0) {
           if(resData[i].s_type == 1) {
@@ -421,7 +437,8 @@ getDistance(value) {
             }
             newMarkers.push({
               iconPath: supplyMarker,
-              id: i+1,
+              id: idCount+1,
+              // markerId: idCount+1,
               latitude: resData[i].s_lat,
               longitude: resData[i].s_lon,
               width: 20,
@@ -435,13 +452,15 @@ getDistance(value) {
                 textAlign:'center'
               }
             })
+            idCount = idCount + 1
           } else {
             for(let j = 0; j < resData[i].details_info.length; j++) {
               goodsInfo = resData[i].details_info[j].goods_name + resData[i].details_info[j].count + '个\n'
             }
             newMarkers.push({
               iconPath: demandMarker,
-              id: i+1,
+              id: idCount+1,
+              // markerId: idCount+1,
               latitude: resData[i].s_lat,
               longitude: resData[i].s_lon,
               width: 20,
@@ -455,17 +474,35 @@ getDistance(value) {
                 textAlign:'center'
               }
             })
+            idCount = idCount + 1
           }
         }
       }
     }
+    // console.log(newMarkers.length)
+    // console.log(newMarkers)
     
     this.setState({
       markers: newMarkers
+      mapScale: scale
     })
   }
 
   tabsClick(value) {
+    // console.log(value)
+    if(value == 0) {
+      this.reLocation(
+        () => {
+          this.markerPush(0)
+        }
+      )
+    } else if(value == 1) {
+      this.reLocation(
+        () => {
+          this.markerPush(1)
+        }
+      )
+    }
     this.setState({
       tabsIdx: value
     })
@@ -505,7 +542,7 @@ getDistance(value) {
   // }
 
   render() {
-    const { keyword, tabBarIdx, markers, tabsIdx, latitude, longitude, address } = this.state
+    const { keyword, tabBarIdx, markers, tabsIdx, latitude, longitude, address, mapScale } = this.state
     //this.markerPush()
 
     
@@ -535,9 +572,9 @@ getDistance(value) {
           markers={markers}
           latitude={latitude}
           longitude={longitude}
-          scale={15}
+          scale={mapScale}
           className='p-map'
-          onCalloutTap={this.goThere.bind(this)}
+          onCalloutTap={this.goThere}
           // onClick={this.getLocationByTap.bind(this)} //在地图中手动选择位置（预留在下一版app中开放）
           // onClick={this.getDistance.bind(this)} //测试计算距离
         >
