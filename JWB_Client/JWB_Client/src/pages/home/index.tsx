@@ -292,8 +292,8 @@ async getNearInfo(finishCallback){
 //点击位置实现导航
 goThere({markerId}: MapProps){
   let lat, lon
-  console.log(markerId)
-  console.log(this.state.markers[markerId])
+  // console.log(markerId)
+  // console.log(this.state.markers[markerId])
   // console.log(this.state.markers[markerId])
   if(this.state.markers[markerId].latitude){
     lat = this.state.markers[markerId].latitude
