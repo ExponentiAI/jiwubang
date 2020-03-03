@@ -118,29 +118,22 @@ export default class Index extends Component<{}, State> {
   * 
   * */
  async getNewestInfo(finishCallback){
-  const date = new Date()
+  const curDate = new Date()
+  const prevDate = new Date()
+  prevDate.setDate(prevDate.getDate()-1)
 			
-  const year = date.getFullYear()        //年 ,从 Date 对象以四位数字返回年份
-  const month = date.getMonth() + 1      //月 ,从 Date 对象返回月份 (0 ~ 11) ,date.getMonth()比实际月份少 1 个月
-  const day = date.getDate()             //日 ,从 Date 对象返回一个月中的某一天 (1 ~ 31)
-    
-  const hours = date.getHours()          //小时 ,返回 Date 对象的小时 (0 ~ 23)
-  const minutes = date.getMinutes()      //分钟 ,返回 Date 对象的分钟 (0 ~ 59)
-  const seconds = date.getSeconds()      //秒 ,返回 Date 对象的秒数 (0 ~ 59) 
+  const end_time = curDate.getFullYear() + "-" + (curDate.getMonth()+1) + "-" + curDate.getDate() + " " + curDate.getHours() + ":" + curDate.getMinutes() + ":" + curDate.getSeconds()
 
-    
-  const end_time = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds
+  const start_time = prevDate.getFullYear() + "-" + (prevDate.getMonth()+1) + "-" + prevDate.getDate() + " " + prevDate.getHours() + ":" + prevDate.getMinutes() + ":" + prevDate.getSeconds()
 
-  const start_time = year + "-" + month + "-" + (day-1) + " " + hours + ":" + minutes + ":" + seconds
-  
   if(this.state.latitude != 0){
     Taro.request({
       url: 'https://jwb.comdesignlab.com/new/1/',
       data: JSON.stringify({
         longitude: this.state.longitude,
         latitude: this.state.latitude,
-        search_range: 10,
-        page_items_count: 10,
+        search_range: 8,
+        page_items_count: 30,
         start_time: start_time,
         end_time: end_time, 
       }),
@@ -150,6 +143,7 @@ export default class Index extends Component<{}, State> {
       method: 'POST',
     })
     .then(res => { 
+      // console.log(res.data)
       if(res.statusCode == 500) {
         Taro.showToast({
           title: '附近尚无用户发布信息',
@@ -179,20 +173,13 @@ export default class Index extends Component<{}, State> {
   * 
   * */
 async getNearInfo(finishCallback){
-  const date = new Date()
+  const curDate = new Date()
+  const prevDate = new Date()
+  prevDate.setDate(prevDate.getDate()-3)
 			
-  const year = date.getFullYear()        //年 ,从 Date 对象以四位数字返回年份
-  const month = date.getMonth() + 1      //月 ,从 Date 对象返回月份 (0 ~ 11) ,date.getMonth()比实际月份少 1 个月
-  const day = date.getDate()             //日 ,从 Date 对象返回一个月中的某一天 (1 ~ 31)
-    
-  const hours = date.getHours()          //小时 ,返回 Date 对象的小时 (0 ~ 23)
-  const minutes = date.getMinutes()      //分钟 ,返回 Date 对象的分钟 (0 ~ 59)
-  const seconds = date.getSeconds()      //秒 ,返回 Date 对象的秒数 (0 ~ 59) 
+  const end_time = curDate.getFullYear() + "-" + (curDate.getMonth()+1) + "-" + curDate.getDate() + " " + curDate.getHours() + ":" + curDate.getMinutes() + ":" + curDate.getSeconds()
 
-    
-  const end_time = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds
-
-  const start_time = year + "-" + month + "-" + (day-3) + " " + hours + ":" + minutes + ":" + seconds
+  const start_time = prevDate.getFullYear() + "-" + (prevDate.getMonth()+1) + "-" + prevDate.getDate() + " " + prevDate.getHours() + ":" + prevDate.getMinutes() + ":" + prevDate.getSeconds()
   
   if(this.state.latitude != 0){
     Taro.request({
@@ -201,7 +188,7 @@ async getNearInfo(finishCallback){
         longitude: this.state.longitude,
         latitude: this.state.latitude,
         search_range: 2,
-        page_items_count: 1,
+        page_items_count: 10,
         start_time: start_time,
         end_time: end_time, 
       }),
@@ -239,26 +226,19 @@ async getNearInfo(finishCallback){
   * */
  async getMyInfo(){
 
-  const date = new Date()
+  const curDate = new Date()
+  const prevDate = new Date()
+  prevDate.setDate(prevDate.getDate()-5)
 			
-  const year = date.getFullYear()        //年 ,从 Date 对象以四位数字返回年份
-  const month = date.getMonth() + 1      //月 ,从 Date 对象返回月份 (0 ~ 11) ,date.getMonth()比实际月份少 1 个月
-  const day = date.getDate()             //日 ,从 Date 对象返回一个月中的某一天 (1 ~ 31)
-    
-  const hours = date.getHours()          //小时 ,返回 Date 对象的小时 (0 ~ 23)
-  const minutes = date.getMinutes()      //分钟 ,返回 Date 对象的分钟 (0 ~ 59)
-  const seconds = date.getSeconds()      //秒 ,返回 Date 对象的秒数 (0 ~ 59) 
+  const end_time = curDate.getFullYear() + "-" + (curDate.getMonth()+1) + "-" + curDate.getDate() + " " + curDate.getHours() + ":" + curDate.getMinutes() + ":" + curDate.getSeconds()
 
-    
-  const end_time = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds
-
-  const start_time = year + "-" + month + "-" + (day-3) + " " + hours + ":" + minutes + ":" + seconds
+  const start_time = prevDate.getFullYear() + "-" + (prevDate.getMonth()+1) + "-" + prevDate.getDate() + " " + prevDate.getHours() + ":" + prevDate.getMinutes() + ":" + prevDate.getSeconds()
 
   Taro.request({
     url: 'https://jwb.comdesignlab.com/me/1/',
     data: JSON.stringify({
       u_id: getLogininfo().openid,
-      page_items_count: 10,
+      page_items_count: 15,
       start_time: start_time,
       end_time: end_time,
     }),
@@ -267,6 +247,7 @@ async getNearInfo(finishCallback){
     },
     method: 'POST',
   }).then(res => {
+    // console.log(res.data)
     if(res.statusCode == 500) {
       Taro.showToast({
         title: '您尚未发布任何信息',
