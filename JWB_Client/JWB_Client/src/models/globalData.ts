@@ -15,7 +15,7 @@ import { getStorageSync } from "@tarojs/taro"
   var logininfo = {
      u_type: 0,
      openid: '',
-     nick_name: "",
+     nick_name: "", 
      avatar_url: "",
      gender: "",
   }
@@ -26,8 +26,8 @@ import { getStorageSync } from "@tarojs/taro"
     return globalData[key]
   }
   export function getLogininfo () {
-    if(getStorageSync('logininfo')['openid']){
-    logininfo['openid'] = getStorageSync('logininfo')['openid']}
+    if(getStorageSync('logininfo')['open_id']){
+    logininfo['openid'] = getStorageSync('logininfo')['open_id']}
     logininfo['nick_name'] = globalData['userinfo']['nickName']
     logininfo['avatar_url'] = globalData['userinfo']['avatarUrl']
     if(globalData['userinfo']['gender']==1){

@@ -128,7 +128,7 @@ export default class Index extends Component<{}, State> {
 
   if(this.state.latitude != 0){
     Taro.request({
-      url: 'https://jwb.comdesignlab.com/new/1/',
+      url: 'http://129.204.190.240:7760/new/1',
       data: JSON.stringify({
         longitude: this.state.longitude,
         latitude: this.state.latitude,
@@ -138,7 +138,7 @@ export default class Index extends Component<{}, State> {
         end_time: end_time, 
       }),
       header: {
-        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+        'content-type': 'application/json;charset=utf-8'
       },
       method: 'POST',
     })
@@ -183,7 +183,7 @@ async getNearInfo(finishCallback){
   
   if(this.state.latitude != 0){
     Taro.request({
-      url: 'https://jwb.comdesignlab.com/new/1/',
+      url: 'http://129.204.190.240:7760/nearby/1',
       data: JSON.stringify({
         longitude: this.state.longitude,
         latitude: this.state.latitude,
@@ -193,7 +193,7 @@ async getNearInfo(finishCallback){
         end_time: end_time, 
       }),
       header: {
-        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+        'content-type': 'application/json;charset=utf-8'
       },
       method: 'POST',
     })
@@ -211,6 +211,7 @@ async getNearInfo(finishCallback){
           duration: 2000
         })
       } else {
+        //console.log(res.data)
         this.setState({
           resData: res.data?res.data:[]
         }, finishCallback)
@@ -233,17 +234,17 @@ async getNearInfo(finishCallback){
   const end_time = curDate.getFullYear() + "-" + (curDate.getMonth()+1) + "-" + curDate.getDate() + " " + curDate.getHours() + ":" + curDate.getMinutes() + ":" + curDate.getSeconds()
 
   const start_time = prevDate.getFullYear() + "-" + (prevDate.getMonth()+1) + "-" + prevDate.getDate() + " " + prevDate.getHours() + ":" + prevDate.getMinutes() + ":" + prevDate.getSeconds()
-
+  //console.log(getLogininfo().openid)
   Taro.request({
-    url: 'https://jwb.comdesignlab.com/me/1/',
-    data: JSON.stringify({
+    url: 'http://129.204.190.240:7760/me/1',
+    data: {
       u_id: getLogininfo().openid,
       page_items_count: 15,
       start_time: start_time,
       end_time: end_time,
-    }),
+    },
     header: {
-      'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+      'content-type': 'application/json;charset=utf-8'
     },
     method: 'POST',
   }).then(res => {
@@ -568,7 +569,7 @@ getDistance(value) {
         </Map>
 
         <view style={{display:"none", justifyContent:'center'}}>
-         <Image src={scrollUpIco} style='width:25px; height:20px;position:absolute;top:40%;left:48%' ></Image></view>
+         <Image src={scrollUpIco} style='width:25px; height:20px;position:absolute;top:40%;left:46%' ></Image></view>
 
         <AtTabs 
           className='p-tabs' current={tabsIdx} tabList={this.tabList} 

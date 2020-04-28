@@ -345,6 +345,7 @@ export default class Index extends Component {
 
   onSubmit = (e) => {
     // const time = new Date()
+    console.log("111")
 
     const date = new Date()
 			
@@ -396,10 +397,11 @@ export default class Index extends Component {
       // console.log(goodsData)
 
       Taro.request({
-        url: 'https://jwb.comdesignlab.com/SupAndDem/',
+        url: 'http://129.204.190.240:7760/SupAndDem',
         // url: 'http://121.43.233.66:8009/SupAndDem/',
         data: {
           u_id: getLogininfo().openid,
+          demand_id:getLogininfo().openid+currentDate,
           lon: this.state.longitude,
           lat: this.state.latitude,
           nation: this.state.address.nation,
@@ -410,7 +412,7 @@ export default class Index extends Component {
           street_number: this.state.address.street_number,
           content: this.state.contentValue,
           type: 0,
-          goods: JSON.stringify(goodsData),
+          goods: goodsData,
           range: this.state.locationValue,
           aging: this.state.prescriptionValue,
           subtime: currentDate,
@@ -418,11 +420,11 @@ export default class Index extends Component {
         },
         header: {
           // 'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-          'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+          'content-type': 'application/json;charset=utf-8'
         },
         method: 'POST',
       }).then(res => {
-          // console.log(res.data.msg)
+          console.log(res.data.msg)
           if(res.data.msg == '操作成功！'){
             Taro.redirectTo({
               url: `../home/index?submit_id=${1}`

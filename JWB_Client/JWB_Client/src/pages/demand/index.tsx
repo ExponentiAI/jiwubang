@@ -356,15 +356,35 @@ export default class Index extends Component {
         if(this.state.goodsChecked[i]){     //如果有勾选
           goodsData.push({
             'goods_name': this.checkboxOption[i].label,
-            'num_or_price': this.state.goodsValue[i]
+            'num_or_price': parseFloat(this.state.goodsValue[i])
           })
         }
       }
-      console.log(goodsData)
+      console.log(
+          'u_id:', getLogininfo().openid,
+          'demand_id:',getLogininfo().openid+currentDate,
+          'lon:', this.state.longitude,
+          'lat: ',this.state.latitude,
+          'nation: ',this.state.address.nation,
+          'province:', this.state.address.province,
+          'city: ',this.state.address.city,
+          'district: ',this.state.address.district,
+          'street: ',this.state.address.street,
+          'street_number:', this.state.address.street_number,
+          'content: ',this.state.contentValue,
+          'type: ',1,
+          'goods: ',goodsData,
+          'range: ',-1,
+          'aging: ',-1,
+          'subtime:', currentDate,
+          'store_name:', this.state.shopName,
+      )
+      console.log('logininfo',getLogininfo())
       Taro.request({
-        url: 'https://jwb.comdesignlab.com/SupAndDem/',
+        url: 'http://129.204.190.240:7760/SupAndDem',
         data: {
           u_id: getLogininfo().openid,
+          demand_id:getLogininfo().openid+currentDate,
           lon: this.state.longitude,
           lat: this.state.latitude,
           nation: this.state.address.nation,
@@ -375,19 +395,19 @@ export default class Index extends Component {
           street_number: this.state.address.street_number,
           content: this.state.contentValue,
           type: 1,
-          goods: JSON.stringify(goodsData),
+          goods: goodsData,
           range: -1,
           aging: -1,
           subtime: currentDate,
           store_name: this.state.shopName,
         },
         header: {
-          'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+          'content-type': 'application/json;charset=utf-8'
         },
         method: 'POST',
       })
+     
       .then(res => {
-        console.log(res.data.msg)
           if(res.data.msg == '操作成功！'){
             Taro.redirectTo({
               url: `../home/index?submit_id=${1}`

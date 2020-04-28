@@ -43,5 +43,38 @@ $prefixCls: w-message-item;
       font-size: 24px;
       line-height: 1.2em;
     }
-  }
+    .#{$prefixCls}-title{
+      margin-left: 26px;
+      font-size: 26px;
+      color: $primary-color;
+      display: flex;
+      flex-direction: row;
+      }
+      .#{$prefixCls}-img{
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+      }
+      .#{$prefixCls}-commentshow{
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        padding-bottom: 10px;
+      }
+      .#{$prefixCls}-comment-column{
+        display: flex;
+        flex-direction: column;
+      }
+      .#{$prefixCls}-comment-inputBox{
+        display: flex;
+        flex-direction: row;
+        .#{$prefixCls}-submit{
+          position:relative;
+          left:30%;
+          margin-top: 3%;
+        }
+       
+    }
+    }
+    
 }

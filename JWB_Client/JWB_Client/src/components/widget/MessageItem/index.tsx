@@ -2,6 +2,8 @@ import Taro from '@tarojs/taro';
 import { View, Image, Button, Text } from '@tarojs/components';
 import Component from '../../common/component';
 import './index.scss';
+import { AtForm, AtInput, AtButton,AtTextarea } from 'taro-ui'
+import {getGlobalData, setGlobalData, getLogininfo} from "../../../models/globalData"
 // import { empty } from '../../../assets/images/icon'
 
 interface Props {
@@ -11,8 +13,11 @@ interface Props {
   distance: Array<any>;
   showdistance: boolean;
   itemData?: {
+    demand_id?:string;
+    nick_name?:string;
     avatar_url?: string;
     details_info?: Array<any>;
+    comment_info?: Array<any>;
     s_aging?: number;
     s_city?: string;
     s_content?: string;
@@ -66,8 +71,13 @@ interface Props {
 // }]
 
 interface State {
+  demand_id?:string;
   active: number;
+  isCommentShow:boolean;
+  contentValue?:string;
+  
 }
+
 
 
 
@@ -75,16 +85,89 @@ class Tab extends Component<Props, State> {
   prefix = 'w-message-item'
 
   state: State
-
   constructor(props) {
     super(props)
+    this.state.isCommentShow=true 
+    this.state.contentValue=""  
   }
+
+  commentShowChange () {
+    let flag=!this.state.isCommentShow
+    this.setState({
+      isCommentShow: flag,
+      contentValue: ''
+    })
+    
+  }
+
+  handleChange (value) {
+    this.setState({
+      contentValue:value
+    })
+    return value
+  }
+  onSubmit (event) {
+    console.log(event)
+
+    const date = new Date()
+			
+    const year = date.getFullYear()        //年 ,从 Date 对象以四位数字返回年份
+    const month = date.getMonth() + 1      //月 ,从 Date 对象返回月份 (0 ~ 11) ,date.getMonth()比实际月份少 1 个月
+    const day = date.getDate()             //日 ,从 Date 对象返回一个月中的某一天 (1 ~ 31)
+    
+    const hours = date.getHours()          //小时 ,返回 Date 对象的小时 (0 ~ 23)
+    const minutes = date.getMinutes()      //分钟 ,返回 Date 对象的分钟 (0 ~ 59)
+    const seconds = date.getSeconds()      //秒 ,返回 Date 对象的秒数 (0 ~ 59) 
+
+    
+    const currentDate = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds
+
+    if(!(this.state.contentValue)||this.state.contentValue==""){
+      Taro.showToast({title: '内容不能为空！', icon: 'none'})
+    }
+    else{
+      
+    Taro.request({
+      url: 'http://129.204.190.240:7760/SubComment',
+      data: {
+        u_id: getLogininfo().openid,
+        demand_id:this.props.itemData.demand_id,
+        comment_content:this.state.contentValue,
+        subtime: currentDate,      
+      },
+      header: {
+        'content-type': 'application/json;charset=utf-8'
+      },
+      method: 'POST',
+    })
+   
+    .then(res => {
+      console.log(res.data.msg)
+        if(res.data.msg == '操作成功！'){
+          Taro.redirectTo({
+            url: `../home/index?submit_id=${1}`
+          })
+        }else if(res.data.msg == '内容涉及敏感词！'){
+          Taro.showToast({title: '内容涉及敏感词！', icon: 'none'})
+        }
+    })
+   }
+
+  }
+
+ 
+
+  onReset (event) {
+    console.log(event)
+  }
+
 
   render() {
     const { style, className = '' } = this.props
 
 
     const goodsInfo = []
+    const commentInfo =[]
     let item
     if (this.props.itemData && this.props.distance){
       if(this.props.itemData.details_info){
@@ -92,6 +175,12 @@ class Tab extends Component<Props, State> {
           goodsInfo.push(this.props.itemData.details_info[item])
         }
       }
+      if(this.props.itemData.comment_info){
+        for (item in this.props.itemData.comment_info){
+          commentInfo.push(this.props.itemData.comment_info[item])
+        }
+      }
+
 
       let goods_str = '#' + this.props.itemData.s_street
 
@@ -133,9 +222,53 @@ class Tab extends Component<Props, State> {
         <View className={`${this.prefix}-bottom-wrap`}>
           {goods_str}
           <View className={`${this.prefix}-operation`}>
-            <Text className={`${this.prefix}-comment`}>评论</Text>
+            {this.state.isCommentShow == true && <Text className={`${this.prefix}-comment`} onClick={this.commentShowChange.bind(this)} style="color:black">评论</Text>}
+            {this.state.isCommentShow == false && <Text className={`${this.prefix}-comment`} onClick={this.commentShowChange.bind(this)} style="color:#3D91ED">评论</Text>}
           </View>
+          <View hidden={this.state.isCommentShow} className={`${this.prefix}-comment-area`} style="padding-top:10px">
+          {
+              
+              this.props.itemData.comment_info.map((item, index) => {
+                return (
+                  <View  key = {index} className={`${this.prefix}-commentshow`}>
+                    <Image src={item.c_avatar_url} className={`${this.prefix}-img`}></Image>
+                    <View className={`${this.prefix}-comment-column`} >
+                     <View className={`${this.prefix}-title`} style="display:block" >
+                            {item.c_nick_name}
+                            <View style="float:right;color:grey;font-size:10px">{item.c_subtime}</View>
+                          
+                     </View >
+                     <View style="padding-left:12px;width:240px;word-wrap:break-word">{item.comment_content}</View>
+                    </View>
+                  </View>
+                )
+              })
+            }
+            
+         
+          <AtForm className={`${this.prefix}-comment-input`} onSubmit={this.onSubmit.bind(this)} onReset={this.onReset.bind(this)}>
+          <View className={`${this.prefix}-comment-inputBox`}>
+          <View className={`${this.prefix}-comment-inputField`}>
+          <AtInput 
+            name='value'
+            title=''
+            type='text'
+            placeholder='写下你的评论...'
+            value={this.state.contentValue}
+            onChange={this.handleChange.bind(this)}
+            customStyle={{width:"150%"}}
+
+          />
+          </View>
+          <View className={`${this.prefix}-submit`}>
+           <AtButton formType='submit' size='small' customStyle={{width:"10%",color:"#3D91ED"}}>提交</AtButton>
+          </View>
+          </View>
+          </AtForm>
         </View>
+        </View>
+        
+
       </View>
     }
     
