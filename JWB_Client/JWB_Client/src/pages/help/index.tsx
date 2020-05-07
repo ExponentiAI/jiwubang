@@ -397,7 +397,7 @@ export default class Index extends Component {
       // console.log(goodsData)
 
       Taro.request({
-        url: 'http://129.204.190.240:7760/SupAndDem',
+        url: 'https://jwb.comdesignlab.com/SupAndDem',
         // url: 'http://121.43.233.66:8009/SupAndDem/',
         data: {
           u_id: getLogininfo().openid,

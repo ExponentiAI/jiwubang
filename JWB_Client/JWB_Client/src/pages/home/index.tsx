@@ -128,7 +128,7 @@ export default class Index extends Component<{}, State> {
 
   if(this.state.latitude != 0){
     Taro.request({
-      url: 'http://129.204.190.240:7760/new/1',
+      url: 'https://jwb.comdesignlab.com/new/1',
       data: JSON.stringify({
         longitude: this.state.longitude,
         latitude: this.state.latitude,
@@ -183,7 +183,7 @@ async getNearInfo(finishCallback){
   
   if(this.state.latitude != 0){
     Taro.request({
-      url: 'http://129.204.190.240:7760/nearby/1',
+      url: 'https://jwb.comdesignlab.com/nearby/1',
       data: JSON.stringify({
         longitude: this.state.longitude,
         latitude: this.state.latitude,
@@ -236,7 +236,7 @@ async getNearInfo(finishCallback){
   const start_time = prevDate.getFullYear() + "-" + (prevDate.getMonth()+1) + "-" + prevDate.getDate() + " " + prevDate.getHours() + ":" + prevDate.getMinutes() + ":" + prevDate.getSeconds()
   //console.log(getLogininfo().openid)
   Taro.request({
-    url: 'http://129.204.190.240:7760/me/1',
+    url: 'https://jwb.comdesignlab.com/me/1',
     data: {
       u_id: getLogininfo().openid,
       page_items_count: 15,

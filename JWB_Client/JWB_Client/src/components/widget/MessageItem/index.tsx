@@ -128,7 +128,7 @@ class Tab extends Component<Props, State> {
     else{
       
     Taro.request({
-      url: 'http://129.204.190.240:7760/SubComment',
+      url: 'https://jwb.comdesignlab.com/SubComment',
       data: {
         u_id: getLogininfo().openid,
         demand_id:this.props.itemData.demand_id,

@@ -379,9 +379,9 @@ export default class Index extends Component {
           'subtime:', currentDate,
           'store_name:', this.state.shopName,
       )
-      console.log('logininfo',getLogininfo())
+      //console.log('logininfo',getLogininfo())
       Taro.request({
-        url: 'http://129.204.190.240:7760/SupAndDem',
+        url: 'https://jwb.comdesignlab.com/SupAndDem',
         data: {
           u_id: getLogininfo().openid,
           demand_id:getLogininfo().openid+currentDate,

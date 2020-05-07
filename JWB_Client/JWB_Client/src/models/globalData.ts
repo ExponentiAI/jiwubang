@@ -18,6 +18,7 @@ import { getStorageSync } from "@tarojs/taro"
      nick_name: "", 
      avatar_url: "",
      gender: "",
+     token: ""
   }
   export function setGlobalData (key, val) {
     globalData[key] = val
@@ -26,20 +27,23 @@ import { getStorageSync } from "@tarojs/taro"
     return globalData[key]
   }
   export function getLogininfo () {
-    if(getStorageSync('logininfo')['open_id']){
-    logininfo['openid'] = getStorageSync('logininfo')['open_id']}
+    
     logininfo['nick_name'] = globalData['userinfo']['nickName']
     logininfo['avatar_url'] = globalData['userinfo']['avatarUrl']
     if(globalData['userinfo']['gender']==1){
         logininfo['gender'] = '男'
     } else if(globalData['userinfo']['gender']==2){
         logininfo['gender'] = '女'
+    }
+    if(getStorageSync('logininfo')['open_id']){
+      logininfo['openid'] = getStorageSync('logininfo')['open_id'],
+      logininfo['token'] = getStorageSync('logininfo')['token'],
+      logininfo['nick_name'] = getStorageSync('logininfo')['nick_name'].
+      logininfo['gender'] = getStorageSync('logininfo')['gender']
     }
     return logininfo
   }
   export function setLogininfo () {
-    if(getStorageSync('logininfo')['openid']){
-    logininfo['openid'] = getStorageSync('logininfo')['openid']}
     logininfo['nick_name'] = globalData['userinfo']['nickName']
     logininfo['avatar_url'] = globalData['userinfo']['avatarUrl']
     if(globalData['userinfo']['gender']==1){
@@ -47,5 +51,9 @@ import { getStorageSync } from "@tarojs/taro"
     } else if(globalData['userinfo']['gender']==2){
         logininfo['gender'] = '女'
     }
-    
+    if(getStorageSync('logininfo')['openid']){
+      logininfo['openid'] = getStorageSync('logininfo')['openid'],
+      logininfo['token'] = getStorageSync('logininfo')['token'],
+      logininfo['nick_name'] = getStorageSync('logininfo')['nick_name'],
+      logininfo['gender'] = getStorageSync('logininfo')['gender']}
   }
