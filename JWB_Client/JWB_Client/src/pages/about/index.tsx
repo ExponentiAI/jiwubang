@@ -1,13 +1,14 @@
-import Taro, { Component, Config, base64ToArrayBuffer  } from '@tarojs/taro'
+import Taro, { Component, Config, base64ToArrayBuffer, navigateBackMiniProgram  } from '@tarojs/taro'
 import { View, Text, Image, Navigator, WebView  } from '@tarojs/components'
 import './index.scss'
 import { AtIcon } from 'taro-ui'
-import { aboutIcon, disco, bottomIcon } from '../../assets/images/icon'
+import { aboutIcon, disco, bottomIcon,huaqiaoIcon,shejiyuanIcon,nsfcIcon,exponentiAIIcon,tengxun } from '../../assets/images/icon'
 
 
 export default class About extends Component {
   config: Config = {
-    navigationBarTitleText: '关于我们'
+    navigationBarTitleText: '关于我们',
+    
   }
 
 
@@ -21,7 +22,7 @@ export default class About extends Component {
           />
         </View>
         <View className='at-row at-row__justify--center'>
-          <Text className='about_text'>关于</Text>
+          <Text className='about_text'>关于我们</Text>
         </View>
         <View className='subtitle-box'>
           <View className='at-row at-row__justify--center'>
@@ -29,27 +30,14 @@ export default class About extends Component {
           </View>
           <View className='at-row at-row__justify--center'>
             <Image
-              style='width: 300rpx; height: 48rpx; background: #fff;'
-              src={disco}
+              style='width: 200px; height: 70px; background: #fff;'
+              src={exponentiAIIcon}
             />
           </View>
           <View className='at-row at-row__justify--center'>
-            <Text className='mainlab'>湖南大学数据智能与服务协同实验室</Text>
+            <Text className='mainlab' style='color: grey ;letter-spacing:3px'>指能创新学科交叉研究中心</Text>
           </View>
-          <View className='at-row at-row__justify--center'>
-            <Text style='color: black;font-size: .7em;'>&</Text>
-          </View>
-          <View className='sublab-box'>
-            <View className='sublab'>
-              湖南大学嵌入式与网络计算湖南省重点实验室
-            </View>
-            <View className='sublab'>
-              国防科技大学高性能计算国家重点实验室
-            </View>
-            <View className='sublab'>
-              中山大学大数据与计算智能研究所
-            </View>
-          </View>
+          
         </View>
         <View className='subtitle-box'>
           <View className='at-row at-row__justify--center'>
@@ -72,13 +60,35 @@ export default class About extends Component {
             <Text className='mainlab'>https://github.com/ExponentiAI/jiwubang/</Text>
           </View>
         </View>
-
-        <View className='bottom-icon'>
+        <View className='subtitle-box'>
+          <View className='at-row at-row__justify--center'>
+            <Text className='subtitle'>合作机构</Text>
+          </View>
+          <View className='at-row at-row__justify--center' style='display:flex;flex-direction:row'>
             <Image
-                style='width: 380rpx; height: 200rpx; background: #fff;'
-                src={bottomIcon}
+              style='width: 55px; height: 35px; margin-right:10px;background: #fff;'
+              src={shejiyuanIcon}
             />
+            <Image
+              style='width:42px; height: 35px; margin-right:10px;background: #fff;'
+              src={huaqiaoIcon}
+            />
+             <Image
+              style='width:60px; height: 35px; margin-right:10px;background: #fff;'
+              src={disco}
+            />
+             <Image
+              style='width:65px; height: 35px; margin-right:10px;background: #fff;'
+              src={nsfcIcon}
+            />
+             <Image
+              style='width:65px; height: 35px; background: #fff;'
+              src={tengxun}
+            />
+          </View>
         </View>
+
+      
       </View>
     )
   }

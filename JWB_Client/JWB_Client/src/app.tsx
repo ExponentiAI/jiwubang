@@ -21,10 +21,15 @@ class App extends Component {
   }
   config: Config = {
     pages: [
+      'pages/enter/index',  // 进入页
       'pages/home/index',  // 首页
       'pages/demand/index',  // 信息提供
       'pages/help/index',  // 信息求助
       'pages/about/index',  //关于页面
+      'pages/home_life/index',  // 首页(生活物资)
+      'pages/demand_life/index',  // 信息提供(生活物资)
+      'pages/help_life/index',  // 信息求助(生活物资)
+      
     ],
     window: {
       backgroundTextStyle: 'light',

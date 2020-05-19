@@ -30,7 +30,7 @@
             color: #2A86EB;
             font-size: .8em;
             margin-bottom: 30rpx;
-            letter-spacing: .4em;
+            letter-spacing: .1em;
             font-family: "Times New Roman", "黑体","正楷","幼圆","微软雅黑";
         }
     }
@@ -55,11 +55,3 @@
     }
 }
 
-.bottom-icon{
-    position: fixed;    
-    bottom: 20rpx;
-    left: 50%;
-    // top: 50%;
-    text-align:center;
-    transform: translate(-50%);
-}

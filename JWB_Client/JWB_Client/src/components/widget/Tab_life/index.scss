@@ -1,0 +1,32 @@
+
+$prefixCls: w-tab;
+
+.#{$prefixCls}{
+  color: #8a8a8a;
+  display: flex;
+  box-shadow: 0 -6px 20px #e1e1e1;
+  background-color: #f8f8f8;
+  &-btn{
+    flex: 1;
+    font-size: 24px;
+    padding: 20px 0 0;
+    border-radius: 0;
+    &:after{
+      border: none;
+      display: none;
+    }
+    &-hc{
+      background-color: #fff;
+    }
+    &-icon{
+      display: block;
+      width: 45px;
+      height: 45px;
+      margin: 0 auto;
+    }
+    &-selected{
+      color: #3d91ed;
+      border-radius: 0;
+    }
+  }
+}

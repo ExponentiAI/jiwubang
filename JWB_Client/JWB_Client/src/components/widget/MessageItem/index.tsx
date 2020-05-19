@@ -75,6 +75,7 @@ interface State {
   active: number;
   isCommentShow:boolean;
   contentValue?:string;
+  placeholderValue?:string;
   
 }
 
@@ -88,7 +89,9 @@ class Tab extends Component<Props, State> {
   constructor(props) {
     super(props)
     this.state.isCommentShow=true 
-    this.state.contentValue=""  
+    this.state.contentValue="" 
+    this.state.placeholderValue="写下你的内容..." 
+    
   }
 
   commentShowChange () {
@@ -136,7 +139,8 @@ class Tab extends Component<Props, State> {
         subtime: currentDate,      
       },
       header: {
-        'content-type': 'application/json;charset=utf-8'
+        'content-type': 'application/json;charset=utf-8',
+        'token':getLogininfo().token,
       },
       method: 'POST',
     })
@@ -144,9 +148,14 @@ class Tab extends Component<Props, State> {
     .then(res => {
       console.log(res.data.msg)
         if(res.data.msg == '操作成功！'){
+          if(this.props.itemData.s_type==0||this.props.itemData.s_type==1){
           Taro.redirectTo({
             url: `../home/index?submit_id=${1}`
-          })
+          })}else{
+            Taro.redirectTo({
+              url: `../home_life/index?submit_id=${1}`
+            })
+          }
         }else if(res.data.msg == '内容涉及敏感词！'){
           Taro.showToast({title: '内容涉及敏感词！', icon: 'none'})
         }
@@ -155,7 +164,9 @@ class Tab extends Component<Props, State> {
 
   }
 
- 
+  onClick(event){
+    console.log()
+  }
 
   onReset (event) {
     console.log(event)
@@ -187,13 +198,35 @@ class Tab extends Component<Props, State> {
       if (this.props.itemData.s_type == 0){
         goods_str += ' 需 '
         for(item in goodsInfo){
-          goods_str += goodsInfo[item].goods_name + goodsInfo[item].count + "个" + (item == goodsInfo.length-1?'':',')
+          if(goodsInfo[item].goods_name=='其它'){goods_str += '其它,内容如下:'}
+          else{goods_str += goodsInfo[item].goods_name + goodsInfo[item].count + "个" + (item == goodsInfo.length-1?'':',')}
         }
         goods_str += '# ' + this.props.itemData.s_content
-      }else{
+      }else if (this.props.itemData.s_type == 1){
         goods_str += ' ' + this.props.itemData.store_name + ' 有 '
         for(item in goodsInfo){
+          if(goodsInfo[item].goods_name=='其它'){goods_str += '其它,内容如下：'}
+          else{
           goods_str += goodsInfo[item].goods_name + goodsInfo[item].count + "元/个" + (item == goodsInfo.length-1?'':',')
+          }
+        }
+        goods_str += '# ' + this.props.itemData.s_content
+      }else if (this.props.itemData.s_type == 2{
+        goods_str += ' ' + this.props.itemData.store_name + ' 需 '
+        for(item in goodsInfo){
+          if(goodsInfo[item].goods_name=='其它'){goods_str += '其它服务,内容如下：'}
+          else{
+          goods_str += goodsInfo[item].goods_name + (item == goodsInfo.length-1?'':',')
+          }
+        }
+        goods_str += '# ' + this.props.itemData.s_content
+      }else if (this.props.itemData.s_type == 3){
+        goods_str += ' ' + this.props.itemData.store_name + ' 有 '
+        for(item in goodsInfo){
+          if(goodsInfo[item].goods_name=='其它'){goods_str += '其它服务,内容如下：'}
+          else{
+          goods_str += goodsInfo[item].goods_name + (item == goodsInfo.length-1?'':',')
+          }
         }
         goods_str += '# ' + this.props.itemData.s_content
       }
@@ -230,7 +263,7 @@ class Tab extends Component<Props, State> {
               
               this.props.itemData.comment_info.map((item, index) => {
                 return (
-                  <View  key = {index} className={`${this.prefix}-commentshow`}>
+                  <View onClick={this.onClick.bind(this)} key = {index} className={`${this.prefix}-commentshow`}>
                     <Image src={item.c_avatar_url} className={`${this.prefix}-img`}></Image>
                     <View className={`${this.prefix}-comment-column`} >
                      <View className={`${this.prefix}-title`} style="display:block" >
@@ -253,7 +286,7 @@ class Tab extends Component<Props, State> {
             name='value'
             title=''
             type='text'
-            placeholder='写下你的评论...'
+            placeholder={this.state.placeholderValue}
             value={this.state.contentValue}
             onChange={this.handleChange.bind(this)}
             customStyle={{width:"150%"}}

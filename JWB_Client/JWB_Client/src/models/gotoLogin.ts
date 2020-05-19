@@ -22,6 +22,7 @@ export function gotologin(){
               
               if (mylogininfo) {
                 Taro.setStorageSync('logininfo', mylogininfo)
+                
       }
     }
   })

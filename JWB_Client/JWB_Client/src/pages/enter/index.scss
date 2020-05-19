@@ -1,0 +1,56 @@
+
+.body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    
+.background{
+    position: fixed;
+    
+    height:120%;
+    width:100%;
+    top:-10%;
+    z-index:-1;
+    
+}
+.button{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:80px;  
+    width:500px;
+    border-radius:40px;
+    
+    
+    .button-icon{
+        position:relative;
+        right:50px;
+        height:50px;
+        width:60px;
+        
+    }
+    .button-text{
+           
+    }
+}
+#medical{
+    color:#3d91ed;
+    display:fixed;
+    bottom:-800px;
+    
+}
+#life{
+    color:#3d91ed;
+    display:fixed;
+    bottom:-860px;
+}
+.about{
+    color:white;
+    font-size:40px;
+    align-self:center;
+    position: fixed;
+    top:1100px;
+    
+}
+}

@@ -10,7 +10,7 @@ import demandMarker from '../../assets/images/icon/marker1.png'
 import supplyMarker from '../../assets/images/icon/marker2.png'
 import refreshButton from '../../assets/images/icon/refresh.png'
 import './index.less'
-import { scrollUpIco, bottomIcon } from '../../assets/images/icon'
+import { scrollUpIco, bottomIcon,medical2life } from '../../assets/images/icon'
 import {getGlobalData, setGlobalData, getLogininfo,setLogininfo} from "../../models/globalData"
 import {gotologin} from '../../models/gotoLogin'
 
@@ -37,6 +37,8 @@ export interface State {
   newestdistances: Array<any>;
   myData: Array<any>;
   newestData: Array<any>;
+  type: string;
+  
 }
 
 export default class Index extends Component<{}, State> {
@@ -78,6 +80,7 @@ export default class Index extends Component<{}, State> {
       markers: [],
       resData: [],
       submitresult: -1,
+      type:'supply',
 
       qqmapsdk: new QQMapWX({
         key: 'WHEBZ-3YWEX-R7V4Y-7U6AV-HXTKK-7EFIN'
@@ -127,25 +130,27 @@ export default class Index extends Component<{}, State> {
   const start_time = prevDate.getFullYear() + "-" + (prevDate.getMonth()+1) + "-" + prevDate.getDate() + " " + prevDate.getHours() + ":" + prevDate.getMinutes() + ":" + prevDate.getSeconds()
 
   if(this.state.latitude != 0){
+    console.log("token:",getLogininfo().token)
     Taro.request({
-      url: 'https://jwb.comdesignlab.com/new/1',
+      url: 'https://jwb.comdesignlab.com/new/1?type='+this.state.type,
       data: JSON.stringify({
         longitude: this.state.longitude,
         latitude: this.state.latitude,
         search_range: 8,
         page_items_count: 30,
         start_time: start_time,
-        end_time: end_time, 
+        end_time: end_time
       }),
       header: {
-        'content-type': 'application/json;charset=utf-8'
+        'content-type': 'application/json;charset=utf-8',
+        'token':getLogininfo().token,
       },
       method: 'POST',
     })
     .then(res => { 
       // console.log(res.data)
       if(res.statusCode == 500) {
-        Taro.showToast({
+        Taro.showToast({              
           title: '附近尚无用户发布信息',
           icon: 'none',
           duration: 2000
@@ -160,6 +165,7 @@ export default class Index extends Component<{}, State> {
         this.setState({
           newestData: res.data?res.data:[]
         }, finishCallback)
+        console.log(res.data)
       }
     })
     // .then(res => this.setState({...}, finishCallback))
@@ -183,17 +189,19 @@ async getNearInfo(finishCallback){
   
   if(this.state.latitude != 0){
     Taro.request({
-      url: 'https://jwb.comdesignlab.com/nearby/1',
+      url: 'https://jwb.comdesignlab.com/nearby/1?type='+this.state.type,
       data: JSON.stringify({
         longitude: this.state.longitude,
         latitude: this.state.latitude,
         search_range: 2,
         page_items_count: 10,
         start_time: start_time,
-        end_time: end_time, 
+        end_time: end_time 
+        
       }),
       header: {
-        'content-type': 'application/json;charset=utf-8'
+        'content-type': 'application/json;charset=utf-8',
+        'token':getLogininfo().token
       },
       method: 'POST',
     })
@@ -236,15 +244,17 @@ async getNearInfo(finishCallback){
   const start_time = prevDate.getFullYear() + "-" + (prevDate.getMonth()+1) + "-" + prevDate.getDate() + " " + prevDate.getHours() + ":" + prevDate.getMinutes() + ":" + prevDate.getSeconds()
   //console.log(getLogininfo().openid)
   Taro.request({
-    url: 'https://jwb.comdesignlab.com/me/1',
+    url: 'https://jwb.comdesignlab.com/me/1?type='+this.state.type,
     data: {
       u_id: getLogininfo().openid,
       page_items_count: 15,
       start_time: start_time,
-      end_time: end_time,
+      end_time: end_time
+  
     },
     header: {
-      'content-type': 'application/json;charset=utf-8'
+      'content-type': 'application/json;charset=utf-8',
+      'token':getLogininfo().token
     },
     method: 'POST',
   }).then(res => {
@@ -517,6 +527,10 @@ getDistance(value) {
     this.getLocationInfo()
   }
 
+  imgclick(){
+    Taro.redirectTo({ url: `/pages/home_life/index` })
+  }
+
   // tabsClick(value) {
   //   this.setState({
   //     tabsIdx: value
@@ -538,6 +552,7 @@ getDistance(value) {
             latitude={latitude} 
             longitude={longitude} 
             address={address}
+        
             >
           </WTab>
         }
@@ -560,6 +575,13 @@ getDistance(value) {
           // onClick={this.getLocationByTap.bind(this)} //在地图中手动选择位置（预留在下一版app中开放）
           // onClick={this.getDistance.bind(this)} //测试计算距离
         >
+           <CoverImage
+              className='icon'
+              src={medical2life}
+              onClick={this.imgclick.bind(this)}
+              style='width:50px;height:50px'
+              
+          />
           <CoverImage
               className='refresh'
               src={refreshButton}
@@ -569,7 +591,7 @@ getDistance(value) {
         </Map>
 
         <view style={{display:"none", justifyContent:'center'}}>
-         <Image src={scrollUpIco} style='width:25px; height:20px;position:absolute;top:40%;left:46%' ></Image></view>
+         <CoverImage src={scrollUpIco} style='width:25px; height:20px;position:absolute;top:40%;left:46%' ></CoverImage></view>
 
         <AtTabs 
           className='p-tabs' current={tabsIdx} tabList={this.tabList} 

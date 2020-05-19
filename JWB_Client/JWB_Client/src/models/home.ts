@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-import {getGlobalData} from "../models/globalData"
+import {getGlobalData,getLogininfo} from "../models/globalData"
 
 export const login = ( userdata:{ u_type: number; openid: string; nick_name: string; avatar_url: string; gender: string }) => Taro.request({
   method: 'POST',
@@ -21,6 +21,10 @@ export const login = ( userdata:{ u_type: number; openid: string; nick_name: str
     m_longitude: getGlobalData('latitude'),
     m_latitude: getGlobalData('longitude'),
 }),
+header: {
+  'content-type': 'application/json;charset=utf-8',
+  'token':getLogininfo().token,
+},
   success: res => {
    let mdata = res.data
   //  console.log(mdata.msg)

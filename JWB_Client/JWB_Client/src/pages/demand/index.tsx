@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Checkbox, Text, Map, Progress, CheckboxGroup } from '@tarojs/components'
 import { UPage } from '../../components/ui'
-import { LocationPicker, PrescriptionPicker, WGoods, TextInput } from '../../components/widget'
+import { LocationPicker, PrescriptionPicker, WGoods, TextInput,WGoods_noValue } from '../../components/widget'
 import {
   AtButton, AtAccordion, AtTextarea,
   AtModal, AtToast, AtAvatar
@@ -34,13 +34,15 @@ export interface State {
   progress: number;
   shopInputFlag: boolean;
   goodsCheckedFlag: boolean;
+  type:string;
 }
 
 export default class Index extends Component {
   state: State
   config: Config = {
-    navigationBarTitleText: '信息提供'
+    navigationBarTitleText: '信息提供',
   }
+  
 
   componentDidMount() {
 
@@ -113,7 +115,7 @@ export default class Index extends Component {
       checkboxOption: [],
       isOpened: false,
       isRead: true,
-      contentValue: '',
+      contentValue: "",
       goodsValue: [-1, -1, -1, -1, -1],
       goodsChecked: [false, false, false, false, false],
       submitClick: false,
@@ -125,40 +127,42 @@ export default class Index extends Component {
       progress: 33,
       shopInputFlag: false,
       goodsCheckedFlag: false,
+      type:'supply',
     }
   }
 
   checkboxOption = [{
     id: 1,
     value: '1',
-    label: '外科用口罩',
+    label: '医用外科用口罩',
     unit: '元/只',
     checked: false,
   }, {
     id: 2,
     value: '2',
-    label: 'N95口罩',
+    label: '儿童用口罩',
     unit: '元/只',
     checked: false,
   }, {
     id: 3,
     value: '3',
-    label: '普通一次性口罩',
-    unit: '元/只',
+    label: '家用消毒液',
+    unit: '元/瓶',
     checked: false,
   }, {
     id: 4,
     value: '4',
-    label: '医用酒精',
+    label: '家用洗手液',
     unit: '元/瓶',
     checked: false,
   }, {
     id: 5,
     value: '5',
-    label: '84消毒液',
+    label: '维生素C冲剂',
     unit: '元/瓶',
     checked: false,
-  }
+  },
+  
   ]
 
   render() {
@@ -279,9 +283,18 @@ export default class Index extends Component {
               handleValue = {this.handleGoodsValue.bind(this)}
               type={2}
             ></WGoods>)
-          })
+          })         
         }
-
+         <WGoods_noValue
+              id={6}
+              key={6}
+              value={'6'}
+              label={'其它'}
+              checked = {false}
+              handleValue = {this.handleGoodsValue.bind(this)}
+              type={2}
+              text={'在文本框输入'}
+            ></WGoods_noValue> 
       </UPage>
     )
   }
@@ -353,35 +366,42 @@ export default class Index extends Component {
       // this.setState({unitToast: false})
       let goodsData = []
       for(var i = 0; i < this.state.goodsChecked.length; i++){
-        if(this.state.goodsChecked[i]){     //如果有勾选
+        if(this.state.goodsChecked[i] && (i < this.state.goodsChecked.length-1)){     //如果有勾选
           goodsData.push({
             'goods_name': this.checkboxOption[i].label,
             'num_or_price': parseFloat(this.state.goodsValue[i])
           })
+        }else if(this.state.goodsChecked[i] && (i == this.state.goodsChecked.length-1)){
+          goodsData.push({
+            'goods_name': '其它',
+            'num_or_price': -1
+          })
         }
       }
-      console.log(
-          'u_id:', getLogininfo().openid,
-          'demand_id:',getLogininfo().openid+currentDate,
-          'lon:', this.state.longitude,
-          'lat: ',this.state.latitude,
-          'nation: ',this.state.address.nation,
-          'province:', this.state.address.province,
-          'city: ',this.state.address.city,
-          'district: ',this.state.address.district,
-          'street: ',this.state.address.street,
-          'street_number:', this.state.address.street_number,
-          'content: ',this.state.contentValue,
-          'type: ',1,
-          'goods: ',goodsData,
-          'range: ',-1,
-          'aging: ',-1,
-          'subtime:', currentDate,
-          'store_name:', this.state.shopName,
-      )
+      //console.log('goods:',goodsData)
+      //console.log('content:',this.state.contentValue)
+      //console.log('store_name:',this.state.shopName)
+      let dataS=['u_id:', getLogininfo().openid,
+        'demand_id:',getLogininfo().openid+currentDate,
+        'lon:', this.state.longitude,
+        'lat:', this.state.latitude,
+        'nation:', this.state.address.nation,
+        'province:', this.state.address.province,
+        'city:', this.state.address.city,
+        'district:', this.state.address.district,
+        'street:', this.state.address.street,
+        'street_number:', this.state.address.street_number,
+        'content:',this.state.contentValue,
+        'type:',1,
+        'goods:',goodsData,
+        'range:', -1,
+        'aging:', -1,
+        'subtime:', currentDate,
+        'store_name:', this.state.shopName,]
+       // console.log(dataS)
       //console.log('logininfo',getLogininfo())
       Taro.request({
-        url: 'https://jwb.comdesignlab.com/SupAndDem',
+        url: 'https://jwb.comdesignlab.com/SupAndDem?type='+this.state.type,
         data: {
           u_id: getLogininfo().openid,
           demand_id:getLogininfo().openid+currentDate,
@@ -402,12 +422,14 @@ export default class Index extends Component {
           store_name: this.state.shopName,
         },
         header: {
-          'content-type': 'application/json;charset=utf-8'
+          'content-type': 'application/json;charset=utf-8',
+          'token':getLogininfo().token,
         },
         method: 'POST',
       })
      
       .then(res => {
+         console.log(res.data.msg)
           if(res.data.msg == '操作成功！'){
             Taro.redirectTo({
               url: `../home/index?submit_id=${1}`

@@ -38,8 +38,7 @@ import { getStorageSync } from "@tarojs/taro"
     if(getStorageSync('logininfo')['open_id']){
       logininfo['openid'] = getStorageSync('logininfo')['open_id'],
       logininfo['token'] = getStorageSync('logininfo')['token'],
-      logininfo['nick_name'] = getStorageSync('logininfo')['nick_name'].
-      logininfo['gender'] = getStorageSync('logininfo')['gender']
+      logininfo['nick_name'] = getStorageSync('logininfo')['nick_name']
     }
     return logininfo
   }
@@ -54,6 +53,6 @@ import { getStorageSync } from "@tarojs/taro"
     if(getStorageSync('logininfo')['openid']){
       logininfo['openid'] = getStorageSync('logininfo')['openid'],
       logininfo['token'] = getStorageSync('logininfo')['token'],
-      logininfo['nick_name'] = getStorageSync('logininfo')['nick_name'],
-      logininfo['gender'] = getStorageSync('logininfo')['gender']}
+      logininfo['nick_name'] = getStorageSync('logininfo')['nick_name']
+     }
   }

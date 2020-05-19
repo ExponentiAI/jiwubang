@@ -17,7 +17,7 @@ interface Props {
 interface State {
   isShow: boolean;
   checked: boolean;
-  goodsValue: number;
+  goodsValue: string;
 }
 
 export default class WGoods extends Component<Props> {  
@@ -29,7 +29,7 @@ export default class WGoods extends Component<Props> {
       this.state = {
         isShow: false,
         checked: false,
-        goodsValue: -1,
+        goodsValue: '',
       }
     }
 

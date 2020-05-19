@@ -18,6 +18,7 @@ interface Props {
   latitude?: number;
   longitude?: number;
   address?: any;
+  
 }
 
 interface State {
@@ -31,13 +32,14 @@ class Tab extends Component<Props, State> {
       active: 0
     }
   }
-
+  
   prefix = 'w-tab'
+
   tabList = [
     { text: '信息求助', jump: 0, icon: tabbar_icon1, selectedIcon: tabbar_icon1 },
     { text: '信息提供', jump: 1, icon: tabbar_icon2, selectedIcon: tabbar_icon2 },
-    { text: '关于我们', jump: 2, icon: tabbar_icon3, selectedIcon: tabbar_icon3 },
   ]
+
 
   async login() {
     let data
@@ -48,14 +50,11 @@ class Tab extends Component<Props, State> {
     } 
     if (data && pageToSwicth == 1) {
       // Taro.navigateTo({ url: `/pages/demand/index?latitude=${this.props.latitude}&longitude=${this.props.longitude}&address=${JSON.stringify(this.props.address)}` })
-      Taro.redirectTo({ url: `/pages/demand/index` })
+      Taro.navigateTo({ url: `/pages/demand/index` })
     }
     if (data && pageToSwicth == 0) {
       // Taro.navigateTo({ url: `/pages/help/index?latitude=${this.props.latitude}&longitude=${this.props.longitude}&address=${JSON.stringify(this.props.address)}` })
-      Taro.redirectTo({ url: `/pages/help/index` })
-    }
-    if (pageToSwicth == 2){
-      Taro.redirectTo({ url: `/pages/about/index` })
+      Taro.navigateTo({ url: `/pages/help/index` })
     }
   }
 
@@ -68,8 +67,6 @@ class Tab extends Component<Props, State> {
     }
     if(item.jump == 0 || item.jump == 1){
       this.login()
-    }else if(item.jump == 2){
-      Taro.redirectTo({ url: `/pages/about/index` })
     }
   }
 
@@ -78,9 +75,9 @@ class Tab extends Component<Props, State> {
   render() {
     const { style, className = '' } = this.props
     const { active } = this.state
-
     return <View style={style} className={`${className} ${this.prefix}`}>
       {
+       
         this.tabList && this.tabList.map((item, idx) => (
           // <Button openType='getUserInfo' onGetUserInfo={this.onGetUserInfo.bind(this, item)} key={item.text} className={`${this.prefix}-btn ${idx === active ? `${this.prefix}-btn-selected` : ''}`} hoverClass={`${this.prefix}-btn-hc`}>
           <Button openType='getUserInfo' onGetUserInfo={this.onGetUserInfo.bind(this, item)} key={item.text} className={`${this.prefix}-btn`} hoverClass={`${this.prefix}-btn-hc`}>

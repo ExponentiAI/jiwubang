@@ -1,7 +1,7 @@
 import Taro, { Component, Config, getUserInfo } from '@tarojs/taro'
 import { View, Checkbox, Text, Map, Progress, CheckboxGroup } from '@tarojs/components'
 import { UPage } from '../../components/ui'
-import { LocationPicker, PrescriptionPicker, WGoods, UserInfo } from '../../components/widget'
+import { LocationPicker, PrescriptionPicker, WGoods,WGoods_noValue, UserInfo } from '../../components/widget'
 import {
   AtButton, AtAccordion, AtTextarea,
   AtModal, AtAvatar
@@ -37,6 +37,7 @@ export interface State {
   address: any;
   markers: Array<any>;
   progress: number;
+  type:string;
 }
 
 export default class Index extends Component {
@@ -44,7 +45,7 @@ export default class Index extends Component {
 
   state: State
   config: Config = {
-    navigationBarTitleText: '信息求助'
+    navigationBarTitleText: '信息求助',
   }
 
   componentDidMount() {
@@ -130,40 +131,42 @@ export default class Index extends Component {
       address: '',
       markers: [],
       progress: 25,
+      type:'supply',
     }
   }
 
   checkboxOption = [{
     id: 1,
     value: '1',
-    label: '外科用口罩',
+    label: '医用外科用口罩',
     unit: '只',
     checked: false,
   }, {
     id: 2,
     value: '2',
-    label: 'N95口罩',
+    label: '儿童用口罩',
     unit: '只',
     checked: false,
   }, {
     id: 3,
     value: '3',
-    label: '普通一次性口罩',
-    unit: '只',
+    label: '家用消毒液',
+    unit: '瓶',
     checked: false,
   }, {
     id: 4,
     value: '4',
-    label: '医用酒精',
+    label: '家用洗手液',
     unit: '瓶',
     checked: false,
   }, {
     id: 5,
     value: '5',
-    label: '84消毒液',
+    label: '维生素C冲剂',
     unit: '瓶',
     checked: false,
-  }
+  },
+  
   ]
 
   render() {
@@ -286,6 +289,16 @@ export default class Index extends Component {
             ></WGoods>)
           })
         }
+        <WGoods_noValue
+              id={6}
+              key={6}
+              value={'6'}
+              label={'其它'}
+              checked = {false}
+              handleValue = {this.handleGoodsValue.bind(this)}
+              type={2}
+              text={'在文本框输入'}
+            ></WGoods_noValue> 
 
         <LocationPicker
           handleValue={this.handleLocationValue.bind(this)}>
@@ -345,7 +358,7 @@ export default class Index extends Component {
 
   onSubmit = (e) => {
     // const time = new Date()
-    console.log("111")
+    //console.log("111")
 
     const date = new Date()
 			
@@ -388,16 +401,23 @@ export default class Index extends Component {
       let goodsData = []
       for (var i = 0; i < this.state.goodsChecked.length; i++) {
         if (this.state.goodsChecked[i]) {     //如果有勾选
+           for(var i = 0; i < this.state.goodsChecked.length; i++){
+        if(this.state.goodsChecked[i] && (i < this.state.goodsChecked.length-1)){     //如果有勾选
           goodsData.push({
             'goods_name': this.checkboxOption[i].label,
-            'num_or_price': this.state.goodsValue[i]
+            'num_or_price': parseFloat(this.state.goodsValue[i])
+          })
+        }else if(this.state.goodsChecked[i] && (i == this.state.goodsChecked.length-1)){
+          goodsData.push({
+            'goods_name': '其它',
+            'num_or_price': -1
           })
         }
       }
-      // console.log(goodsData)
+       //console.log(goodsData)
 
       Taro.request({
-        url: 'https://jwb.comdesignlab.com/SupAndDem',
+        url: 'https://jwb.comdesignlab.com/SupAndDem?type='+this.state.type,
         // url: 'http://121.43.233.66:8009/SupAndDem/',
         data: {
           u_id: getLogininfo().openid,
@@ -420,7 +440,8 @@ export default class Index extends Component {
         },
         header: {
           // 'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-          'content-type': 'application/json;charset=utf-8'
+          'content-type': 'application/json;charset=utf-8',
+          'token':getLogininfo().token,
         },
         method: 'POST',
       }).then(res => {
