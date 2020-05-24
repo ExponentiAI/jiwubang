@@ -70,10 +70,12 @@ export default class About extends Component {
               src={shejiyuanIcon}
             />
             <Image
-              style='width:42px; height: 35px; margin-right:10px;background: #fff;'
+            className='huaqiao'
+              
               src={huaqiaoIcon}
             />
              <Image
+              
               style='width:60px; height: 35px; margin-right:10px;background: #fff;'
               src={disco}
             />

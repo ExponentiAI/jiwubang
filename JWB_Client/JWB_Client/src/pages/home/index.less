@@ -1,6 +1,21 @@
 .p-home-page{
+  .top{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .icon{
+    // left: 0;
+    // top: 0;
+    margin-left:10px;
+    width: 60px;
+    height: 60px;
+    z-index:999;
+  }
   .p-search-bar{
-    padding-right: 240px;
+    padding-right: 10px;
+    padding-left:10px;
+    width: 450px;
     .at-search-bar__action{
       display: none;
     }
@@ -17,21 +32,22 @@
       width: 70px;
       height: 70px;
     }
-    .icon{
-      position: absolute;
-      // left: 0;
-      left: 2%;
-      top: 2%;
-      // top: 0;
-      width: 80px;
-      height: 70px;
-    }
+    
   }
   .p-tabs{
     .p-tabs-pane{
       min-height: calc(100vh - 345px);
       max-height: calc(100vh - 345px);
       overflow-y: auto;
+      background-color: white;;
     }
+  }
+  .switchModal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    
   }
 }

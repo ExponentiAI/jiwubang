@@ -295,17 +295,7 @@ export default class Index extends Component {
             ></WGoods_noValue>)
           })
         }
-        <WGoods_noValue
-              id={6}
-              key={6}
-              value={'6'}
-              label={'其它'}
-              checked = {false}
-              handleValue = {this.handleGoodsValue.bind(this)}
-              type={2}
-              text={'在文本框输入'}
-            ></WGoods_noValue> 
-
+        
         <LocationPicker
           handleValue={this.handleLocationValue.bind(this)}>
 

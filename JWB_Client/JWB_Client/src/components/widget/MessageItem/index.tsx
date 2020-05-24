@@ -76,6 +76,8 @@ interface State {
   isCommentShow:boolean;
   contentValue?:string;
   placeholderValue?:string;
+  replyId?:string;
+  submitContent?:string;
   
 }
 
@@ -91,6 +93,8 @@ class Tab extends Component<Props, State> {
     this.state.isCommentShow=true 
     this.state.contentValue="" 
     this.state.placeholderValue="写下你的内容..." 
+    this.state.replyId=""
+    this.state.submitContent=''
     
   }
 
@@ -98,17 +102,15 @@ class Tab extends Component<Props, State> {
     let flag=!this.state.isCommentShow
     this.setState({
       isCommentShow: flag,
-      contentValue: ''
+      contentValue: '',
+      placeholderValue:"写下你的内容...",
+      replyId:'',
+      
     })
     
   }
 
-  handleChange (value) {
-    this.setState({
-      contentValue:value
-    })
-    return value
-  }
+  
   onSubmit (event) {
     console.log(event)
 
@@ -129,14 +131,21 @@ class Tab extends Component<Props, State> {
       Taro.showToast({title: '内容不能为空！', icon: 'none'})
     }
     else{
+      if(this.state.placeholderValue&&this.state.placeholderValue!='写下你的内容...'){
+        this.state.submitContent = this.state.placeholderValue+this.state.contentValue
+        //console.log(this.state.contentValue)
+        //console.log(this.state.placeholderValue)
+        //console.log(this.state.submitContent)
+      }else{this.state.submitContent =this.state.contentValue}
       
     Taro.request({
       url: 'https://jwb.comdesignlab.com/SubComment',
       data: {
         u_id: getLogininfo().openid,
         demand_id:this.props.itemData.demand_id,
-        comment_content:this.state.contentValue,
-        subtime: currentDate,      
+        comment_content:this.state.submitContent,
+        subtime: currentDate,  
+        replyId:this.state.replyId,    
       },
       header: {
         'content-type': 'application/json;charset=utf-8',
@@ -164,13 +173,19 @@ class Tab extends Component<Props, State> {
 
   }
 
-  onClick(event){
-    console.log()
+  onClick(item,e){
+    this.setState({
+      placeholderValue:'@'+decodeURIComponent(item.c_nick_name)+' : ',
+      replyId:item.c_uid
+    })
+    //console.log(item)
   }
 
   onReset (event) {
     console.log(event)
   }
+
+  
 
 
   render() {
@@ -255,23 +270,23 @@ class Tab extends Component<Props, State> {
         <View className={`${this.prefix}-bottom-wrap`}>
           {goods_str}
           <View className={`${this.prefix}-operation`}>
-            {this.state.isCommentShow == true && <Text className={`${this.prefix}-comment`} onClick={this.commentShowChange.bind(this)} style="color:black">评论</Text>}
-            {this.state.isCommentShow == false && <Text className={`${this.prefix}-comment`} onClick={this.commentShowChange.bind(this)} style="color:#3D91ED">评论</Text>}
+            {this.state.isCommentShow == true && <Text className={`${this.prefix}-comment`} onClick={this.commentShowChange.bind(this)} style="color:black">评论-></Text>}
+            {this.state.isCommentShow == false && <Text className={`${this.prefix}-comment`} onClick={this.commentShowChange.bind(this)} style="color:#3D91ED">评论-></Text>}
           </View>
           <View hidden={this.state.isCommentShow} className={`${this.prefix}-comment-area`} style="padding-top:10px">
           {
               
               this.props.itemData.comment_info.map((item, index) => {
                 return (
-                  <View onClick={this.onClick.bind(this)} key = {index} className={`${this.prefix}-commentshow`}>
+                  <View onClick={this.onClick.bind(this,item)} key = {index} className={`${this.prefix}-commentshow`}>
                     <Image src={item.c_avatar_url} className={`${this.prefix}-img`}></Image>
                     <View className={`${this.prefix}-comment-column`} >
                      <View className={`${this.prefix}-title`} style="display:block" >
-                            {item.c_nick_name}
+                            {decodeURIComponent(item.c_nick_name)}
                             <View style="float:right;color:grey;font-size:10px">{item.c_subtime}</View>
                           
                      </View >
-                     <View style="padding-left:12px;width:240px;word-wrap:break-word">{item.comment_content}</View>
+                     <View style="padding-left:12px;width:550rpx;word-wrap:break-word">{item.comment_content}</View>
                     </View>
                   </View>
                 )
@@ -282,20 +297,21 @@ class Tab extends Component<Props, State> {
           <AtForm className={`${this.prefix}-comment-input`} onSubmit={this.onSubmit.bind(this)} onReset={this.onReset.bind(this)}>
           <View className={`${this.prefix}-comment-inputBox`}>
           <View className={`${this.prefix}-comment-inputField`}>
-          <AtInput 
+          <AtTextarea
+            count={false} 
             name='value'
-            title=''
-            type='text'
             placeholder={this.state.placeholderValue}
             value={this.state.contentValue}
-            onChange={this.handleChange.bind(this)}
-            customStyle={{width:"150%"}}
+            onChange={(e) => {this.setState({contentValue: e.detail.value})}}
+            maxLength={100}
+            height={40}
+            customStyle={{width:"550rpx",marginRight:"10px"}}
 
           />
           </View>
-          <View className={`${this.prefix}-submit`}>
-           <AtButton formType='submit' size='small' customStyle={{width:"10%",color:"#3D91ED"}}>提交</AtButton>
-          </View>
+          <View style={{display:'flex',alignItems:"center"}}>
+           <AtButton className={`${this.prefix}-submit`} formType='submit' size='small' customStyle={{color:"#3D91ED"}}>提交</AtButton>
+           </View>
           </View>
           </AtForm>
         </View>

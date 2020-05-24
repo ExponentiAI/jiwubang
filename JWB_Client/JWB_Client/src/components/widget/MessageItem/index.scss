@@ -68,10 +68,10 @@ $prefixCls: w-message-item;
       .#{$prefixCls}-comment-inputBox{
         display: flex;
         flex-direction: row;
+        align-content: center;
         .#{$prefixCls}-submit{
-          position:relative;
-          left:30%;
-          margin-top: 3%;
+          position: relative;
+          
         }
        
     }

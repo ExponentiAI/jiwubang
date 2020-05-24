@@ -38,7 +38,8 @@ export interface State {
   myData: Array<any>;
   newestData: Array<any>;
   type: string;
-  
+  modalShow:boolean;
+  modalContent:string;
 }
 
 export default class Index extends Component<{}, State> {
@@ -81,6 +82,8 @@ export default class Index extends Component<{}, State> {
       resData: [],
       submitresult: -1,
       type:'supply',
+      modalShow:false,
+      modalContent:'\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b切换到生活服务？',
 
       qqmapsdk: new QQMapWX({
         key: 'WHEBZ-3YWEX-R7V4Y-7U6AV-HXTKK-7EFIN'
@@ -422,10 +425,11 @@ getDistance(value) {
       let idCount = 0
       for (let i = 0; i < resData.length; i++) {
         if(resData[i].details_info.length > 0) {
-          if(resData[i].s_type == 1) {
-            
+          if(resData[i].s_type == 0) {
             for(let j = 0; j < resData[i].details_info.length; j++) {
-              goodsInfo = resData[i].details_info[j].goods_name + resData[i].details_info[j].count + '元/个\n'
+              if(resData[i].details_info[j].goods_name=='其它\n'){
+                goodsInfo += '其它'}
+              else{goodsInfo += resData[i].details_info[j].goods_name + resData[i].details_info[j].count + '元/个\n'}
             }
             newMarkers.push({
               iconPath: supplyMarker,
@@ -436,7 +440,7 @@ getDistance(value) {
               width: 20,
               height: 30,
               callout: {
-                content: resData[i].s_street + '\n' + resData[i].store_name + '\n有' + goodsInfo + resData[i].s_subtime,
+                content: resData[i].s_street + '\n' + resData[i].store_name + '\n需:' + goodsInfo + resData[i].s_subtime,
                 // content: '测试',
                 color: "#FFFFFF",
                 bgColor: "#3D91ED",
@@ -445,9 +449,34 @@ getDistance(value) {
               }
             })
             idCount = idCount + 1
-          } else {
+          } else if (resData[i].s_type == 1){
+            //console.log(resData[i])
             for(let j = 0; j < resData[i].details_info.length; j++) {
-              goodsInfo = resData[i].details_info[j].goods_name + resData[i].details_info[j].count + '个\n'
+              if(resData[i].details_info[j].goods_name=='其它'){goodsInfo += '其它\n'}
+              else{goodsInfo += resData[i].details_info[j].goods_name + resData[i].details_info[j].count + '元/个\n'}
+            }
+            newMarkers.push({
+              iconPath: demandMarker,
+              id: idCount+1,
+              // markerId: idCount+1,
+              latitude: resData[i].s_lat,
+              longitude: resData[i].s_lon,
+              width: 20,
+              height: 30,
+              callout: {
+                content: resData[i].s_street + '\n有:' + goodsInfo + resData[i].s_subtime,
+                // content: '测试',
+                color: "#3D91ED",
+                bgColor: "#FFFFFF",
+                display:'BYCLICK',
+                textAlign:'center'
+              }
+            })
+            idCount = idCount + 1
+          } else if (resData[i].s_type == 2){
+            for(let j = 0; j < resData[i].details_info.length; j++) {
+             
+              goodsInfo += resData[i].details_info[j].goods_name 
             }
             newMarkers.push({
               iconPath: demandMarker,
@@ -467,10 +496,31 @@ getDistance(value) {
               }
             })
             idCount = idCount + 1
-          }
         }
+        else if (resData[i].s_type == 3){
+          for(let j = 0; j < resData[i].details_info.length; j++) {
+            goodsInfo += resData[i].details_info[j].goods_name 
+          }
+          newMarkers.push({
+            iconPath: demandMarker,
+            id: idCount+1,
+            // markerId: idCount+1,
+            latitude: resData[i].s_lat,
+            longitude: resData[i].s_lon,
+            width: 20,
+            height: 30,
+            callout: {
+              content: resData[i].s_street + '\n有' + goodsInfo + resData[i].s_subtime,
+              // content: '测试',
+              color: "#3D91ED",
+              bgColor: "#FFFFFF",
+              display:'BYCLICK',
+              textAlign:'center'
+            }
+          })
+          idCount = idCount + 1
       }
-    }
+    }}}
     // console.log(newMarkers.length)
     // console.log(newMarkers)
     
@@ -528,7 +578,9 @@ getDistance(value) {
   }
 
   imgclick(){
-    Taro.redirectTo({ url: `/pages/home_life/index` })
+    this.setState({
+      modalShow:true
+    })
   }
 
   // tabsClick(value) {
@@ -536,6 +588,13 @@ getDistance(value) {
   //     tabsIdx: value
   //   })
   // }
+  handleClose(){this.setState({
+    modalShow:false
+  })}
+  handleCancel(){this.setState({
+    modalShow:false
+  })}
+  handleConfirm(){Taro.redirectTo({ url: `/pages/home_life/index` })}
 
   render() {
     const { keyword, tabBarIdx, markers, tabsIdx, latitude, longitude, address, mapScale } = this.state
@@ -543,6 +602,7 @@ getDistance(value) {
 
     
     return (
+      
       <UPage
         className='p-home-page'
         showBottom
@@ -557,13 +617,32 @@ getDistance(value) {
           </WTab>
         }
         renderTop={
+          <View className='top'>
+          <CoverImage
+              className='icon'
+              src={medical2life}
+              onClick={this.imgclick.bind(this)}
+              
+              
+          />
           <AtSearchBar
             value={keyword}
             onChange={this.searchChange.bind(this)}
-            className='p-search-bar'
-            showActionButton
+            className='p-search-bar' 
           />
+          </View>
         }>
+          <AtModal
+            className='switchModal'
+            isOpened={this.state.modalShow}
+            cancelText='否'
+            confirmText='是'
+            onClose={ this.handleClose.bind(this) }
+            onCancel={ this.handleCancel.bind(this) }
+            onConfirm={ this.handleConfirm.bind(this) }
+            content={this.state.modalContent}
+            
+/>
 
         <Map
           markers={markers}
@@ -575,13 +654,7 @@ getDistance(value) {
           // onClick={this.getLocationByTap.bind(this)} //在地图中手动选择位置（预留在下一版app中开放）
           // onClick={this.getDistance.bind(this)} //测试计算距离
         >
-           <CoverImage
-              className='icon'
-              src={medical2life}
-              onClick={this.imgclick.bind(this)}
-              style='width:50px;height:50px'
-              
-          />
+          
           <CoverImage
               className='refresh'
               src={refreshButton}
