@@ -45,7 +45,12 @@ class App extends Component {
   }
 
   
-
+  onHide(){
+    let pages = Taro.getCurrentPages(); 
+         if(pages['0'].route != `pages/enter/index`){ 
+         Taro.redirectTo({url:`pages/enter/index`  })
+  }
+  }
   componentDidMount () {
   }
 

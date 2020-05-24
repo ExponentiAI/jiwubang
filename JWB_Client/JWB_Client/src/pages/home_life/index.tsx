@@ -617,7 +617,7 @@ getDistance(value) {
         }
         renderTop={
           <View className='top'>
-          <CoverImage
+          <Image
               className='icon'
               src={life2medical}
               onClick={this.imgclick.bind(this)}
@@ -653,7 +653,7 @@ getDistance(value) {
           // onClick={this.getDistance.bind(this)} //测试计算距离
         >
            
-          <Image
+          <CoverImage
               className='refresh'
               src={refreshButton}
               onClick={this.refreshLoation.bind(this)} 
