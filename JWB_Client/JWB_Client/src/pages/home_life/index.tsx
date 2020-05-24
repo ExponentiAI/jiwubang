@@ -653,7 +653,7 @@ getDistance(value) {
           // onClick={this.getDistance.bind(this)} //测试计算距离
         >
            
-          <CoverImage
+          <Image
               className='refresh'
               src={refreshButton}
               onClick={this.refreshLoation.bind(this)} 

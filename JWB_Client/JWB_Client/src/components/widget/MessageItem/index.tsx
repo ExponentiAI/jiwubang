@@ -213,14 +213,14 @@ class Tab extends Component<Props, State> {
       if (this.props.itemData.s_type == 0){
         goods_str += ' 需 '
         for(item in goodsInfo){
-          if(goodsInfo[item].goods_name=='其它'){goods_str += '其它,内容如下:'}
+          if(goodsInfo[item].goods_name=='其它'){goods_str += '其它'}
           else{goods_str += goodsInfo[item].goods_name + goodsInfo[item].count + "个" + (item == goodsInfo.length-1?'':',')}
         }
         goods_str += '# ' + this.props.itemData.s_content
       }else if (this.props.itemData.s_type == 1){
         goods_str += ' ' + this.props.itemData.store_name + ' 有 '
         for(item in goodsInfo){
-          if(goodsInfo[item].goods_name=='其它'){goods_str += '其它,内容如下：'}
+          if(goodsInfo[item].goods_name=='其它'){goods_str += '其它'}
           else{
           goods_str += goodsInfo[item].goods_name + goodsInfo[item].count + "元/个" + (item == goodsInfo.length-1?'':',')
           }
@@ -229,7 +229,7 @@ class Tab extends Component<Props, State> {
       }else if (this.props.itemData.s_type == 2{
         goods_str += ' ' + this.props.itemData.store_name + ' 需 '
         for(item in goodsInfo){
-          if(goodsInfo[item].goods_name=='其它'){goods_str += '其它服务,内容如下：'}
+          if(goodsInfo[item].goods_name=='其它'){goods_str += '其它'}
           else{
           goods_str += goodsInfo[item].goods_name + (item == goodsInfo.length-1?'':',')
           }
@@ -238,7 +238,7 @@ class Tab extends Component<Props, State> {
       }else if (this.props.itemData.s_type == 3){
         goods_str += ' ' + this.props.itemData.store_name + ' 有 '
         for(item in goodsInfo){
-          if(goodsInfo[item].goods_name=='其它'){goods_str += '其它服务,内容如下：'}
+          if(goodsInfo[item].goods_name=='其它'){goods_str += '其它'}
           else{
           goods_str += goodsInfo[item].goods_name + (item == goodsInfo.length-1?'':',')
           }
