@@ -73,7 +73,7 @@
 		"eslint-plugin-react": "^7.8.2",
 		"eslint-plugin-react-hooks": "^1.6.1",
 		"eslint-plugin-taro": "1.3.36",
-		"qs": "^6.9.1",
+		"qs": "^6.9.7",
 		"stylelint": "9.3.0",
 		"stylelint-config-taro-rn": "1.3.36",
 		"stylelint-taro-rn": "1.3.36",
